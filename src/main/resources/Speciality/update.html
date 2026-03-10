@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="ca">
+<head>
+  <meta charset="UTF-8" />
+  <title>Editar especialidad</title>
+  <link rel="stylesheet"         href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css">
+</head>
+
+
+<body>
+<main class="container">
+  <h1>Edita especialidad</h1>
+  <form class="form-horizontal" th:action="@{/Speciality/update}" th:object="${Speciality}" method="post">
+    <div class="form-group row">
+      <label for="speciality" class="control-label col-sm-2">Nom: </label>
+      <input id="speciality" type="text" th:field="*{speciality}" class="form-control col-sm-4">
+    </div>
+
+
+    <div class="form-group row">
+      <label for="idSpeciality" class="control-label col-sm-2">Num. Federat</label>
+      <input id="idSpeciality" type="text" th:field="*{idSpeciality}" class="form-control col-sm-4">
+    </div>
+
+    <button type="submit" class="btn btn-primary">Edita especialidad</button>
+
+
+  </form>
+</main>
+</body>
+</html>

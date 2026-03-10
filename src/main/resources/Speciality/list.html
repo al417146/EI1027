@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <title>Gestionar Especialitats</title>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" />
+</head>
+<body>
+<main class="container">
+    <h1>Lista de Especialidades</h1>
+    <table>
+        <thead>
+        <tr>
+            <th>Código</th>
+            <th>Nombre</th>
+            <td></td>
+            <td></td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="Speciality: ${especialidades}">
+            <td th:text="${Speciality.idSpeciality}"></td>
+            <td th:text="${Speciality.speciality}"></td>
+            <td><a th:href="@{/Speciality/update/{speciality}(Speciality=${Speciality.speciality})}">Edita</a>
+            </td>
+            <td><a th:href="@{/Speciality/delete/{speciality}(Speciality=${Speciality.speciality})}">Elimina</a>
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="add">Añade especialidad</a>
+    <br><br>
+    <a href="/">Volver</a>
+</main>
+</body>
+</html>
