@@ -18,12 +18,12 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="Speciality: ${especialidades}">
-            <td th:text="${Speciality.idSpeciality}"></td>
-            <td th:text="${Speciality.speciality}"></td>
-            <td><a th:href="@{/Speciality/update/{speciality}(Speciality=${Speciality.speciality})}">Edita</a>
+        <tr th:each="speciality: ${especialidades}">
+            <td th:text="${speciality.idSpeciality}"></td>
+            <td th:text="${speciality.speciality}"></td>
+            <td><a th:href="@{/speciality/update/{speciality}(speciality=${SpecialityController.speciality})}">Edita</a>
             </td>
-            <td><a th:href="@{/Speciality/delete/{speciality}(Speciality=${Speciality.speciality})}">Elimina</a>
+            <td><a th:href="@{/speciality/delete/{speciality}(Speciality=${SpecialityController.speciality})}">Elimina</a>
             </td>
         </tr>
         </tbody>

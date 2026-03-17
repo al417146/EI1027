@@ -10,7 +10,7 @@
 <body>
 <main class="container">
   <h1>Edita especialidad</h1>
-  <form class="form-horizontal" th:action="@{/Speciality/update}" th:object="${Speciality}" method="post">
+  <form class="form-horizontal" th:action="@{/speciality/update}" th:object="${speciality}" method="post">
     <div class="form-group row">
       <label for="speciality" class="control-label col-sm-2">Nom: </label>
       <input id="speciality" type="text" th:field="*{speciality}" class="form-control col-sm-4">
@@ -18,7 +18,7 @@
 
 
     <div class="form-group row">
-      <label for="idSpeciality" class="control-label col-sm-2">Num. Federat</label>
+      <label for="idSpeciality" class="control-label col-sm-2">id Especialidad</label>
       <input id="idSpeciality" type="text" th:field="*{idSpeciality}" class="form-control col-sm-4">
     </div>
 
