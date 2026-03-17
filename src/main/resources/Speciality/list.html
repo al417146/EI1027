@@ -18,7 +18,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="speciality: ${especialidades}">
+        <tr th:each="speciality: ${specialities}">
             <td th:text="${speciality.idSpeciality}"></td>
             <td th:text="${speciality.speciality}"></td>
             <td><a th:href="@{/speciality/update/{speciality}(speciality=${SpecialityController.speciality})}">Edita</a>

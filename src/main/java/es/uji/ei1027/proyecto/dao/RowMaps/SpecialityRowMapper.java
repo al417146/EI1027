@@ -12,7 +12,7 @@ public final class SpecialityRowMapper implements RowMapper<Speciality> {
         Speciality speciality = new Speciality();
 
         speciality.setIdSpeciality(rs.getInt("idSpeciality"));
-        speciality.setSpeciality(rs.getString("speciality"));
+        speciality.setSpeciality(rs.getString("descrip"));
 
         return speciality;
     }
