@@ -14,42 +14,42 @@ public class SpecialityController {
     private SpecialityDAO specialityDAO;
 
     @Autowired
-    public void setSpecialityDAO(SpecialityDAO specialityDAO){
+    public void setSpecialityDAO(SpecialityDAO specialityDAO) {
         this.specialityDAO = specialityDAO;
     }
 
     @RequestMapping("/list")
-    public String list(Model model){
+    public String list(Model model) {
         model.addAttribute("specialities", specialityDAO.getSpecialities());
         return "speciality/list";
     }
 
-    @RequestMapping("/add")
-    public String add(Model model){
+    @GetMapping("/add")
+    public String add(Model model) {
         model.addAttribute("speciality", new Speciality());
         return "speciality/add";
     }
 
     @PostMapping("/add")
-    public String processAdd(@ModelAttribute Speciality speciality){
+    public String processAdd(@ModelAttribute Speciality speciality) {
         specialityDAO.addSpeciality(speciality);
         return "redirect:list";
     }
 
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable int id){
+    public String delete(@PathVariable String id) {
         specialityDAO.deleteSpeciality(id);
         return "redirect:../list";
     }
 
-    @RequestMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable int id){
+    @GetMapping("/edit/{id}")
+    public String edit(Model model, @PathVariable String id) {
         model.addAttribute("speciality", specialityDAO.getSpeciality(id));
         return "speciality/edit";
     }
 
     @PostMapping("/edit")
-    public String processEdit(@ModelAttribute Speciality speciality){
+    public String processEdit(@ModelAttribute Speciality speciality) {
         specialityDAO.updateSpeciality(speciality);
         return "redirect:list";
     }

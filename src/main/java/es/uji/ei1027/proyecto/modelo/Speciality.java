@@ -1,30 +1,30 @@
 package es.uji.ei1027.proyecto.modelo;
 
 public class Speciality {
-    int idSpeciality;
-    String speciality;
+    String idSpeciality;
+    String descrip;
 
-    public int getIdSpeciality() {
+    public String getIdSpeciality() {
         return idSpeciality;
     }
 
-    public void setIdSpeciality(int idSpeciality) {
+    public void setIdSpeciality(String idSpeciality) {
         this.idSpeciality = idSpeciality;
     }
 
-    public String getSpeciality() {
-        return speciality;
+    public String getDescrip() {
+        return descrip;
     }
 
-    public void setSpeciality(String speciality) {
-        this.speciality = speciality;
+    public void setDescrip(String descrip) {
+        this.descrip = descrip;
     }
 
     @Override
     public String toString() {
         return "Speciality {" +
                 "idSpeciality = " + idSpeciality +
-                ", speciality = '" + speciality + '\'' +
+                ", descrip = '" + descrip + '\'' +
                 '}';
     }
 }

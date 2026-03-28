@@ -1,34 +1,32 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <title>Gestionar Especialitats</title>
+    <title>Gestionar Especialidades</title>
     <meta charset="UTF-8" />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" />
 </head>
 <body>
 <main class="container">
     <h1>Lista de Especialidades</h1>
-    <table>
+    <table class="table table-striped">
         <thead>
         <tr>
             <th>Código</th>
             <th>Nombre</th>
-            <td></td>
-            <td></td>
+            <th></th>
+            <th></th>
         </tr>
         </thead>
         <tbody>
         <tr th:each="speciality: ${specialities}">
             <td th:text="${speciality.idSpeciality}"></td>
-            <td th:text="${speciality.speciality}"></td>
-            <td><a th:href="@{/speciality/update/{speciality}(speciality=${SpecialityController.speciality})}">Edita</a>
-            </td>
-            <td><a th:href="@{/speciality/delete/{speciality}(Speciality=${SpecialityController.speciality})}">Elimina</a>
-            </td>
+            <td th:text="${speciality.descrip}"></td>
+            <td><a th:href="@{/speciality/edit/{id}(id=${speciality.idSpeciality})}">Editar</a></td>
+            <td><a th:href="@{/speciality/delete/{id}(id=${speciality.idSpeciality})}">Eliminar</a></td>
         </tr>
         </tbody>
     </table>
-    <a href="add">Añade especialidad</a>
+    <a href="add">Añadir especialidad</a>
     <br><br>
     <a href="/">Volver</a>
 </main>

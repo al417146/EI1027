@@ -10,51 +10,49 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+
 @Repository
-    public class SpecialityDAO {
+public class SpecialityDAO {
 
-        private JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
-        @Autowired
-        public void setDataSource(DataSource dataSource){
-            jdbcTemplate = new JdbcTemplate(dataSource);
-        }
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
+    }
 
-        public void addSpeciality(Speciality speciality){
-            jdbcTemplate.update("INSERT INTO Speciality VALUES (?,?)",
-                    speciality.getIdSpeciality(),
-                    speciality.getSpeciality());
-        }
+    public void addSpeciality(Speciality speciality) {
+        jdbcTemplate.update("INSERT INTO Speciality VALUES (?, ?)",
+                speciality.getIdSpeciality(),
+                speciality.getDescrip());
+    }
 
-        public void deleteSpeciality(int idSpeciality){
-            jdbcTemplate.update("DELETE FROM Speciality WHERE idSpeciality=?",
+    public void deleteSpeciality(String idSpeciality) {
+        jdbcTemplate.update("DELETE FROM Speciality WHERE idSpeciality=?", idSpeciality);
+    }
+
+    public void updateSpeciality(Speciality speciality) {
+        jdbcTemplate.update("UPDATE Speciality SET descrip=? WHERE idSpeciality=?",
+                speciality.getDescrip(),
+                speciality.getIdSpeciality());
+    }
+
+    public Speciality getSpeciality(String idSpeciality) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM Speciality WHERE idSpeciality=?",
+                    new SpecialityRowMapper(),
                     idSpeciality);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         }
+    }
 
-        public void updateSpeciality(Speciality speciality){
-            jdbcTemplate.update("UPDATE Speciality SET speciality=? WHERE idSpeciality=?",
-                    speciality.getSpeciality(),
-                    speciality.getIdSpeciality());
+    public List<Speciality> getSpecialities() {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Speciality", new SpecialityRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
         }
-
-        public Speciality getSpeciality(int idSpeciality){
-            try{
-                return jdbcTemplate.queryForObject(
-                        "SELECT * FROM Speciality WHERE idSpeciality=?",
-                        new SpecialityRowMapper(),
-                        idSpeciality);
-            } catch(EmptyResultDataAccessException e){
-                return null;
-            }
-        }
-
-        public List<Speciality> getSpecialities(){
-            try{
-                return jdbcTemplate.query("SELECT * FROM Speciality",
-                        new SpecialityRowMapper());
-            } catch(EmptyResultDataAccessException e){
-                return new ArrayList<>();
-            }
-        }
+    }
 }
-
