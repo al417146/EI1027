@@ -20,7 +20,23 @@ public class patiDAO {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void addPATI(PATI p){
+    public List<PATI> getPATIsByOVIUser(String dniOviUser) {
+        try {
+            return jdbcTemplate.query(
+                    "SELECT p.* " +
+                            "FROM PATI p " +
+                            "JOIN Registration r ON p.DNI = r.DNIPat " +
+                            "JOIN ovUser u ON u.DNI = r.DNIOvUser " +
+                            "WHERE u.DNI = ?",
+                    new PATIRowMapper(),
+                    dniOviUser
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+
+        public void addPATI(PATI p){
         jdbcTemplate.update("INSERT INTO PATI VALUES (?,?,?,?,?,?,?,?)",
                 p.getDNI(),
                 p.getName(),
