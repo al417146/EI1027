@@ -53,8 +53,6 @@ public class OVIUserController {
 
         // Siempre pasamos la lista (puede estar vacía)
         model.addAttribute("patis", patiDAO.getPATIsByOVIUser(dniOVI));
-        return "OVIUser/list";
-
         return "/OVIUser/list";
 
     }
