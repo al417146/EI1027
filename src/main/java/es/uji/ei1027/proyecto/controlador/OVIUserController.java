@@ -46,7 +46,6 @@ public class OVIUserController {
         validator.validateHasPATIs(dniOVI, bindingResult);
 
         if (bindingResult.hasErrors()) {
-
             model.addAttribute("errorSinPatis", bindingResult.getGlobalError().getDefaultMessage());
         }
 
@@ -56,6 +55,7 @@ public class OVIUserController {
         return "/OVIUser/list";
 
     }
+
     // AÑADIR (GET)
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addUser(Model model) {
@@ -71,17 +71,11 @@ public class OVIUserController {
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("oviuser") OVIUser user,
                                    BindingResult bindingResult) {
-
         OVIUserValidator validator = new OVIUserValidator();
         validator.validate(user, bindingResult);
-
         if (bindingResult.hasErrors())
-
             return "/OVIUser/add";
-
-
         oviUserDAO.addOVIUser(user);
-
         return "redirect:OVIUser/index";
     }
 
