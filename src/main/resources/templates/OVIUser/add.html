@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Añadir OVIUser</title>
+</head>
+<body>
+    <form th:action="@{/oviuser/add}" th:object="${oviuser}" method="post"> <!-- Método POST -->
+
+        <input type="text" th:field="*{DNI}" placeholder="DNI"/>
+        <p th:if="${#fields.hasErrors('DNI')}" th:errors="*{DNI}"></p>
+
+        <input type="text" th:field="*{name}" placeholder="Nombre"/>
+        <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
+
+        <input type="number" th:field="*{age}" placeholder="Edad"/>
+        <p th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></p>
+
+        <input type="text" th:field="*{mail}" placeholder="Email"/>
+        <p th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></p>
+
+        <input type="text" th:field="*{phone}" placeholder="Teléfono"/>
+        <p th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}"></p>
+
+        <input type="text" th:field="*{gender}" placeholder="Género"/>
+        <p th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}"></p>
+
+        <input type="text" th:field="*{address}" placeholder="Dirección"/>
+        <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+
+        <button type="submit">Añadir</button>
+
+    </form>
+</body>
+</html>

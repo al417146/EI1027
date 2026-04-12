@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 
 @Controller
-@RequestMapping("/templates/OVIUser")
+@RequestMapping("/OVIUser")
 public class OVIUserController {
 
     private OVIUserDAO oviUserDAO;
@@ -34,15 +34,15 @@ public class OVIUserController {
 
         model.addAttribute("PATIs", DAO.getPATIsByOVIUser(dniOVI));
 
-        return "templates/OVIUser/list";
+        return "/OVIUser/list";
     }
     // AÑADIR (GET)
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addUser(Model model) {
 
-        model.addAttribute("templates/OVIUser", new OVIUser());
+        model.addAttribute("/OVIUser", new OVIUser());
 
-        return "templates/OVIUser/add";
+        return "/OVIUser/add";
     }
 
     // AÑADIR (POST)
@@ -54,7 +54,7 @@ public class OVIUserController {
         validator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "templates/OVIUser/add";
+            return "/OVIUser/add";
 
         oviUserDAO.addOVIUser(user);
 
@@ -74,7 +74,7 @@ public class OVIUserController {
 
         model.addAttribute("OVIuser", oviUserDAO.getOVIUser(DNI));
 
-        return "templates/OVIUser/index";
+        return "/OVIUser/index";
     }
 
     // EDITAR (POST)
@@ -86,7 +86,7 @@ public class OVIUserController {
         validator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "templates/OVIUser/update";
+            return "/OVIUser/update";
 
         oviUserDAO.updateOVIUser(user);
         return "redirect:list";
