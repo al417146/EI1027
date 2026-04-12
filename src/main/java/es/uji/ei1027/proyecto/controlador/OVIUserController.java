@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.MapBindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
+import java.util.HashMap;
 
 @Controller
 @RequestMapping("/OVIUser")
@@ -26,15 +28,35 @@ public class OVIUserController {
     @Autowired
     private patiDAO DAO;
 
-    //Listamos los PATIS asociados a este OVIUser
+    //Listamos los PATI asociados a este OVIUser
     @GetMapping("/list")
     public String listPATIS(Model model, Principal p){
 
         String dniOVI = p.getName();
 
-        model.addAttribute("PATIs", DAO.getPATIsByOVIUser(dniOVI));
+        OVIUserValidator validator = new OVIUserValidator();
+
+
+        // Creamos un BindingResult artificial para el validador,
+        // ya que en esta función no se procesa a través de un formulario,
+        // sino de la sesión
+
+        BindingResult bindingResult = new MapBindingResult(new HashMap<>(), "oviuser");
+
+        validator.validateHasPATIs(dniOVI, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+
+            model.addAttribute("errorSinPatis", bindingResult.getGlobalError().getDefaultMessage());
+        }
+
+
+        // Siempre pasamos la lista (puede estar vacía)
+        model.addAttribute("patis", patiDAO.getPATIsByOVIUser(dniOVI));
+        return "OVIUser/list";
 
         return "/OVIUser/list";
+
     }
     // AÑADIR (GET)
     @RequestMapping(value = "/add", method = RequestMethod.GET)
@@ -42,7 +64,9 @@ public class OVIUserController {
 
         model.addAttribute("/OVIUser", new OVIUser());
 
+
         return "/OVIUser/add";
+
     }
 
     // AÑADIR (POST)
@@ -54,18 +78,20 @@ public class OVIUserController {
         validator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors())
+
             return "/OVIUser/add";
+
 
         oviUserDAO.addOVIUser(user);
 
-        return "redirect:/OVIUser/index";
+        return "redirect:OVIUser/index";
     }
 
     // BORRAR
     @RequestMapping("/delete/{DNI}")
     public String deleteUser(@PathVariable String DNI) {
         oviUserDAO.deleteOVIUser(DNI);
-        return "redirect:index";
+        return "redirect:OVIUser/index";
     }
 
     // EDITAR (GET)
@@ -86,9 +112,13 @@ public class OVIUserController {
         validator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors())
+
             return "/OVIUser/update";
 
+
         oviUserDAO.updateOVIUser(user);
-        return "redirect:list";
+        return "redirect:OVIUser/index";
     }
+
+
 }

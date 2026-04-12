@@ -9,34 +9,43 @@
 <main class="container">
     <h1>Lista de PAP/PATIs</h1>
 
-    <!-- Mensaje cuando el OVI no tiene ningún PATI asignado -->
-    <div th:if="${#lists.isEmpty(PATIs)}" class="alert alert-info">
-       No tienes PATI asignados, haz un contrato con uno para que aparezca aquí
+    <!-- Mostramos un error si el OVIUser no tiene PATI -->
+    <div th:if="${errorSinPatis != null and !#strings.isEmpty(errorSinPatis)}"
+         class="alert alert-warning"
+         th:text="${errorSinPatis}">
     </div>
 
-    <table th:unless="${#list.isEmpty(PATIs)}" class="table table-striped">
-        <thead>
-        <tr>
-            <th>DNI</th>
-            <th>Nombre</th>
-            <th>Edad</th>
-            <th>Teléfono</th>
-            <th>Correo</th>
-            <th>Dirección</th>
-        </tr>
-        </thead>
-
-        <tbody>
-            <tr th:each="PATI : ${PATIs}">
-                <td th:text="${PATI.DNI}"></td>
-                <td th:text="${PATI.name}"></td>
-                <td th:text="${PATI.age}"></td>
-                <td th:text="${PATI.phone}"></td>
-                <td th:text="${PATI.mail}"></td>
-                <td th:text="${PATI.address}"></td>
+    <!-- Tabla solo si hay PATIs -->
+    <div th:unless="${#lists.isEmpty(patis)}">
+        <table class="table table-striped">
+            <thead>
+            <tr>
+                <th>DNI</th>
+                <th>Nombre</th>
+                <th>Edad</th>
+                <th>Teléfono</th>
+                <th>Correo</th>
+                <th>Dirección</th>
             </tr>
-        </tbody>
-    </table>
+            </thead>
+            <tbody>
+            <tr th:each="pati : ${patis}">
+                <td th:text="${pati.DNI}"></td>
+                <td th:text="${pati.name}"></td>
+                <td th:text="${pati.age}"></td>
+                <td th:text="${pati.phone}"></td>
+                <td th:text="${pati.mail}"></td>
+                <td th:text="${pati.address}"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <!-- Mensaje informativo si la lista está vacía (por si no hubo error) -->
+    <div th:if="${#lists.isEmpty(patis)} and ${errorSinPatis == null}"
+         class="alert alert-info">
+        No hay suficientes PATIs en la base de datos.
+    </div>
 </main>
 </body>
 </html>
