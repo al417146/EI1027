@@ -4,8 +4,9 @@ import es.uji.ei1027.proyecto.modelo.Speciality;
 import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Date;
 
-public class SpecialityRowMapper implements RowMapper<Speciality> {
+public final class SpecialityRowMapper implements RowMapper<Speciality> {
     @Override
     public Speciality mapRow(ResultSet rs, int rowNum) throws SQLException {
         Speciality s = new Speciality();
