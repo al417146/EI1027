@@ -13,14 +13,19 @@ import java.util.List;
 @Repository
 
 public class patiDAO {
-    private JdbcTemplate jdbcTemplate;
+    private static JdbcTemplate jdbcTemplate;
+
+    public static int countPATIsByOVIUser(String dni) {
+        String sql = "SELECT COUNT(*) FROM PATI WHERE dni_ovi = ?";
+        return jdbcTemplate.queryForObject(sql, Integer.class, dni);
+    }
 
     @Autowired
     public void setDataSource(DataSource dataSource){
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public List<PATI> getPATIsByOVIUser(String dniOviUser) {
+    public static List<PATI> getPATIsByOVIUser(String dniOviUser) {
         try {
             return jdbcTemplate.query(
                     "SELECT p.* " +
