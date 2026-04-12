@@ -40,6 +40,8 @@ public class OVIUserValidator implements Validator {
             errors.rejectValue("age", "incorrecto", "La edad debe ser mayor que 0");
         }
     }
+
+
     public void validateHasPATIs(String dni, Errors errors) {
         if (dni == null || dni.trim().isEmpty()) {
             errors.reject("dni_vacio", "No se pueden ver los PATI asociados debido a que hubo un error al leer el DNI");
