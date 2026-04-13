@@ -8,7 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/speciality")
+@RequestMapping("/Speciality")
 public class SpecialityController {
 
     private SpecialityDAO specialityDAO;
@@ -21,13 +21,13 @@ public class SpecialityController {
     @RequestMapping("/list")
     public String list(Model model) {
         model.addAttribute("specialities", specialityDAO.getSpecialities());
-        return "speciality/list";
+        return "/Speciality/list";
     }
 
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("speciality", new Speciality());
-        return "speciality/add";
+        return "/Speciality/add";
     }
 
     @PostMapping("/add")
@@ -45,7 +45,7 @@ public class SpecialityController {
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable String id) {
         model.addAttribute("speciality", specialityDAO.getSpeciality(id));
-        return "speciality/edit";
+        return "/Speciality/edit";
     }
 
     @PostMapping("/edit")
