@@ -6,6 +6,9 @@ public class Contract {
     String idContract;
     Date dateStart;
     Date dateEnd;
+    int idRequest;
+    String DNICand;
+
 
     public String getIdContract() {
         return idContract;
@@ -31,12 +34,22 @@ public class Contract {
         this.dateEnd = dateEnd;
     }
 
+    public int getIdRequest() {return idRequest;}
+
+    public void setIdRequest(int idRequest) {this.idRequest = idRequest;}
+
+    public String getDNICand() { return DNICand;}
+
+    public void setDNICand(String DNICand) {this.DNICand = DNICand;}
+
     @Override
     public String toString() {
         return "Contract {" +
                 " idContract = " + idContract +
                 ", dateStart = " + dateStart +
                 ", dateEnd = " + dateEnd +
+                ", idRequest = " + idRequest +
+                ", DNICand = " + DNICand +
                 '}';
     }
 }

@@ -5,8 +5,8 @@ import java.util.Date;
 public class Request {
     String DNIUser;
     Date date;
-    int idRequirement;
-    String DNICand;
+    int idRequest;
+    String status;
 
     public String getDNIUser() {
         return DNIUser;
@@ -24,20 +24,20 @@ public class Request {
         this.date = date;
     }
 
-    public int getIdRequirement() {
-        return idRequirement;
+    public int getIdRequest() {
+        return idRequest;
     }
 
-    public void setIdRequirement(int idRequirement) {
-        this.idRequirement = idRequirement;
+    public void setIdRequest(int idRequest) {
+        this.idRequest = idRequest;
     }
 
-    public String getDNICand() {
-        return DNICand;
+    public String getStatus() {
+        return status;
     }
 
-    public void setDNICand(String DNICand) {
-        this.DNICand = DNICand;
+    public void setStatus(String status) {
+        this.status = status;
     }
 
     @Override
@@ -45,8 +45,8 @@ public class Request {
         return "Request {" +
                 " DNIUser = '" + DNIUser + '\'' +
                 ", date = " + date +
-                ", idRequirement = " + idRequirement +
-                ", DNICand = '" + DNICand + '\'' +
+                ", idRequest = " + idRequest +
+                ", status = '" + status + '\'' +
                 '}';
     }
 }

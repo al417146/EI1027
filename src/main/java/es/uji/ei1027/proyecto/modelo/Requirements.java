@@ -1,16 +1,10 @@
 package es.uji.ei1027.proyecto.modelo;
 
 public class Requirements{
-    String requirement;
     int idRequirement;
+    String topic;
+    String desc;
 
-    public String getRequirement() {
-        return requirement;
-    }
-
-    public void setRequirement(String requirement) {
-        this.requirement = requirement;
-    }
 
     public int getIdRequirement() {
         return idRequirement;
@@ -20,11 +14,20 @@ public class Requirements{
         this.idRequirement = idRequirement;
     }
 
+    public String getTopic() { return topic; }
+
+    public void setTopic(String topic) {  this.topic = topic; }
+
+    public String getDesc() {  return desc; }
+
+    public void setDesc(String desc) {   this.desc = desc; }
+
     @Override
     public String toString() {
         return "Requirements {" +
-                " requirement ='" + requirement + '\'' +
-                ", idRequirement ='" + idRequirement + '\'' +
+                " idRequirement ='" + idRequirement + '\'' +
+                ", topic ='" + topic + '\'' +
+                ", desc='" + desc + '\'' +
                 '}';
     }
 }

@@ -14,8 +14,8 @@ public final class RequestRowMapper implements RowMapper<Request> {
 
         request.setDNIUser(rs.getString("DNIUser"));
         request.setDate(rs.getObject("date", Date.class));
-        request.setIdRequirement(rs.getInt("idRequirement"));
-        request.setDNICand(rs.getString("DNICand"));
+        request.setIdRequest(rs.getInt("idRequest"));
+        request.setStatus(rs.getString("status"));
 
         return request;
     }

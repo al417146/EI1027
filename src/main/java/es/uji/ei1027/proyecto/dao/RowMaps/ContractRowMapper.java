@@ -9,12 +9,15 @@ import java.util.Date;
 
 public final class ContractRowMapper implements RowMapper<Contract> {
 
+    @Override
     public Contract mapRow(ResultSet rs, int rowNum) throws SQLException {
         Contract contract = new Contract();
 
         contract.setIdContract(rs.getString("idContract"));
         contract.setDateStart(rs.getObject("dateStart", Date.class));
         contract.setDateEnd(rs.getObject("dateEnd", Date.class));
+        contract.setIdRequest(rs.getInt("idRequest"));
+        contract.setDNICand(rs.getString("DNIPati"));
 
         return contract;
     }

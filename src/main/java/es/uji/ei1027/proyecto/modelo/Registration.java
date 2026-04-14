@@ -2,6 +2,7 @@ package es.uji.ei1027.proyecto.modelo;
 
 public class Registration {
     String DNIUser, DNIAssistant, code;
+    int idAct;
     boolean attendace;
 
     public String getDNIUser() {
@@ -28,6 +29,10 @@ public class Registration {
         this.code = code;
     }
 
+    public int getIdAct() { return idAct;}
+
+    public void setIdAct(int idAct) { this.idAct = idAct;}
+
     public boolean isAttendace() {
         return attendace;
     }
@@ -42,6 +47,7 @@ public class Registration {
                 " DNIUser = '" + DNIUser + '\'' +
                 ", DNIAssistant = '" + DNIAssistant + '\'' +
                 ", code = '" + code + '\'' +
+                ", idAct = " + idAct +
                 ", attendace = " + attendace +
                 '}';
     }

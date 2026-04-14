@@ -12,7 +12,7 @@ public class PATI {
     String phone;
     String mail;
     String address;
-    int idSpeciality;
+    String status;
 
     public String getName() {
         return name;
@@ -70,12 +70,12 @@ public class PATI {
         this.address = address;
     }
 
-    public int getIdSpeciality() {
-        return idSpeciality;
+    public String getStatus() {
+        return status;
     }
 
-    public void setIdSpeciality(int idSpeciality) {
-        this.idSpeciality = idSpeciality;
+    public void setIdSpeciality(String status) {
+        this.status = status;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class PATI {
                 ", phone = " + phone +
                 ", mail = '" + mail + '\'' +
                 ", address = '" + address + '\'' +
-                ", idSpeciality = " + idSpeciality +
+                ", status = " + status +
                 '}';
     }
 }

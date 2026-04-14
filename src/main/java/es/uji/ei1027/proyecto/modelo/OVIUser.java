@@ -9,6 +9,7 @@ public class OVIUser {
     String phone;
     String mail;
     String address;
+    String status;
 
     public String getDNI() {
         return DNI;
@@ -66,6 +67,9 @@ public class OVIUser {
         this.address = address;
     }
 
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
     @Override
     public String toString() {
         return "OVIUser {" +
@@ -76,6 +80,7 @@ public class OVIUser {
                 ", phone =" + phone +
                 ", mail ='" + mail + '\'' +
                 ", address ='" + address + '\'' +
+                ", status =" + status +
                 '}';
     }
 }

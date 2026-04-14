@@ -4,8 +4,9 @@ import java.util.Date;
 
 public class Negotiation {
     String idNeg;
-    Date date;
+    Date dateStart;
     String DNICand;
+    String status;
 
     public String getIdNeg() {
         return idNeg;
@@ -16,11 +17,11 @@ public class Negotiation {
     }
 
     public Date getDate() {
-        return date;
+        return dateStart;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(Date dateStart) {
+        this.dateStart = dateStart;
     }
 
     public String getDNICand() {
@@ -31,12 +32,17 @@ public class Negotiation {
         this.DNICand = DNICand;
     }
 
+    public String getStatus() {return status;}
+
+    public void setStatus(String status) {this.status = status;}
+
     @Override
     public String toString() {
         return "Negotiation {" +
                 " idNeg = '" + idNeg + '\'' +
-                ", date = " + date +
+                ", date = " + dateStart +
                 ", DNICand = '" + DNICand + '\'' +
+                ", status = '" + status + '\'' +
                 '}';
     }
 }
