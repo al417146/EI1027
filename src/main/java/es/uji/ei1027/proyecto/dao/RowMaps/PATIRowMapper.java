@@ -18,7 +18,7 @@ public final class PATIRowMapper implements RowMapper<PATI> {
         pati.setPhone(rs.getString("phone"));
         pati.setMail(rs.getString("mail"));
         pati.setAddress(rs.getString("address"));
-        pati.setIdSpeciality(rs.getInt("idSpeciality"));
+        pati.setIdSpeciality(rs.getString("idSpeciality"));
 
         return pati;
     }

@@ -12,7 +12,9 @@ public final class RequirementsRowMapper implements RowMapper<Requirements> {
         Requirements r = new Requirements();
 
         r.setIdRequirement(rs.getInt("idRequirement"));
-        r.setRequirement(rs.getString("requirement"));
+        r.setTopic(rs.getString("topic"));
+        r.setDesc(rs.getString("desc"));
+
 
         return r;
     }

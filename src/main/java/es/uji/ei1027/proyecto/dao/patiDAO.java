@@ -49,8 +49,8 @@ public class patiDAO {
                 p.getGender(),
                 p.getPhone(),
                 p.getMail(),
-                p.getAddress(),
-                p.getIdSpeciality());
+                p.getAddress());
+                /*p.getIdSpeciality()); */
     }
 
     public void deletePATI(String DNI){
@@ -66,7 +66,7 @@ public class patiDAO {
                 p.getPhone(),
                 p.getMail(),
                 p.getAddress(),
-                p.getIdSpeciality(),
+                /*p.getIdSpeciality(), */
                 p.getDNI());
     }
 
