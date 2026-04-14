@@ -22,10 +22,12 @@ public class ContractDAO {
     }
 
     public void addContract(Contract c){
-        jdbcTemplate.update("INSERT INTO Contract VALUES (?,?,?)",
+        jdbcTemplate.update("INSERT INTO Contract VALUES (?,?,?,?,?)",
                 c.getIdContract(),
                 c.getDateStart(),
-                c.getDateEnd());
+                c.getDateEnd(),
+                c.getIdRequest(),
+                c.getDNICand());
     }
 
     public void deleteContract(String idContract){

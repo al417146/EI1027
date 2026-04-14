@@ -21,11 +21,11 @@ public class RequestDAO {
     }
 
     public void addRequest(Request r){
-        /*jdbcTemplate.update("INSERT INTO Request VALUES (?,?,?,?)",
+        jdbcTemplate.update("INSERT INTO Request VALUES (?,?,?,?)",
                 r.getDNIUser(),
                 r.getDate(),
-                r.(),
-                r.getDNICand()); */
+                r.getIdRequest(),
+                r.getStatus());
     }
 
     public void deleteRequest(String DNIUser){
@@ -34,11 +34,14 @@ public class RequestDAO {
     }
 
     public void updateRequest(Request r){
-        /*jdbcTemplate.update("UPDATE Request SET date=?, idRequirement=?, DNICand=? WHERE DNIUser=?",
+        jdbcTemplate.update("UPDATE Request SET DNIUser=?, date=?, idRequest=?, status=? WHERE DNIUser=?",
+                r.getDNIUser(),
                 r.getDate(),
-                r.getIdRequirement(),
-                r.getDNICand(),
-                r.getDNIUser()); */
+                r.getIdRequest(),
+                r.getStatus(),
+                r.getDNIUser()
+        );
+
     }
 
     public Request getRequest(String DNIUser){

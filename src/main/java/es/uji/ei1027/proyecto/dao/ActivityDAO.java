@@ -22,10 +22,12 @@ public class ActivityDAO {
     }
 
     public void addActivity(Activity a){
-        jdbcTemplate.update("INSERT INTO Activity VALUES (?,?,?)",
+        jdbcTemplate.update("INSERT INTO Activity VALUES (?,?,?,?,?)",
                 a.getIdAct(),
                 a.getName(),
-                a.getPlace());
+                a.getPlace(),
+                a.getActDate(),
+                a.getDNIProf());
     }
 
     public void deleteActivity(int idAct){
