@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date; // Añadido
 
 public final class OVIUserRowMapper implements RowMapper<OVIUser> {
 
@@ -13,11 +14,13 @@ public final class OVIUserRowMapper implements RowMapper<OVIUser> {
 
         user.setDNI(rs.getString("DNI"));
         user.setName(rs.getString("name"));
-        user.setAge(rs.getInt("age"));
+        // Cambiado de setAge(rs.getInt("age")) a setBirthDate
+        user.setBirthDate(rs.getObject("birth_date", Date.class));
         user.setGender(rs.getString("gender"));
         user.setPhone(rs.getString("phone"));
         user.setMail(rs.getString("mail"));
         user.setAddress(rs.getString("address"));
+        user.setStatus(rs.getString("status"));
 
         return user;
     }

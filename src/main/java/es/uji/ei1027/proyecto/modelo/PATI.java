@@ -1,13 +1,12 @@
 package es.uji.ei1027.proyecto.modelo;
 
-
-//Se ha puesto solamente PATI, puesto que no dejaba poner PAP/PATI
+import java.util.Date; // Importación necesaria
 
 public class PATI {
 
     String DNI;
     String name;
-    int age;
+    Date birthDate; // Cambiado de int age
     String gender;
     String phone;
     String mail;
@@ -30,12 +29,12 @@ public class PATI {
         this.DNI = DNI;
     }
 
-    public int getAge() {
-        return age;
+    public Date getBirthDate() { // Actualizado
+        return birthDate;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setBirthDate(Date birthDate) { // Actualizado
+        this.birthDate = birthDate;
     }
 
     public String getGender() {
@@ -74,16 +73,15 @@ public class PATI {
         return status;
     }
 
-    public void setIdSpeciality(String status) {
-        this.status = status;
-    }
+    public void setStatus(String status) { this.status = status; }
+
 
     @Override
     public String toString() {
         return "PAP/PATI {" +
                 " DNI = '" + DNI + '\'' +
                 ", name = '" + name + '\'' +
-                ", age = " + age +
+                ", birthDate = " + birthDate + // Actualizado
                 ", gender = '" + gender + '\'' +
                 ", phone = " + phone +
                 ", mail = '" + mail + '\'' +

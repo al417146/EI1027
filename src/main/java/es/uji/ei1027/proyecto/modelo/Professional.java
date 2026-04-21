@@ -1,8 +1,10 @@
 package es.uji.ei1027.proyecto.modelo;
 
+import java.util.Date;
+
 public class Professional {
     String DNI, name, phone, mail, genre, address, uniqueSpeciality;
-    int age;
+    Date birthDate;
 
     public String getDNI() {
         return DNI;
@@ -60,12 +62,12 @@ public class Professional {
         this.uniqueSpeciality = uniqueSpeciality;
     }
 
-    public int getAge() {
-        return age;
+    public Date getDate() {
+        return birthDate;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setDate(Date birthDate) {
+        this.birthDate = birthDate;
     }
 
     @Override
@@ -78,7 +80,7 @@ public class Professional {
                 ", genre = '" + genre + '\'' +
                 ", address = '" + address + '\'' +
                 ", uniqueSpeciality = '" + uniqueSpeciality + '\'' +
-                ", age = " + age +
+                ", birthDate = " + birthDate + // Corregido para usar el atributo real
                 '}';
     }
 }

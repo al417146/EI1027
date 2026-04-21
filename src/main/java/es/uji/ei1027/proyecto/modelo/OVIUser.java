@@ -1,10 +1,12 @@
 package es.uji.ei1027.proyecto.modelo;
 
+import java.util.Date; // Importación necesaria
+
 public class OVIUser {
 
     String DNI;
     String name;
-    int age;
+    Date birthDate; // Cambiado de int age
     String gender;
     String phone;
     String mail;
@@ -19,12 +21,12 @@ public class OVIUser {
         this.DNI = DNI;
     }
 
-    public int getAge() {
-        return age;
+    public Date getBirthDate() { // Actualizado
+        return birthDate;
     }
 
-    public void setAge(int age) {
-        this.age = age;
+    public void setBirthDate(Date birthDate) { // Actualizado
+        this.birthDate = birthDate;
     }
 
     public String getName() {
@@ -70,12 +72,13 @@ public class OVIUser {
     public String getStatus() { return status; }
 
     public void setStatus(String status) { this.status = status; }
+
     @Override
     public String toString() {
         return "OVIUser {" +
                 " DNI ='" + DNI + '\'' +
                 ", name ='" + name + '\'' +
-                ", age =" + age +
+                ", birthDate =" + birthDate + // Actualizado
                 ", gender ='" + gender + '\'' +
                 ", phone =" + phone +
                 ", mail ='" + mail + '\'' +

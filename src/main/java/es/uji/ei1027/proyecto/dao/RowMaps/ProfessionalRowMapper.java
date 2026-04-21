@@ -5,6 +5,7 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Date; // Añadido
 
 public final class ProfessionalRowMapper implements RowMapper<Professional> {
 
@@ -18,7 +19,8 @@ public final class ProfessionalRowMapper implements RowMapper<Professional> {
         p.setGenre(rs.getString("genre"));
         p.setAddress(rs.getString("address"));
         p.setUniqueSpeciality(rs.getString("uniqueSpeciality"));
-        p.setAge(rs.getInt("age"));
+        // Cambiado de p.setAge(rs.getInt("age"))
+        p.setDate(rs.getObject("birth_date", Date.class));
 
         return p;
     }
