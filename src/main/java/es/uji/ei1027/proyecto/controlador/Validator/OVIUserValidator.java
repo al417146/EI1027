@@ -9,13 +9,6 @@ import org.springframework.validation.Validator;
 
 public class OVIUserValidator implements Validator {
 
-    private patiDAO PATIDao;
-
-    @Autowired
-    public void setPatiDAO(patiDAO PATIDao) {
-        this.PATIDao = PATIDao;
-    }
-
     @Override
     public boolean supports(Class<?> clazz) {
         return OVIUser.class.isAssignableFrom(clazz);
@@ -42,16 +35,5 @@ public class OVIUserValidator implements Validator {
     }
 
 
-    public void validateHasPATIs(String dni, Errors errors) {
-        if (dni == null || dni.trim().isEmpty()) {
-            errors.reject("dni_vacio", "No se pueden ver los PATI asociados debido a que hubo un error al leer el DNI");
-            return;
-        }
 
-        // Llamamos al método del DAO que nos diga cuántos PATIs tiene este OVIUser
-        int cantidad = patiDAO.countPATIsByOVIUser(dni);  // ver paso 2
-        if (cantidad == 0) {
-            errors.reject("sin_patis", "No tienes ningún PATI asociado ¡Prueba con uno a ver como sale!");
-        }
-    }
 }

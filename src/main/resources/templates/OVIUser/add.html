@@ -5,7 +5,7 @@
     <title>Añadir OVIUser</title>
 </head>
 <body>
-    <form th:action="@{/oviuser/add}" th:object="${oviuser}" method="post"> <!-- Método POST -->
+    <form th:action="@{/OVIUser/add}" th:object="${oviuser}" method="post"> <!-- Método POST -->
 
         <input type="text" th:field="*{DNI}" placeholder="DNI"/>
         <p th:if="${#fields.hasErrors('DNI')}" th:errors="*{DNI}"></p>

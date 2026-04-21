@@ -12,6 +12,7 @@ public class PATI {
     String mail;
     String address;
     String status;
+    //Mapa especialidad
 
     public String getName() {
         return name;
