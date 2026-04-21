@@ -11,7 +11,6 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
 @Repository
-
 public class patiDAO {
     private static JdbcTemplate jdbcTemplate;
 
@@ -30,9 +29,10 @@ public class patiDAO {
             return jdbcTemplate.query(
                     "SELECT p.* " +
                             "FROM PATI p " +
-                            "JOIN Registration r ON p.DNI = r.DNIPat " +
-                            "JOIN ovUser u ON u.DNI = r.DNIOvUser " +
-                            "WHERE u.DNI = ?",
+                            "JOIN Contract c ON p.DNI = c.DNICand " +
+                            "JOIN Request r ON c.idContract = r.idContract " +
+                            "JOIN OVIUser o ON o.DNI = r.DNIUser" +
+                            "WHERE o.DNI = ?",
                     new PATIRowMapper(),
                     dniOviUser
             );
@@ -50,7 +50,6 @@ public class patiDAO {
                 p.getPhone(),
                 p.getMail(),
                 p.getAddress());
-                /*p.getIdSpeciality()); */
     }
 
     public void deletePATI(String DNI){
