@@ -1,18 +1,27 @@
 package es.uji.ei1027.proyecto.modelo;
 
 import java.util.Date; // Importación necesaria
+import java.util.HashMap;
 
 public class PATI {
 
     String DNI;
     String name;
-    Date birthDate; // Cambiado de int age
+    Date birthDate;
     String gender;
     String phone;
     String mail;
     String address;
     String status;
-    //Mapa especialidad
+    HashMap<Integer, String> specialties;
+
+    public HashMap<Integer, String> getSpecialties() {
+        return specialties;
+    }
+
+    public void setSpecialties(HashMap<Integer, String> specialties) {
+        this.specialties = specialties;
+    }
 
     public String getName() {
         return name;
@@ -76,18 +85,18 @@ public class PATI {
 
     public void setStatus(String status) { this.status = status; }
 
-
     @Override
     public String toString() {
-        return "PAP/PATI {" +
-                " DNI = '" + DNI + '\'' +
-                ", name = '" + name + '\'' +
-                ", birthDate = " + birthDate + // Actualizado
-                ", gender = '" + gender + '\'' +
-                ", phone = " + phone +
-                ", mail = '" + mail + '\'' +
-                ", address = '" + address + '\'' +
-                ", status = " + status +
+        return "PATI{" +
+                "DNI='" + DNI + '\'' +
+                ", name='" + name + '\'' +
+                ", birthDate=" + birthDate +
+                ", gender='" + gender + '\'' +
+                ", phone='" + phone + '\'' +
+                ", mail='" + mail + '\'' +
+                ", address='" + address + '\'' +
+                ", status='" + status + '\'' +
+                ", specialties=" + specialties +
                 '}';
     }
 }

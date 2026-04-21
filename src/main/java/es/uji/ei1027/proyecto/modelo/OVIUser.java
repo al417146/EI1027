@@ -6,7 +6,7 @@ public class OVIUser {
 
     String DNI;
     String name;
-    Date birthDate; // Cambiado de int age
+    Date birthDate;
     String gender;
     String phone;
     String mail;
