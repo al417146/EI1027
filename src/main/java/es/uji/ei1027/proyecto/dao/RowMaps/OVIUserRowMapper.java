@@ -14,7 +14,6 @@ public final class OVIUserRowMapper implements RowMapper<OVIUser> {
 
         user.setDNI(rs.getString("DNI"));
         user.setName(rs.getString("name"));
-        // Cambiado de setAge(rs.getInt("age")) a setBirthDate
         user.setBirthDate(rs.getObject("birth_date", Date.class));
         user.setGender(rs.getString("gender"));
         user.setPhone(rs.getString("phone"));

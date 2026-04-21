@@ -14,8 +14,12 @@ import java.util.List;
 public class patiDAO {
     private static JdbcTemplate jdbcTemplate;
 
-    public static int countPATIsByOVIUser(String dni) {
-        String sql = "SELECT COUNT(*) FROM PATI WHERE dni_ovi = ?";
+    public int countPATIsByOVIUser(String dni) {
+        String sql = "SELECT COUNT(*) FROM PATI p " +
+                "JOIN Contract c ON p.DNI = c.DNICand " +
+                "JOIN Request r ON c.idContract = r.idContract " +
+                "JOIN OVIUser o ON o.DNI = r.DNIUser " +
+                "WHERE o.DNI = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, dni);
     }
 
@@ -45,12 +49,13 @@ public class patiDAO {
         jdbcTemplate.update("INSERT INTO PATI VALUES (?,?,?,?,?,?,?,?)",
                 p.getDNI(),
                 p.getName(),
-                p.getAge(),
+                p.getBirthDate(),
                 p.getGender(),
                 p.getPhone(),
                 p.getMail(),
-                p.getAddress());
-    }
+                p.getAddress(),
+                p.getStatus());
+        }
 
     public void deletePATI(String DNI){
         jdbcTemplate.update("DELETE FROM PATI WHERE DNI=?",
@@ -58,14 +63,13 @@ public class patiDAO {
     }
 
     public void updatePATI(PATI p){
-        jdbcTemplate.update("UPDATE PATI SET name=?, age=?, gender=?, phone=?, mail=?, address=?, idSpeciality=? WHERE DNI=?",
+        jdbcTemplate.update("UPDATE PATI SET name=?, birthDate=?, gender=?, phone=?, mail=?, address=?, idSpeciality=? WHERE DNI=?",
                 p.getName(),
-                p.getAge(),
+                p.getBirthDate(),
                 p.getGender(),
                 p.getPhone(),
                 p.getMail(),
                 p.getAddress(),
-                /*p.getIdSpeciality(), */
                 p.getDNI());
     }
 
@@ -88,4 +92,6 @@ public class patiDAO {
             return new ArrayList<>();
         }
     }
+
+
 }
