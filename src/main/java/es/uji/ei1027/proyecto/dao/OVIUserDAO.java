@@ -22,14 +22,16 @@ public class OVIUserDAO {
     }
 
     public void addOVIUser(OVIUser u){
-        jdbcTemplate.update("INSERT INTO OVIUser VALUES (?,?,?,?,?,?,?)",
+        jdbcTemplate.update("INSERT INTO OVIUser VALUES (?,?,?,?,?,?,?,?)",
                 u.getDNI(),
                 u.getName(),
                 u.getBirthDate(),
                 u.getGender(),
                 u.getPhone(),
                 u.getMail(),
-                u.getAddress());
+                u.getAddress(),
+                u.getStatus());
+
     }
 
     public void deleteOVIUser(String DNI){

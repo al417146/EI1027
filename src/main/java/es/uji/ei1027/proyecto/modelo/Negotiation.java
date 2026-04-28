@@ -1,18 +1,23 @@
 package es.uji.ei1027.proyecto.modelo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Negotiation {
-    String idNeg;
+    int idNeg;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     Date dateStart;
+
     String DNICand;
     String status;
 
-    public String getIdNeg() {
+    public int getIdNeg() {
         return idNeg;
     }
 
-    public void setIdNeg(String idNeg) {
+    public void setIdNeg(int idNeg) {
         this.idNeg = idNeg;
     }
 

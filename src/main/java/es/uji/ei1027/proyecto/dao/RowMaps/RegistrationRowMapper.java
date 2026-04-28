@@ -14,7 +14,8 @@ public final class RegistrationRowMapper implements RowMapper<Registration> {
         r.setDNIUser(rs.getString("DNIUser"));
         r.setDNIAssistant(rs.getString("DNIAssistant"));
         r.setCode(rs.getString("code"));
-        r.setAttendace(rs.getBoolean("attendace"));
+        r.setIdAct(rs.getInt("idAct"));
+        r.setAttendace(rs.getBoolean("attendance"));
 
         return r;
     }

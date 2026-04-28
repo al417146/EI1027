@@ -28,28 +28,31 @@ public class RequestDAO {
                 r.getStatus());
     }
 
-    public void deleteRequest(String DNIUser){
-        jdbcTemplate.update("DELETE FROM Request WHERE DNIUser=?",
-                DNIUser);
+    public void deleteRequest(int idRequest){
+        jdbcTemplate.update("DELETE FROM Request WHERE idRequest=?",
+                idRequest);
     }
 
     public void updateRequest(Request r){
-        jdbcTemplate.update("UPDATE Request SET DNIUser=?, date=?, idRequest=?, status=? WHERE DNIUser=?",
+        jdbcTemplate.update("UPDATE Request SET DNIUser=?, date=?, status=?, " +
+                        "idContract=?, idNeg=?, idRequirement=? WHERE idRequest=?",
                 r.getDNIUser(),
                 r.getDate(),
-                r.getIdRequest(),
                 r.getStatus(),
-                r.getDNIUser()
+                r.getIdContract(),
+                r.getIdNeg(),
+                r.getIdRequirement(),
+                r.getIdRequest()
         );
 
     }
 
-    public Request getRequest(String DNIUser){
+    public Request getRequest(int idRequest){
         try{
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM Request WHERE DNIUser=?",
-                    new RequestRowMapper(),
-                    DNIUser);
+                    "SELECT * FROM Request WHERE idRequest=?",
+                    new RequestRowMapper(), idRequest
+                    );
         } catch(EmptyResultDataAccessException e){
             return null;
         }

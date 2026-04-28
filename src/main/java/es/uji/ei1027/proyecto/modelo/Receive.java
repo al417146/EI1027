@@ -23,7 +23,7 @@ public class Receive {
 
     @Override
     public String toString() {
-        return "Contract {" +
+        return "Receive {" +
                 " DNIPati = " + DNIPati +
                 ", idSpeciality = " + idRequest +
                 '}';

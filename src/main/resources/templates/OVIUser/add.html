@@ -13,8 +13,8 @@
         <input type="text" th:field="*{name}" placeholder="Nombre"/>
         <p th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></p>
 
-        <input type="number" th:field="*{age}" placeholder="Edad"/>
-        <p th:if="${#fields.hasErrors('age')}" th:errors="*{age}"></p>
+        <input type="date" th:field="*{birthDate}" placeholder="Fecha de nacimiento"/>
+        <p th:if="${#fields.hasErrors('birthDate')}" th:errors="*{age}"></p>
 
         <input type="text" th:field="*{mail}" placeholder="Email"/>
         <p th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}"></p>
@@ -27,6 +27,9 @@
 
         <input type="text" th:field="*{address}" placeholder="Dirección"/>
         <p th:if="${#fields.hasErrors('address')}" th:errors="*{address}"></p>
+
+        <input type="text" th:field="*{status}" placeholder="Status"/>
+        <p th:if="${#fields.hasErrors('status')}" th:errors="*{status}"></p>
 
         <button type="submit">Añadir</button>
 

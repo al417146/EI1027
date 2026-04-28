@@ -19,7 +19,6 @@ public final class ProfessionalRowMapper implements RowMapper<Professional> {
         p.setGenre(rs.getString("genre"));
         p.setAddress(rs.getString("address"));
         p.setUniqueSpeciality(rs.getString("uniqueSpeciality"));
-        // Cambiado de p.setAge(rs.getInt("age"))
         p.setDate(rs.getObject("birth_date", Date.class));
 
         return p;

@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
-@Repository
 
+@Repository
 public class ContractDAO {
 
     private JdbcTemplate jdbcTemplate;
@@ -30,24 +30,26 @@ public class ContractDAO {
                 c.getDNICand());
     }
 
-    public void deleteContract(String idContract){
+    public void deleteContract(int idContract){
         jdbcTemplate.update("DELETE FROM Contract WHERE idContract=?",
-                idContract);
+                        idContract);
     }
 
     public void updateContract(Contract c){
-        jdbcTemplate.update("UPDATE Contract SET dateStart=?, dateEnd=? WHERE idContract=?",
+        jdbcTemplate.update("UPDATE Contract SET dateStart=?, " +
+                        "dateEnd=?, idRequest=?, DNICand=? WHERE idContract=?",
                 c.getDateStart(),
                 c.getDateEnd(),
+                c.getIdRequest(),
+                c.getDNICand(),
                 c.getIdContract());
     }
 
-    public Contract getContract(String idContract){
+    public Contract getContract(int idContract){
         try{
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM Contract WHERE idContract=?",
-                    new ContractRowMapper(),
-                    idContract);
+                    new ContractRowMapper(), idContract);
         } catch(EmptyResultDataAccessException e){
             return null;
         }
@@ -55,18 +57,19 @@ public class ContractDAO {
 
     public List<Contract> getContracts(){
         try{
-            return jdbcTemplate.query("SELECT * FROM Contract",
-                    new ContractRowMapper());
+            return jdbcTemplate.query("SELECT * FROM Contract", new ContractRowMapper());
         } catch(EmptyResultDataAccessException e){
             return new ArrayList<>();
         }
     }
 
     public Contract getContratoByPATI(String dniPati) {
-        return jdbcTemplate.queryForObject(
-                "SELECT * FROM Contract WHERE DNICand = ?",
-                new ContractRowMapper(),
-                dniPati
-        );
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM Contract WHERE DNICand = ?",
+                    new ContractRowMapper(), dniPati);
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
     }
 }

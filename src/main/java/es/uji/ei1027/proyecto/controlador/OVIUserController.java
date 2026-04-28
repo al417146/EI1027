@@ -25,15 +25,21 @@ public class OVIUserController {
     private OVIUserDAO oviUserDAO;
 
     @Autowired
-    public void setOviUserDAO(OVIUserDAO oviUserDAO) {
-        this.oviUserDAO = oviUserDAO;
-    }
-
-    @Autowired
     private patiDAO DAO;
 
     @Autowired
     private ContractDAO cDAO;
+
+    @Autowired
+    public void setOviUserDAO(OVIUserDAO oviUserDAO) {
+        this.oviUserDAO = oviUserDAO;
+    }
+
+    //Panel principal
+    @GetMapping("/index")
+    public String index(){
+        return "OVIUser/index";
+    }
 
     //Listamos los PATI asociados a este OVIUser
     @GetMapping("/list")
@@ -56,7 +62,7 @@ public class OVIUserController {
     public String mandarContrato(Model model, @PathVariable String DNICand){
 
         Contract contract = cDAO.getContratoByPATI(DNICand);
-
+        //Falta validador contrato
         model.addAttribute("contrato", contract);
         return "Contrato/info";
     }

@@ -10,13 +10,15 @@ import java.util.Date;
 public final class RequestRowMapper implements RowMapper<Request> {
 
     public Request mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Request request = new Request();
+        Request r = new Request();
+        r.setDNIUser(rs.getString("DNIUser"));
+        r.setDate(rs.getObject("date", Date.class));
+        r.setIdRequest(rs.getInt("idRequest"));
+        r.setStatus(rs.getString("status"));
+        r.setIdContract(rs.getInt("idContract"));
+        r.setIdNeg(rs.getString("idNeg"));
+        r.setIdRequirement(rs.getInt("idRequirement"));
 
-        request.setDNIUser(rs.getString("DNIUser"));
-        request.setDate(rs.getObject("date", Date.class));
-        request.setIdRequest(rs.getInt("idRequest"));
-        request.setStatus(rs.getString("status"));
-
-        return request;
+        return r;
     }
 }

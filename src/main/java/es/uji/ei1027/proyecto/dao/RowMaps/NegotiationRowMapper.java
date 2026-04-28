@@ -12,9 +12,10 @@ public final class NegotiationRowMapper implements RowMapper<Negotiation> {
     public Negotiation mapRow(ResultSet rs, int rowNum) throws SQLException {
         Negotiation n = new Negotiation();
 
-        n.setIdNeg(rs.getString("idNeg"));
+        n.setIdNeg(rs.getInt("idNeg"));
         n.setDate(rs.getObject("date", Date.class));
         n.setDNICand(rs.getString("DNICand"));
+        n.setStatus(rs.getString("status"));
 
         return n;
     }

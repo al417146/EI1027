@@ -14,7 +14,6 @@ public final class PATIRowMapper implements RowMapper<PATI> {
 
         pati.setDNI(rs.getString("DNI"));
         pati.setName(rs.getString("name"));
-        // Cambiado de setAge(rs.getInt("age")) a setBirthDate
         pati.setBirthDate(rs.getObject("birth_date", Date.class));
         pati.setGender(rs.getString("gender"));
         pati.setPhone(rs.getString("phone"));

@@ -26,7 +26,7 @@ public class Has {
 
     @Override
     public String toString() {
-        return "Contract {" +
+        return "Has {" +
                 " DNIPati = " + DNIPati +
                 ", idSpeciality = " + idSpeciality +
                 '}';

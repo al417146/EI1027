@@ -22,10 +22,11 @@ public class RegistrationDAO {
     }
 
     public void addRegistration(Registration r){
-        jdbcTemplate.update("INSERT INTO Registration VALUES (?,?,?,?)",
+        jdbcTemplate.update("INSERT INTO Registration VALUES (?,?,?,?,?)",
                 r.getDNIUser(),
                 r.getDNIAssistant(),
                 r.getCode(),
+                r.getIdAct(),
                 r.isAttendace());
     }
 

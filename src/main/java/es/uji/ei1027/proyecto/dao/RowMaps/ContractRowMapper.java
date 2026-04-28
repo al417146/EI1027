@@ -17,7 +17,7 @@ public final class ContractRowMapper implements RowMapper<Contract> {
         contract.setDateStart(rs.getObject("dateStart", Date.class));
         contract.setDateEnd(rs.getObject("dateEnd", Date.class));
         contract.setIdRequest(rs.getInt("idRequest"));
-        contract.setDNICand(rs.getString("DNIPati"));
+        contract.setDNICand(rs.getString("DNICand"));
 
         return contract;
     }

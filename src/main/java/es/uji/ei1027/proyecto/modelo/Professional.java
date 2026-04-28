@@ -1,9 +1,13 @@
 package es.uji.ei1027.proyecto.modelo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Professional {
     String DNI, name, phone, mail, genre, address, uniqueSpeciality;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     Date birthDate;
 
     public String getDNI() {

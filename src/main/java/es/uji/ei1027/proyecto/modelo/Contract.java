@@ -1,11 +1,18 @@
 package es.uji.ei1027.proyecto.modelo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Contract {
     String idContract;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     Date dateStart;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     Date dateEnd;
+
     int idRequest;
     String DNICand;
 

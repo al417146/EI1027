@@ -1,5 +1,7 @@
 package es.uji.ei1027.proyecto.modelo;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date; // Importación necesaria
 import java.util.HashMap;
 
@@ -7,7 +9,10 @@ public class PATI {
 
     String DNI;
     String name;
+
+    @DateTimeFormat(pattern = "dd-MM-yyyy")
     Date birthDate;
+
     String gender;
     String phone;
     String mail;

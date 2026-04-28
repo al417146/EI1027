@@ -63,13 +63,15 @@ public class patiDAO {
     }
 
     public void updatePATI(PATI p){
-        jdbcTemplate.update("UPDATE PATI SET name=?, birth_date=?, gender=?, phone=?, mail=?, address=? WHERE DNI=?",
+        jdbcTemplate.update("UPDATE PATI SET name=?, birth_date=?, " +
+                        "gender=?, phone=?, mail=?, address=?, status=? WHERE DNI=?",
                 p.getName(),
                 p.getBirthDate(),
                 p.getGender(),
                 p.getPhone(),
                 p.getMail(),
                 p.getAddress(),
+                p.getStatus(),
                 p.getDNI());
     }
 

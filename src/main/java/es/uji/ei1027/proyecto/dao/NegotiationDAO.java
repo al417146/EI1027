@@ -10,8 +10,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
-@Repository
 
+@Repository
 public class NegotiationDAO {
 
     private JdbcTemplate jdbcTemplate;
@@ -22,30 +22,28 @@ public class NegotiationDAO {
     }
 
     public void addNegotiation(Negotiation n){
-        jdbcTemplate.update("INSERT INTO Negotiation VALUES (?,?,?)",
+        jdbcTemplate.update("INSERT INTO Negotiation VALUES (?,?,?,?)",
                 n.getIdNeg(),
                 n.getDate(),
-                n.getDNICand());
+                n.getDNICand(),
+                n.getStatus());
     }
 
-    public void deleteNegotiation(String idNeg){
+    public void deleteNegotiation(int idNeg){
         jdbcTemplate.update("DELETE FROM Negotiation WHERE idNeg=?",
                 idNeg);
     }
 
     public void updateNegotiation(Negotiation n){
-        jdbcTemplate.update("UPDATE Negotiation SET date=?, DNICand=? WHERE idNeg=?",
-                n.getDate(),
-                n.getDNICand(),
-                n.getIdNeg());
+        jdbcTemplate.update("UPDATE Negotiation SET date=?, DNICand=?, status=? WHERE idNeg=?",
+                n.getDate(), n.getDNICand(), n.getStatus(), n.getIdNeg());
     }
 
-    public Negotiation getNegotiation(String idNeg){
+    public Negotiation getNegotiation(int idNeg){
         try{
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM Negotiation WHERE idNeg=?",
-                    new NegotiationRowMapper(),
-                    idNeg);
+                    new NegotiationRowMapper(), idNeg);
         } catch(EmptyResultDataAccessException e){
             return null;
         }
@@ -53,8 +51,7 @@ public class NegotiationDAO {
 
     public List<Negotiation> getNegotiations(){
         try{
-            return jdbcTemplate.query("SELECT * FROM Negotiation",
-                    new NegotiationRowMapper());
+            return jdbcTemplate.query("SELECT * FROM Negotiation", new NegotiationRowMapper());
         } catch(EmptyResultDataAccessException e){
             return new ArrayList<>();
         }

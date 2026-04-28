@@ -30,7 +30,7 @@
                     <td th:text="${pati.address}"></td>
 
                     <td>
-                        <a th:href="@{/OVIUser/contrato/{dni}"
+                        <a th:href="@{/OVIUser/Contrato/{DNICand}(DNICand=${pati.DNI})}"
                            class="btn btn-info btn-sm">
                             Ver contrato
                         </a>
