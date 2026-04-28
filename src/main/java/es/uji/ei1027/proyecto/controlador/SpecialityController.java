@@ -45,7 +45,7 @@ public class SpecialityController {
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable String id) {
         model.addAttribute("speciality", specialityDAO.getSpeciality(id));
-        return "Speciality/edit";
+        return "Speciality/update";
     }
 
     @PostMapping("/edit")

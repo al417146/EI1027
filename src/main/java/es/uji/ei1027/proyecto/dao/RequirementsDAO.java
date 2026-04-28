@@ -21,10 +21,10 @@ public class RequirementsDAO {
     }
 
     public void addRequirement(Requirements r){
-        jdbcTemplate.update("INSERT INTO Requirements VALUES (?,?)",
+        jdbcTemplate.update("INSERT INTO Requirements VALUES (?,?,?)",
                 r.getIdRequirement(),
-                r.getTopic());
-                r.getDesc();
+                r.getTopic(),
+                r.getDesc());
     }
 
     public void deleteRequirement(int idRequirement){
@@ -33,10 +33,10 @@ public class RequirementsDAO {
     }
 
     public void updateRequirement(Requirements r){
-        jdbcTemplate.update("UPDATE Requirements SET requirement=? WHERE idRequirement=?",
+        jdbcTemplate.update("UPDATE Requirements SET topic=?, desc=? WHERE idRequirement=?",
                 r.getTopic(),
-                r.getIdRequirement(),
-                r.getDesc());
+                r.getDesc(),
+                r.getIdRequirement());
     }
 
     public Requirements getRequirement(int id){

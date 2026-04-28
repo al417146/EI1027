@@ -30,7 +30,7 @@ public class ProfessionalDAO {
                 p.getGenre(),
                 p.getAddress(),
                 p.getUniqueSpeciality(),
-                p.getAge());
+                p.getDate());
     }
 
     public void deleteProfessional(String DNI){
@@ -46,7 +46,7 @@ public class ProfessionalDAO {
                 p.getGenre(),
                 p.getAddress(),
                 p.getUniqueSpeciality(),
-                p.getAge(),
+                p.getDate(),
                 p.getDNI());
     }
 

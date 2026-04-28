@@ -25,7 +25,7 @@ public class OVIUserDAO {
         jdbcTemplate.update("INSERT INTO OVIUser VALUES (?,?,?,?,?,?,?)",
                 u.getDNI(),
                 u.getName(),
-                u.getAge(),
+                u.getBirthDate(),
                 u.getGender(),
                 u.getPhone(),
                 u.getMail(),
@@ -38,9 +38,9 @@ public class OVIUserDAO {
     }
 
     public void updateOVIUser(OVIUser u){
-        jdbcTemplate.update("UPDATE OVIUser SET name=?, age=?, gender=?, phone=?, mail=?, address=? WHERE DNI=?",
+        jdbcTemplate.update("UPDATE OVIUser SET name=?, birthDate=?, gender=?, phone=?, mail=?, address=? WHERE DNI=?",
                 u.getName(),
-                u.getAge(),
+                u.getBirthDate(),
                 u.getGender(),
                 u.getPhone(),
                 u.getMail(),

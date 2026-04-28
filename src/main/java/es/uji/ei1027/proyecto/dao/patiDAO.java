@@ -12,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 @Repository
 public class patiDAO {
-    private static JdbcTemplate jdbcTemplate;
+    private JdbcTemplate jdbcTemplate;
 
     public int countPATIsByOVIUser(String dni) {
         String sql = "SELECT COUNT(*) FROM PATI p " +
@@ -28,14 +28,14 @@ public class patiDAO {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public static List<PATI> getPATIsByOVIUser(String dniOviUser) {
+    public List<PATI> getPATIsByOVIUser(String dniOviUser) {
         try {
             return jdbcTemplate.query(
                     "SELECT p.* " +
                             "FROM PATI p " +
                             "JOIN Contract c ON p.DNI = c.DNICand " +
                             "JOIN Request r ON c.idContract = r.idContract " +
-                            "JOIN OVIUser o ON o.DNI = r.DNIUser" +
+                            "JOIN OVIUser o ON o.DNI = r.DNIUser " +
                             "WHERE o.DNI = ?",
                     new PATIRowMapper(),
                     dniOviUser
@@ -45,7 +45,7 @@ public class patiDAO {
         }
     }
 
-        public void addPATI(PATI p){
+    public void addPATI(PATI p){
         jdbcTemplate.update("INSERT INTO PATI VALUES (?,?,?,?,?,?,?,?)",
                 p.getDNI(),
                 p.getName(),
@@ -55,7 +55,7 @@ public class patiDAO {
                 p.getMail(),
                 p.getAddress(),
                 p.getStatus());
-        }
+    }
 
     public void deletePATI(String DNI){
         jdbcTemplate.update("DELETE FROM PATI WHERE DNI=?",
@@ -63,7 +63,7 @@ public class patiDAO {
     }
 
     public void updatePATI(PATI p){
-        jdbcTemplate.update("UPDATE PATI SET name=?, birthDate=?, gender=?, phone=?, mail=?, address=?, idSpeciality=? WHERE DNI=?",
+        jdbcTemplate.update("UPDATE PATI SET name=?, birth_date=?, gender=?, phone=?, mail=?, address=? WHERE DNI=?",
                 p.getName(),
                 p.getBirthDate(),
                 p.getGender(),

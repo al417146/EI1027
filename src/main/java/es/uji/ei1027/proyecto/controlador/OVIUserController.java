@@ -40,10 +40,10 @@ public class OVIUserController {
     public String listPATIS(Model model, Principal p){
 
         String dniOVI = p.getName();
-        List<PATI> lista = patiDAO.getPATIsByOVIUser(dniOVI);
+        List<PATI> lista = DAO.getPATIsByOVIUser(dniOVI);
 
         // Siempre pasamos la lista (puede estar vacía)
-        model.addAttribute("patis", patiDAO.getPATIsByOVIUser(dniOVI));
+        model.addAttribute("patis", lista);
 
         if (!lista.isEmpty())
             return "OVIUser/list";
@@ -53,9 +53,9 @@ public class OVIUserController {
     }
 
     @RequestMapping(value="/Contrato/{DNICand}", method = RequestMethod.GET)
-    public String mandarContrato(Model model, @PathVariable String DNIPati){
+    public String mandarContrato(Model model, @PathVariable String DNICand){
 
-        Contract contract = cDAO.getContratoByPATI(DNIPati);
+        Contract contract = cDAO.getContratoByPATI(DNICand);
 
         model.addAttribute("contrato", contract);
         return "Contrato/info";
@@ -65,7 +65,7 @@ public class OVIUserController {
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addUser(Model model) {
 
-        model.addAttribute("/OVIUser", new OVIUser());
+        model.addAttribute("oviuser", new OVIUser());
 
         return "OVIUser/add";
 
@@ -80,14 +80,14 @@ public class OVIUserController {
         if (bindingResult.hasErrors())
             return "OVIUser/add";
         oviUserDAO.addOVIUser(user);
-        return "redirect:OVIUser/index";
+        return "redirect:/OVIUser/index";
     }
 
     // BORRAR
     @RequestMapping("/delete/{DNI}")
     public String deleteUser(@PathVariable String DNI) {
         oviUserDAO.deleteOVIUser(DNI);
-        return "redirect:OVIUser/index";
+        return "redirect:/OVIUser/index";
     }
 
     // EDITAR (GET)
@@ -113,7 +113,7 @@ public class OVIUserController {
 
 
         oviUserDAO.updateOVIUser(user);
-        return "redirect:OVIUser/index";
+        return "redirect:/OVIUser/index";
     }
 
 

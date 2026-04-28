@@ -64,7 +64,7 @@ public class ContractDAO {
 
     public Contract getContratoByPATI(String dniPati) {
         return jdbcTemplate.queryForObject(
-                "SELECT * FROM Contrato WHERE DNICand = ?",
+                "SELECT * FROM Contract WHERE DNICand = ?",
                 new ContractRowMapper(),
                 dniPati
         );
