@@ -1,4 +1,4 @@
-package es.uji.ei1027.proyecto.controlador.Validator;
+package es.uji.ei1027.proyecto.Validator;
 
 import es.uji.ei1027.proyecto.dao.patiDAO;
 import es.uji.ei1027.proyecto.modelo.OVIUser;

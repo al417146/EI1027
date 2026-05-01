@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Profesionales disponibles</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css" th:ref="@{css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo"><img src="/images/logo-ovi.png" alt="Logo OVI" class="logo-img"></div>
+  <div class="nav-bar">
+    <a href="/OVIUser/index" class="nav-link">Inicio</a>
+    <a href="/OVIUser/available" class="nav-link">Solicitar profesional</a>
+    <a href="/OVIUser/estadoSolicitud" class="nav-link">Mis solicitudes</a>
+    <a href="/OVIUser/list" class="nav-link">Mis contratos</a>
+    <a href="/logout" class="nav-link">Cerrar sesión</a>
+  </div>
+</header>
+<div class="container">
+  <div class="header-primary">
+    <h1>Solicitar asistencia personal</h1>
+    <p>Elige un profesional para iniciar una solicitud</p>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(disponibles)}" class="alert-info">
+      No hay profesionales disponibles en este momento.
+    </div>
+    <div th:unless="${#lists.isEmpty(disponibles)}">
+      <div class="lista-candidatos">
+        <div th:each="p : ${disponibles}" class="tarjeta-candidato">
+          <h3 th:text="${p.name}"></h3>
+          <p><strong>Teléfono:</strong> <span th:text="${p.phone}"></span></p>
+          <p><strong>Email:</strong> <span th:text="${p.mail}"></span></p>
+          <form th:action="@{/OVIUser/solicitarRequest}" method="post">
+            <input type="hidden" name="dniPAP" th:value="${p.DNI}">
+            <button type="submit" class="btn btn-success">Solicitar este profesional</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

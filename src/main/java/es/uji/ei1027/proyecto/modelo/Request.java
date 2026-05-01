@@ -14,7 +14,9 @@ public class Request {
     String status;
     int idContract;
     String idNeg;        // id de la negociación
-    Integer idRequirement;   // requisito asociado
+    int idRequirement;   // requisito asociado
+
+    String DNICand;      // DNI del PAP/PATI
 
     public String getDNIUser() { return DNIUser; }
     public void setDNIUser(String DNIUser) { this.DNIUser = DNIUser; }
@@ -37,16 +39,10 @@ public class Request {
     public int getIdRequirement() { return idRequirement; }
     public void setIdRequirement(int idRequirement) { this.idRequirement = idRequirement; }
 
-    @Override
-    public String toString() {
-        return "Request {" +
-                " DNIUser = '" + DNIUser + '\'' +
-                ", date = " + date +
-                ", idRequest = " + idRequest +
-                ", status = '" + status + '\'' +
-                ", idContract = '" + idContract + '\'' +
-                ", idNeg = '" + idNeg + '\'' +
-                ", idRequirement = " + idRequirement +
-                '}';
+    public String getDNICand() {
+        return DNICand;
+    }
+    public void setDNICand(String DNICand) {
+        this.DNICand = DNICand;
     }
 }

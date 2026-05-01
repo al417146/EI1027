@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class Contract {
-    String idContract;
+    int idContract;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     Date dateStart;
@@ -17,11 +17,11 @@ public class Contract {
     String DNICand;
 
 
-    public String getIdContract() {
+    public int getIdContract() {
         return idContract;
     }
 
-    public void setIdContract(String idContract) {
+    public void setIdContract(int idContract) {
         this.idContract = idContract;
     }
 

@@ -1,6 +1,6 @@
 package es.uji.ei1027.proyecto.dao;
 
-import es.uji.ei1027.proyecto.dao.RowMaps.RequestRowMapper;
+import es.uji.ei1027.proyecto.RowMaps.RequestRowMapper;
 import es.uji.ei1027.proyecto.modelo.Request;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -21,11 +21,47 @@ public class RequestDAO {
     }
 
     public void addRequest(Request r){
-        jdbcTemplate.update("INSERT INTO Request VALUES (?,?,?,?)",
+        jdbcTemplate.update("INSERT INTO Request VALUES (?,?,?,?,?,?,?,?)",
                 r.getDNIUser(),
                 r.getDate(),
                 r.getIdRequest(),
-                r.getStatus());
+                r.getStatus(),
+                r.getIdContract(),
+                r.getIdNeg(),
+                r.getIdRequirement(),
+                r.getDNICand());
+
+    }
+    public List<Request> getRequestsByUser(String dniUser) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Request WHERE DNIUser = ? ORDER BY date DESC",
+                    new Object[]{dniUser}, new RequestRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    // Solicitudes pendientes dirigidas a un profesional (PAP/PATI)
+    public List<Request> getPendingRequestsForPati(String dniPati) {
+        try {
+            return jdbcTemplate.query("SELECT * FROM Request WHERE DNICand = ? AND status = 'Pendiente'",
+                    new Object[]{dniPati}, new RequestRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+
+        public Request getRequestById(int id) {
+        try {
+            return jdbcTemplate.queryForObject("SELECT * FROM Request WHERE idRequest = ?",
+                    new Object[]{id}, new RequestRowMapper());
+        } catch (EmptyResultDataAccessException e) {
+            return null;
+        }
+    }
+    public void updateRequestStatus(int idRequest, String newStatus, int idContract) {
+        String sql = "UPDATE Request SET status = ?, idContract = ? WHERE idRequest = ?";
+        jdbcTemplate.update(sql, newStatus, idContract, idRequest);
     }
 
     public void deleteRequest(int idRequest){

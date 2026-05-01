@@ -1,6 +1,6 @@
 package es.uji.ei1027.proyecto.dao;
 
-import es.uji.ei1027.proyecto.dao.RowMaps.PATIRowMapper;
+import es.uji.ei1027.proyecto.RowMaps.PATIRowMapper;
 import es.uji.ei1027.proyecto.modelo.PATI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;
@@ -40,6 +40,14 @@ public class patiDAO {
                     new PATIRowMapper(),
                     dniOviUser
             );
+        } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<PATI> getAvailablePATIs() {
+        try {
+            return jdbcTemplate.query("SELECT * FROM PATI WHERE status = 'Aceptado'", new PATIRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }

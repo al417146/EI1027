@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <title>Mis solicitudes</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css" th:ref="@{css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+</header>
+<div class="container">
+  <div class="header-secondary">
+    <h1>Estado de mis solicitudes</h1>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(solicitudes)}" class="alert-info">
+      No has realizado ninguna solicitud.
+    </div>
+    <div th:unless="${#lists.isEmpty(solicitudes)}">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+          <tr><th>ID</th><th>Fecha</th><th>Estado</th><th>Profesional</th> </thead>
+          <tbody>
+          <tr th:each="s : ${solicitudes}">
+            <td th:text="${s.idRequest}"></td>
+            <td th:text="${#dates.format(s.date, 'dd/MM/yyyy')}"></td>
+            <td>
+                                <span th:class="${s.status == 'Pendiente de aprobación por staff'} ? 'estado-pendiente' :
+                                               ${s.status == 'Aceptada'} ? 'estado-aprobada' : 'estado-rechazada'}"
+                                      th:text="${s.status}"></span>
+            </td>
+            <td th:text="${s.DNICand}"></td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div style="margin-top:20px">
+      <a href="/OVIUser/index" class="btn btn-secondary">Volver</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>

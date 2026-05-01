@@ -1,6 +1,6 @@
 package es.uji.ei1027.proyecto.dao;
 
-import es.uji.ei1027.proyecto.dao.RowMaps.SpecialityRowMapper;
+import es.uji.ei1027.proyecto.RowMaps.SpecialityRowMapper;
 import es.uji.ei1027.proyecto.modelo.Speciality;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.EmptyResultDataAccessException;

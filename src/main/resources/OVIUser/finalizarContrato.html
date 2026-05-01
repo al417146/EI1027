@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <title>Finalizar contrato</title>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" type="text/css" href="/css/style.css" th:ref="@{css/style.css}">
+<body>
+<header class="top-bar">...</header>
+<div class="container">
+  <div class="header-secondary">
+    <h1>Finalizar contrato</h1>
+  </div>
+  <div class="card" style="margin:20px">
+    <p><strong>Contrato ID:</strong> <span th:text="${contract.idContract}"></span></p>
+    <p><strong>Profesional (DNI):</strong> <span th:text="${contract.DNICand}"></span></p>
+    <p><strong>Fecha inicio:</strong> <span th:text="${#dates.format(contract.dateStart, 'dd/MM/yyyy')}"></span></p>
+    <form th:action="@{/OVIUser/contrato/finalizar}" method="post">
+      <input type="hidden" name="idContract" th:value="${contract.idContract}">
+      <div class="form-group">
+        <label for="dateEnd">Fecha de finalización (dd-MM-yyyy):</label>
+        <input type="text" id="dateEnd" name="dateEnd" class="form-control" placeholder="dd-MM-yyyy" required>
+      </div>
+      <button type="submit" class="btn btn-warning">Registrar finalización</button>
+      <a href="/OVIUser/list" class="btn btn-secondary">Cancelar</a>
+    </form>
+  </div>
+</div>
+</body>
+</html>

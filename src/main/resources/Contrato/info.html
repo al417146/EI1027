@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" type="text/css" href="/css/style.css" th:ref="@{css/style.css}">
+</head>
+<body>
+<header class="top-bar">...</header>
+<div class="container">
+  <div class="header-primary">
+    <h1>Información del contrato</h1>
+  </div>
+  <div class="card" style="margin:20px">
+    <div class="detalle-perfil">
+      <div class="campo"><label>ID Contrato:</label> <span th:text="${contrato.idContract}"></span></div>
+      <div class="campo"><label>Fecha inicio:</label> <span th:text="${#dates.format(contrato.dateStart, 'dd/MM/yyyy')}"></span></div>
+      <div class="campo"><label>Fecha fin:</label>
+        <span th:if="${contrato.dateEnd != null}" th:text="${#dates.format(contrato.dateEnd, 'dd/MM/yyyy')}"></span>
+        <span th:unless="${contrato.dateEnd != null}" class="estado-pendiente">Indefinido</span>
+      </div>
+      <div class="campo"><label>ID Solicitud:</label> <span th:text="${contrato.idRequest}"></span></div>
+      <div class="campo"><label>DNI Candidato:</label> <span th:text="${contrato.DNICand}"></span></div>
+    </div>
+  </div>
+  <div style="margin:20px">
+    <a href="/OVIUser/list" class="btn btn-primary">Volver</a>
+  </div>
+</div>
+</body>
+</html>

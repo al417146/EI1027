@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Mis profesionales contratados</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css" th:ref="@{css/style.css}">
+</head>
+<body>
+<header class="top-bar">...</header>
+<div class="container">
+    <div class="header-primary">
+        <h1>Profesionales con contrato activo</h1>
+    </div>
+    <div style="padding:20px">
+        <div th:unless="${#lists.isEmpty(patis)}">
+            <div class="table-responsive">
+                <table class="data-table">
+                    <thead>
+                    <tr><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Contrato</th><th>Acciones</th> </thead>
+                    <tbody>
+                    <tr th:each="p : ${patis}">
+                        <td th:text="${p.name}"></td>
+                        <td th:text="${p.phone}"></td>
+                        <td th:text="${p.mail}"></td>
+                        <td>
+                            <a th:href="@{/OVIUser/Contrato/{dni}(dni=${p.DNI})}" class="btn btn-outline">Ver contrato</a>
+                        </td>
+                        <td>
+                            <a th:if="${contractMap != null and contractMap.get(p.DNI) != null and contractMap.get(p.DNI).dateEnd == null}"
+                               th:href="@{/OVIUser/contrato/finalizar/{id}(id=${contractMap.get(p.DNI).idContract})}"
+                               class="btn btn-warning">Finalizar contrato</a>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+        <div style="margin-top:20px">
+            <a href="/OVIUser/index" class="btn btn-secondary">Volver</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>

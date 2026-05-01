@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de OVIUser</title>
+  <link rel="stylesheet" type="text/css" href="/css/style.css" th:ref="@{css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo"><img src="/images/logo-ovi.png" alt="Logo OVI" class="logo-img"></div>
+  <div class="nav-bar">
+    <a href="/OVIUser/index.html" class="nav-link">Inicio</a>
+    <a href="/OVIUser/available.html" class="nav-link">Solicitar profesional</a>
+    <a href="/OVIUser/estadoSolicitud.html" class="nav-link">Mis solicitudes</a>
+    <a href="/OVIUser/list.html" class="nav-link">Mis contratos</a>
+    <a href="/logout.html" class="nav-link">Cerrar sesión</a>
+  </div>
+</header>
+<div class="container">
+  <div class="header-primary">
+    <h1>Bienvenido, <span th:text="${#authentication.name}"></span></h1>
+    <p>Oficina para la Vida Independiente</p>
+  </div>
+  <div class="card" style="margin:20px; text-align:center">
+    <h2>¿Qué deseas hacer?</h2>
+    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+      <a href="/OVIUser/available.html" class="btn btn-primary">Solicitar nuevo profesional</a>
+      <a href="/OVIUser/estadoSolicitud.html" class="btn btn-secondary">Ver estado de solicitudes</a>
+      <a href="/OVIUser/list.html" class="btn btn-outline">Ver mis contratos</a>
+    </div>
+  </div>
+</div>
+</body>
+</html>
