@@ -21,13 +21,13 @@ public class SpecialityController {
     @RequestMapping("/list")
     public String list(Model model) {
         model.addAttribute("specialities", specialityDAO.getSpecialities());
-        return "Speciality/list";
+        return "templates/Speciality/list";
     }
 
     @GetMapping("/add")
     public String add(Model model) {
         model.addAttribute("speciality", new Speciality());
-        return "Speciality/add";
+        return "templates/Speciality/add";
     }
 
     @PostMapping("/add")
@@ -45,7 +45,7 @@ public class SpecialityController {
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable String id) {
         model.addAttribute("speciality", specialityDAO.getSpeciality(id));
-        return "Speciality/update";
+        return "templates/Speciality/update";
     }
 
     @PostMapping("/edit")

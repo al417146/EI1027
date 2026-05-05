@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="UTF-8">
+  <title>Registro</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+
+<body>
+
+<header class="top-bar">
+  <div class="logo">
+    <img src="/images/logo-ovi.png" class="logo-img">
+  </div>
+</header>
+
+<div class="container">
+
+  <div class="header-primary">
+    <h1>Crear cuenta</h1>
+    <p>Selecciona el tipo de usuario</p>
+  </div>
+
+  <div class="card" style="text-align:center; margin:30px auto; max-width:500px;">
+
+    <a th:href="@{/register/oviuser}" class="btn btn-primary" style="width:100%; margin-bottom:20px;">
+      Registrarme como OVIUser
+    </a>
+
+    <a th:href="@{/register/pati}" class="btn btn-secondary" style="width:100%;">
+      Registrarme como PAP/PATI
+    </a>
+
+  </div>
+
+</div>
+
+</body>
+</html>
