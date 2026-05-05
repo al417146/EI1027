@@ -3,17 +3,23 @@
 <head>
   <meta charset="UTF-8">
   <title>Gestión de OVIUser</title>
-  <link rel="stylesheet" type="text/css" href="/css/style.css" th:ref="@{css/style.css}">
+  <link rel="stylesheet" type="text/css" href="/css/style.css" th:href="@{css/style.css}">
 </head>
 <body>
 <header class="top-bar">
   <div class="logo"><img src="/images/logo-ovi.png" alt="Logo OVI" class="logo-img"></div>
   <div class="nav-bar">
-    <a href="/OVIUser/index.html" class="nav-link">Inicio</a>
+    <!--<a href="/templates/index.html" class="nav-link">Inicio</a>
     <a href="/OVIUser/available.html" class="nav-link">Solicitar profesional</a>
     <a href="/OVIUser/estadoSolicitud.html" class="nav-link">Mis solicitudes</a>
     <a href="/OVIUser/list.html" class="nav-link">Mis contratos</a>
-    <a href="/logout.html" class="nav-link">Cerrar sesión</a>
+    <a href="/logout.html" class="nav-link">Cerrar sesión</a>-->
+    <a th:href="@{/}" class="nav-link">Inicio</a>
+    <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+    <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
+    <a th:href="@{/OVIUser/list}" class="nav-link">Mis contratos</a>
+    <a th:href="@{/logout}" class="nav-link">Cerrar sesión</a>
+
   </div>
 </header>
 <div class="container">

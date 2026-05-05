@@ -206,10 +206,10 @@ public class OVIUserController {
         validator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "OVIUser/add";
+            return "Staff/OVIupdate";
 
         oviUserDAO.addOVIUser(user);
-        return "redirect:/OVIUser/index";
+        return "redirect:/Staff/index";
     }
 
 
