@@ -82,7 +82,7 @@ public class OVIUserController {
 
         Contract contract = cDAO.getContractByPATI(DNICand);
         model.addAttribute("contrato", contract);
-        return "contrato/info";
+        return "Contrato/info";
     }
 
     //Mostramos los profesionales disponibles para solicitar
@@ -151,33 +151,35 @@ public class OVIUserController {
     @RequestMapping("/delete/{DNI}")
     public String deleteUser(@PathVariable String DNI) {
         oviUserDAO.deleteOVIUser(DNI);
-        return "redirect:/OVIUser/index";
+        return "redirect:iniciarSesion.html";
     }
 
-    // EDITAR (GET)
-    @RequestMapping(value = "/update/{DNI}", method = RequestMethod.GET)
-    public String editUser(Model model, @PathVariable String DNI) {
-
-        model.addAttribute("OVIuser", oviUserDAO.getOVIUser(DNI));
-
-        return "OVIUser/index";
+    // Mostrar formulario de edición del perfil propio
+    @GetMapping("/profile")
+    public String showProfileForm(Model model, Principal principal) {
+        String dni = principal.getName();
+        OVIUser user = oviUserDAO.getOVIUser(dni);
+        model.addAttribute("oviuser", user);
+        return "OVIUser/profile";
     }
 
-    // EDITAR (POST)
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public String processUpdateSubmit(@ModelAttribute("oviuser") OVIUser user,
-                                      BindingResult bindingResult) {
-
+    // Procesar actualización del perfil
+    @PostMapping("/profile")
+    public String updateProfile(@ModelAttribute("oviuser") OVIUser user,
+                                BindingResult bindingResult,
+                                Principal principal) {
+        // Validar
         OVIUserValidator validator = new OVIUserValidator();
         validator.validate(user, bindingResult);
 
         if (bindingResult.hasErrors())
+            return "OVIUser/profile";
 
-            return "OVIUser/update";
 
-
+        // Asegurar que el DNI no se modifica (o se fuerza el mismo)
+        user.setDNI(principal.getName());
         oviUserDAO.updateOVIUser(user);
-        return "redirect:/OVIUser/index";
+        return "redirect:/OVIUser/index?updated";
     }
 
     /*
