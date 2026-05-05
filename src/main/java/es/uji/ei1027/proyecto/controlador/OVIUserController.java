@@ -9,6 +9,7 @@ import es.uji.ei1027.proyecto.modelo.Contract;
 import es.uji.ei1027.proyecto.modelo.OVIUser;
 import es.uji.ei1027.proyecto.modelo.PATI;
 import es.uji.ei1027.proyecto.modelo.Request;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
@@ -39,14 +40,17 @@ public class OVIUserController {
     public void setOviUserDAO(OVIUserDAO oviUserDAO) {
         this.oviUserDAO = oviUserDAO;
     }
+
     @Autowired
     public void setcDAO(ContractDAO cDAO) {
         this.cDAO = cDAO;
     }
+
     @Autowired
     public void setPatiDAO(patiDAO patiDAO) {
         this.patiDAO = patiDAO;
     }
+
     @Autowired
     public void setrDAO(RequestDAO rDAO) {
         this.rDAO = rDAO;
@@ -59,13 +63,13 @@ public class OVIUserController {
      */
     //Panel principal
     @GetMapping("/index")
-    public String index(){
+    public String index() {
         return "OVIUser/index";
     }
 
     //Listamos los PATI asociados a este OVIUser
     @GetMapping("/list")
-    public String listPATIS(Model model, Principal p){
+    public String listPATIS(Model model, Principal p) {
 
         String dniOVI = p.getName();
         List<PATI> lista = patiDAO.getPATIsByOVIUser(dniOVI);
@@ -78,7 +82,7 @@ public class OVIUserController {
 
     //Mostramos la información del contrato de un profesional
     @GetMapping("/Contrato/{DNICand}")
-    public String mandarContrato(Model model, @PathVariable String DNICand){
+    public String mandarContrato(Model model, @PathVariable String DNICand) {
 
         Contract contract = cDAO.getContractByPATI(DNICand);
         model.addAttribute("contrato", contract);
@@ -87,7 +91,7 @@ public class OVIUserController {
 
     //Mostramos los profesionales disponibles para solicitar
     @GetMapping("/available")
-    public String listaPATISdisponibles(Model model){
+    public String listaPATISdisponibles(Model model) {
         List<PATI> disponibles = patiDAO.getAvailablePATIs();
         model.addAttribute("dispoibles", disponibles);
         return "OVIUser/available";
@@ -95,7 +99,7 @@ public class OVIUserController {
 
     //Crea una solicitud para un profesional elegido
     @PostMapping("/solicitarRequest")
-    public String solicitarRequest(@RequestParam String dniPAP, int idRequirement, Principal principal){
+    public String solicitarRequest(@RequestParam String dniPAP, int idRequirement, Principal principal) {
 
         Request r = new Request();
 
@@ -140,19 +144,13 @@ public class OVIUserController {
 
     //Ver estado de las solicitudes
     @GetMapping("/estadoSolicitud")
-    public String verEstadoSolicitudes(Model model, Principal principal){
+    public String verEstadoSolicitudes(Model model, Principal principal) {
 
         List<Request> solicitudes = rDAO.getRequestsByUser(principal.getName());
         model.addAttribute("solicitudes", solicitudes);
         return "OVIUser/estadoSolicitud";
     }
 
-    // BORRAR
-    @RequestMapping("/delete/{DNI}")
-    public String deleteUser(@PathVariable String DNI) {
-        oviUserDAO.deleteOVIUser(DNI);
-        return "redirect:iniciarSesion.html";
-    }
 
     // Mostrar formulario de edición del perfil propio
     @GetMapping("/profile")
@@ -161,6 +159,15 @@ public class OVIUserController {
         OVIUser user = oviUserDAO.getOVIUser(dni);
         model.addAttribute("oviuser", user);
         return "OVIUser/profile";
+    }
+
+    // Elimina la cuenta
+    @PostMapping("/deleteAccount")
+    public String deleteOwnAccount(HttpSession session, Principal principal) {
+        String dni = principal.getName();
+        oviUserDAO.deleteOVIUser(dni);
+        session.invalidate();  // Cierra la sesión
+        return "redirect:/iniciarSesion?deleted";
     }
 
     // Procesar actualización del perfil
@@ -182,6 +189,20 @@ public class OVIUserController {
         return "redirect:/OVIUser/index?updated";
     }
 
+    // AÑADIR (POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String processAddSubmit(@ModelAttribute("oviuser") OVIUser user,
+                                   BindingResult bindingResult) {
+
+        OVIUserValidator validator = new OVIUserValidator();
+        validator.validate(user, bindingResult);
+        if (bindingResult.hasErrors())
+            return "OVIUser/add";
+
+        user.setStatus("Pendiente");   // Estado inicial pendiente de evaluación por el staff
+        oviUserDAO.addOVIUser(user);
+        return "redirect:/OVIUser/index";
+    }
     /*
     ########################################################
         PARTE PARA EL MANEJO DE OVIUSERS PARA EL STAFF
@@ -194,27 +215,11 @@ public class OVIUserController {
 
         model.addAttribute("oviuser", new OVIUser());
 
-        return "OVIUser/add";
+        return "Staff/OVIadd";
 
     }
-
-    // AÑADIR (POST)
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("oviuser") OVIUser user,
-                                   BindingResult bindingResult) {
-
-        OVIUserValidator validator = new OVIUserValidator();
-
-        validator.validate(user, bindingResult);
-
-        if (bindingResult.hasErrors())
-            return "Staff/OVIupdate";
-
-        oviUserDAO.addOVIUser(user);
-        return "redirect:/Staff/index";
-    }
-
-
-
-
 }
+
+
+
+
