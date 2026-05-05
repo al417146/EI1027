@@ -103,5 +103,31 @@ public class patiDAO {
         }
     }
 
+    public List<PATI> findMatch(String address, String gender, String topic) {
+        try {
+            String sql =
+                    "SELECT DISTINCT p.* " +
+                            "FROM PATI p " +
+                            "JOIN HAS h ON p.DNI = h.DNIPati " +
+                            "JOIN SPECIALITY s ON h.idSpeciality = s.idSpeciality " +
+                            "WHERE p.status = 'Aceptado' " +
+                            "AND p.gender = ? " +
+                            "AND p.address LIKE ? " +
+                            "AND s.speciality = ?";
+
+            return jdbcTemplate.query(
+                    sql,
+                    new PATIRowMapper(),
+                    gender,
+                    "%" + address + "%",
+                    topic
+            );
+
+        } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+
+
 
 }

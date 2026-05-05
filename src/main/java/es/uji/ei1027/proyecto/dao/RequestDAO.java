@@ -102,4 +102,15 @@ public class RequestDAO {
             return new ArrayList<>();
         }
     }
+    public List<Request> getPendingRequests() {
+        try {
+            return jdbcTemplate.query(
+                    "SELECT * FROM Request WHERE status = 'Pendiente' ORDER BY date DESC",
+                    new RequestRowMapper()
+            );
+        } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+
 }
