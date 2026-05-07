@@ -81,12 +81,12 @@ public class OVIUserController {
     }
 
     //Mostramos la información del contrato de un profesional
-    @GetMapping("/Contrato/{DNICand}")
+    @GetMapping("/templates/Contrato/{DNICand}")
     public String mandarContrato(Model model, @PathVariable String DNICand) {
 
         Contract contract = cDAO.getContractByPATI(DNICand);
         model.addAttribute("contrato", contract);
-        return "Contrato/info";
+        return "templates/Contrato/info";
     }
 
     //Mostramos los profesionales disponibles para solicitar

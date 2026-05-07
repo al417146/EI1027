@@ -12,8 +12,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import javax.naming.Binding;
-
 @Controller
 @RequestMapping("/contract")
 public class ContractController {
@@ -71,7 +69,7 @@ public class ContractController {
       return "redirect:../list";
    }
 
-   @RequestMapping(value = "/Contrato/{DNICand}", method = RequestMethod.GET)
+   @RequestMapping(value = "/templates/Contrato/{DNICand}", method = RequestMethod.GET)
    public String mandarContrato(@PathVariable String DNICand, Model model){
 
       Contract c = cDAO.getContractsByPATI(DNICand);
