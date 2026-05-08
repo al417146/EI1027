@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Actualizar OVIUser</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:ref="@{css/style.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{css/style.css}">
 </head>
 <body>
 
 <form th:action="@{/OVIUser/update}" th:object="${oviuser}" method="post">
 
-  <!-- DNI: clave primaria, no editable -->
   <input type="text" th:field="*{DNI}" placeholder="DNI" readonly/>
   <p th:if="${#fields.hasErrors('DNI')}" th:errors="*{DNI}"></p>
 

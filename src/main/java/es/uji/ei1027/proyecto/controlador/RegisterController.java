@@ -32,7 +32,7 @@ public class RegisterController {
     @GetMapping("/register/oviuser")
     public String showOVIUserForm(Model model) {
         model.addAttribute("oviuser", new OVIUser());
-        return "OVIUserRegister";   // → templates/OVIUserRegister.html
+        return "OVIUser/add";   // → templates/OVIUser/add.html
     }
 
     // 3. Registro OVIUser (POST)
@@ -43,7 +43,7 @@ public class RegisterController {
         new OVIUserValidator().validate(user, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "OVIUserRegister";
+            return "add";
 
         oviUserDAO.addOVIUser(user);
         return "redirect:/login";

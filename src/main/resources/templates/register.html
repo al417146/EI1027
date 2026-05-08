@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Registro</title>
-  <link rel="stylesheet" th:href="@{/css/style.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:ref="@{css/style.css}">
 </head>
 
 <body>
@@ -23,10 +23,10 @@
 
   <div class="card" style="text-align:center; margin:30px auto; max-width:500px;">
 
-    <a th:href="@{/register/oviuser}" class="btn btn-primary" style="width:100%; margin-bottom:20px;">
+    <a th:href="@{OVIUser/add.hmtl}" class="btn btn-primary" style="width:100%; margin-bottom:20px;">
       Registrarme como OVIUser
     </a>
-
+FALTA INICIAR SESION <a
     <a th:href="@{/register/pati}" class="btn btn-secondary" style="width:100%;">
       Registrarme como PAP/PATI
     </a>
