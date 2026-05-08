@@ -43,7 +43,7 @@ public class RegisterController {
         new OVIUserValidator().validate(user, bindingResult);
 
         if (bindingResult.hasErrors())
-            return "add";
+            return "OVIUser/add";
 
         oviUserDAO.addOVIUser(user);
         return "redirect:/login";
