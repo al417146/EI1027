@@ -1,14 +1,9 @@
 package es.uji.ei1027.proyecto.controlador;
 
 import es.uji.ei1027.proyecto.Validator.OVIUserValidator;
-import es.uji.ei1027.proyecto.dao.ContractDAO;
-import es.uji.ei1027.proyecto.dao.OVIUserDAO;
-import es.uji.ei1027.proyecto.dao.RequestDAO;
-import es.uji.ei1027.proyecto.dao.patiDAO;
-import es.uji.ei1027.proyecto.modelo.Contract;
-import es.uji.ei1027.proyecto.modelo.OVIUser;
-import es.uji.ei1027.proyecto.modelo.PATI;
-import es.uji.ei1027.proyecto.modelo.Request;
+import es.uji.ei1027.proyecto.Validator.RequestValidator;
+import es.uji.ei1027.proyecto.dao.*;
+import es.uji.ei1027.proyecto.modelo.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -37,24 +32,10 @@ public class OVIUserController {
     private RequestDAO rDAO;
 
     @Autowired
-    public void setOviUserDAO(OVIUserDAO oviUserDAO) {
-        this.oviUserDAO = oviUserDAO;
-    }
+    private RequirementsDAO requirementsDAO;
 
-    @Autowired
-    public void setcDAO(ContractDAO cDAO) {
-        this.cDAO = cDAO;
-    }
-
-    @Autowired
-    public void setPatiDAO(patiDAO patiDAO) {
-        this.patiDAO = patiDAO;
-    }
-
-    @Autowired
-    public void setrDAO(RequestDAO rDAO) {
-        this.rDAO = rDAO;
-    }
+   @Autowired
+   private RequestValidator requestValidator;
 
     /*
     ######################################
@@ -189,6 +170,40 @@ public class OVIUserController {
         return "redirect:/OVIUser/index?updated";
     }
 
+
+    //Mostramos un formulario para crear una solicitud genérica (sin elegir profesional)
+    @GetMapping("/requestAssistance")
+    public String showRequestAssistance(Model model) {
+
+        List<Requirements> requirements = requirementsDAO.getRequirements(); // Necesitas inyectar RequirementsDAO
+        model.addAttribute("requirements", requirements);
+        model.addAttribute("request", new Request());
+        return "OVIUser/requestAssistance";
+    }
+
+    //Se procesa la solicitud
+    @PostMapping("/requestAssistance")
+    public String processRequestAssistance(@ModelAttribute("request") Request request,
+                                           BindingResult bindingResult,
+                                           Principal principal) {
+
+        requestValidator.validate(request, bindingResult);
+
+        if (bindingResult.hasErrors())
+            return "OVIUser/requestAssistance";
+
+
+        request.setDNIUser(principal.getName());
+        request.setDate(new Date());
+        request.setStatus("Pendiente");
+        request.setDNICand(null);       // sin profesional aún
+        request.setIdContract(0);       // Se pondrá en 0, ya que no hay un contrato hecho
+        request.setIdNeg(null);
+        rDAO.addRequest(request);
+        return "redirect:/OVIUser/estadoSolicitud";
+    }
+
+   // Cambiar el añadir
     // AÑADIR (POST)
     @RequestMapping(value = "/add", method = RequestMethod.POST)
     public String processAddSubmit(@ModelAttribute("oviuser") OVIUser user,
@@ -197,11 +212,11 @@ public class OVIUserController {
         OVIUserValidator validator = new OVIUserValidator();
         validator.validate(user, bindingResult);
         if (bindingResult.hasErrors())
-            return "OVIUser/add";
+            return "index";
 
-        user.setStatus("Pendiente");   // Estado inicial pendiente de evaluación por el staff
+        user.setStatus("Pendiente");   //Mientras que no haya sido aceptado por el staff, se pone en pendiente
         oviUserDAO.addOVIUser(user);
-        return "redirect:/OVIUser/index";
+        return "redirect:/index";
     }
     /*
     ########################################################

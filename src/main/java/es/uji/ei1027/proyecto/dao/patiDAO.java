@@ -9,7 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import javax.sql.DataSource;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public class patiDAO {
     private JdbcTemplate jdbcTemplate;
@@ -30,7 +33,7 @@ public class patiDAO {
 
     public List<PATI> getPATIsByOVIUser(String dniOviUser) {
         try {
-            return jdbcTemplate.query(
+            List<PATI> patis = jdbcTemplate.query(
                     "SELECT p.* " +
                             "FROM PATI p " +
                             "JOIN Contract c ON p.DNI = c.DNICand " +
@@ -40,14 +43,40 @@ public class patiDAO {
                     new PATIRowMapper(),
                     dniOviUser
             );
+            for (PATI pati : patis) {
+                HashMap<Integer, String> specs = getSpecialtiesForPati(pati.getDNI());
+                pati.setSpecialties(specs);
+            }
+            return patis;
         } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }
     }
 
+    public HashMap<Integer, String> getSpecialtiesForPati(String dniPati) {
+        try {
+            String sql = "SELECT s.idSpeciality, s.descrip FROM Speciality s " +
+                    "JOIN Has h ON s.idSpeciality = h.idSpeciality " +
+                    "WHERE h.DNIPati = ?";
+            return jdbcTemplate.query(sql, rs -> {
+                HashMap<Integer, String> hashMap = new HashMap<>();
+                while (rs.next()) {
+                    hashMap.put(rs.getInt("idSpeciality"), rs.getString("descrip"));
+                }
+                return hashMap;
+            }, dniPati);
+        } catch (EmptyResultDataAccessException e) {
+            return new HashMap<>();
+        }
+    }
+
     public List<PATI> getAvailablePATIs() {
         try {
-            return jdbcTemplate.query("SELECT * FROM PATI WHERE status = 'Aceptado'", new PATIRowMapper());
+            List<PATI> patis = jdbcTemplate.query("SELECT * FROM PATI WHERE status = 'Aceptado'", new PATIRowMapper());
+            for (PATI p : patis) {
+                p.setSpecialties(getSpecialtiesForPati(p.getDNI()));
+            }
+            return patis;
         } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }

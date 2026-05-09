@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Administración – Solicitudes pendientes</title>
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:ref="@{css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo"><img src="/static/images/logo-ovi.png" alt="Logo OVI" class="logo-img"></div>
+  <div class="nav-bar">
+    <a th:href="@{/}" class="nav-link">Inicio</a>
+    <a th:href="@{/admin/list}" class="nav-link">Solicitudes pendientes</a>
+    <a th:href="@{/logout}" class="nav-link">Cerrar sesión</a>
+  </div>
+</header>
+<div class="container">
+  <div class="header-secondary">
+    <h1>Gestión de solicitudes pendientes</h1>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(requests)}" class="alert-info">
+      No hay solicitudes pendientes.
+    </div>
+    <div th:unless="${#lists.isEmpty(requests)}">
+      <div class="table-responsive">
+        <table class="data-table">
+          <thead>
+          <tr>
+            <th>ID</th>
+            <th>Usuario (DNI)</th>
+            <th>Fecha</th>
+            <th>ID Requisito</th>
+            <th>Acción</th>
+          </tr>
+          </thead>
+          <tbody>
+          <tr th:each="r : ${requests}">
+            <td th:text="${r.idRequest}"></td>
+            <td th:text="${r.DNIUser}"></td>
+            <td th:text="${#dates.format(r.date, 'dd/MM/yyyy')}"></td>
+            <td th:text="${r.idRequirement}"></td>
+            <td>
+              <a th:href="@{/admin/match/{id}(id=${r.idRequest})}" class="btn btn-outline">Ver candidatos</a>
+            </td>
+          </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
