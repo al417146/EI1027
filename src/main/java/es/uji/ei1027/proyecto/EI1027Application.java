@@ -7,7 +7,7 @@ import java.util.logging.Logger;
 
 
 @SpringBootApplication
-public class ClubesportiuApplication {
+public class EI1027Application {
 	/*// Plantilla para ejecutar operaciones sobre la conexión
 	private JdbcTemplate jdbcTemplate;
 
@@ -17,11 +17,11 @@ public class ClubesportiuApplication {
 		jdbcTemplate = new JdbcTemplate(dataSource);
 	}
 */
-	private static final Logger log = Logger.getLogger(ClubesportiuApplication.class.getName());
+	private static final Logger log = Logger.getLogger(EI1027Application.class.getName());
 
 	public static void main(String[] args) {
 		// Autoconfigura la aplicación
-		new SpringApplicationBuilder(ClubesportiuApplication.class).run(args);
+		new SpringApplicationBuilder(EI1027Application.class).run(args);
 	}
 }
 

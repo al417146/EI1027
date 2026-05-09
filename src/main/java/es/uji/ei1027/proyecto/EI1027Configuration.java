@@ -4,12 +4,11 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.jdbc.DataSourceBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Primary;
 
 import javax.sql.DataSource;
 
 @Configuration
-public class ClubDeportivoConfiguration {
+public class EI1027Configuration {
 
     // Configura el acceso a la base de datos (DataSource)
     // a partir de las propiedades a src/main/resources/applications.properties
