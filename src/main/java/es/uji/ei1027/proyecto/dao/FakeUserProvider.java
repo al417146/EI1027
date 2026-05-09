@@ -40,7 +40,7 @@ public class FakeUserProvider implements UserDao{
         if (passwordEncryptor.checkPassword(password, user.getPassword())) {
             // Per seguretat el camp password no s’ha de tornar
             UserDetails safeUser = new UserDetails();
-            safeUser.setMail(user.getMail());
+            safeUser.setDni(user.getDni());
             return safeUser;
         }
         else {

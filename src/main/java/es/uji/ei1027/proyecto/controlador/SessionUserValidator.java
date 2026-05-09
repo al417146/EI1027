@@ -14,7 +14,7 @@ public class SessionUserValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         UserDetails user = (UserDetails) obj;
 
-        if (user.getMail() == null || user.getMail().trim().equals("")) {
+        if (user.getDni() == null || user.getDni().trim().equals("")) {
             errors.rejectValue("mail", "obligatorio", "El correo es obligatorio");
         }
 

@@ -35,7 +35,7 @@ public class LoginController {
             return "login";
 
         UserDetails authenticated =
-                userDao.loadUserByUsername(user.getMail(), user.getPassword());
+                userDao.loadUserByUsername(user.getDni(), user.getPassword());
 
         if (authenticated == null) {
             bindingResult.rejectValue("password", "badpw", "Correo o contraseña incorrectos");
