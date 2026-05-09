@@ -3,18 +3,22 @@
 <head>
     <meta charset="UTF-8">
     <title>Mis profesionales contratados</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:ref="@{css/style.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{css/style.css}">
 </head>
 <body>
 <header class="top-bar">
-    <div class="logo"><img src="/static/images/logo-ovi.png" alt="Logo OVI" class="logo-img"></div>
-    <div class="nav-bar">
-        <a href="/templates/OVIUser/OVIindex.html" class="nav-link">Inicio</a>
-        <a href="/templates/OVIUser/available.html" class="nav-link">Solicitar profesional</a>
-        <a href="/templates/OVIUser/estadoSolicitud.html" class="nav-link">Mis solicitudes</a>
-        <a href="/templates/OVIUser/list.html" class="nav-link">Mis contratos</a>
-        <a href="/logout" class="nav-link">Cerrar sesión</a>
+    <div class="logo">
+        <img th:src="@{/images/logo-ovi.png}"
+             alt="Logo OVI"
+             class="logo-img" src="/images/logo-ovi.png">
     </div>
+    <nav class="nav-bar">
+        <a th:href="@{/OVIUser/index}" class="nav-link">Inicio</a>
+        <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+        <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
+        <a th:href="@{/OVIUser/list}" class="nav-link">Mis contratos</a>
+        <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+    </nav>
 </header>
 <div class="container">
     <div class="header-primary">
@@ -52,7 +56,7 @@
             </div>
         </div>
         <div style="margin-top:20px">
-            <a href="/templates/OVIUser/OVIindex.html" class="btn btn-secondary">Volver</a>
+            <a href="/templates/OVIUser/OVIndex.html" class="btn btn-secondary">Volver</a>
         </div>
     </div>
 </div>

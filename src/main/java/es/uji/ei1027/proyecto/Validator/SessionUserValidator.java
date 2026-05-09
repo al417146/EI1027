@@ -1,4 +1,4 @@
-package es.uji.ei1027.proyecto.controlador;
+package es.uji.ei1027.proyecto.Validator;
 
 import es.uji.ei1027.proyecto.modelo.UserDetails;
 import org.springframework.validation.Errors;
@@ -14,11 +14,11 @@ public class SessionUserValidator implements Validator {
     public void validate(Object obj, Errors errors) {
         UserDetails user = (UserDetails) obj;
 
-        if (user.getDni() == null || user.getDni().trim().equals("")) {
-            errors.rejectValue("mail", "obligatorio", "El correo es obligatorio");
+        if (user.getDni() == null || user.getDni().trim().isEmpty()) {
+            errors.rejectValue("dni", "obligatorio", "El DNI es obligatorio"); // ✅ corregido
         }
 
-        if (user.getPassword() == null || user.getPassword().trim().equals("")) {
+        if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
             errors.rejectValue("password", "obligatorio", "La contraseña es obligatoria");
         }
     }

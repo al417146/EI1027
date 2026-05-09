@@ -10,7 +10,9 @@
 
 <header class="top-bar">
     <div class="logo">
-        <img src="/static/images/logo-ovi.png" alt="Logo OVI" class="logo-img">
+        <img th:src="@{/images/logo-ovi.png}"
+             alt="Logo OVI"
+             class="logo-img" src="/images/logo-ovi.png">
     </div>
 </header>
 
@@ -27,12 +29,16 @@
 
             <div class="form-group">
                 <label>Usuario (DNI)</label>
-                <input type="text" name="username" placeholder="Introduce tu DNI" required>
+                <label>
+                    <input type="text" name="username" placeholder="Introduce tu DNI" required>
+                </label>
             </div>
 
             <div class="form-group">
                 <label>Contraseña</label>
-                <input type="password" name="password" placeholder="Introduce tu contraseña" required>
+                <label>
+                    <input type="password" name="password" placeholder="Introduce tu contraseña" required>
+                </label>
             </div>
 
             <button type="submit" class="btn btn-primary" style="width:100%;">Entrar</button>
@@ -40,8 +46,10 @@
         </form>
 
         <p style="margin-top:20px; text-align:center;">
+
             ¿No tienes cuenta?
-            <a th:href="@{/register}">Regístrate aquí</a>
+
+            <a th:href="@{/register}"><strong>Regístrate aquí</strong></a>
         </p>
 
     </div>

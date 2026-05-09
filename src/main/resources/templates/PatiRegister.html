@@ -10,7 +10,9 @@
 
 <header class="top-bar">
   <div class="logo">
-    <img src="/static/images/logo-ovi.png" class="logo-img">
+    <img th:src="@{/images/logo-ovi.png}"
+         alt="Logo OVI"
+         class="logo-img" src="/images/logo-ovi.png">
   </div>
 </header>
 
@@ -27,42 +29,58 @@
 
       <div class="form-group">
         <label>DNI</label>
-        <input type="text" th:field="*{DNI}" required>
+        <label>
+          <input type="text" th:field="*{DNI}" required>
+        </label>
       </div>
 
       <div class="form-group">
         <label>Nombre completo</label>
-        <input type="text" th:field="*{name}" required>
+        <label>
+          <input type="text" th:field="*{name}" required>
+        </label>
       </div>
 
       <div class="form-group">
         <label>Fecha de nacimiento</label>
-        <input type="date" th:field="*{birthDate}" required>
+        <label>
+          <input type="date" th:field="*{birthDate}" required>
+        </label>
       </div>
 
       <div class="form-group">
         <label>Género</label>
-        <input type="text" th:field="*{gender}" required>
+        <label>
+          <input type="text" th:field="*{gender}" required>
+        </label>
       </div>
 
       <div class="form-group">
         <label>Teléfono</label>
-        <input type="text" th:field="*{phone}" required>
+        <label>
+          <input type="text" th:field="*{phone}" required>
+        </label>
       </div>
 
       <div class="form-group">
         <label>Email</label>
-        <input type="text" th:field="*{mail}" required>
+        <label>
+          <input type="text" th:field="*{mail}" required>
+        </label>
       </div>
 
       <div class="form-group">
         <label>Dirección</label>
-        <input type="text" th:field="*{address}" required>
+        <label>
+          <input type="text" th:field="*{address}" required>
+        </label>
       </div>
 
       <div class="form-group">
         <label>Especialidades</label>
-        <textarea th:field="*{specialties}" placeholder="Ej: 1: Cocina, 2: Movilidad..."></textarea>
+        <label>
+          <textarea th:field="*{specialties}" placeholder="Ej: 1: Cocina, 2: Movilidad..."></textarea>
+        </label>
       </div>
 
       <button type="submit" class="btn btn-secondary" style="width:100%;">Registrarse</button>

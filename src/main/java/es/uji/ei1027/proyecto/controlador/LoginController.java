@@ -1,5 +1,6 @@
 package es.uji.ei1027.proyecto.controlador;
 
+import es.uji.ei1027.proyecto.Validator.SessionUserValidator;
 import es.uji.ei1027.proyecto.dao.UserDao;
 import es.uji.ei1027.proyecto.modelo.UserDetails;
 import jakarta.servlet.http.HttpSession;
@@ -38,24 +39,44 @@ public class LoginController {
                 userDao.loadUserByUsername(user.getDni(), user.getPassword());
 
         if (authenticated == null) {
-            bindingResult.rejectValue("password", "badpw", "Correo o contraseña incorrectos");
+            bindingResult.rejectValue("password", "badpw", "DNI o contraseña incorrectos");
             return "login";
         }
 
         session.setAttribute("user", authenticated);
 
-        String nextUrl = (String) session.getAttribute("nextUrl");
-        if (nextUrl != null) {
-            session.removeAttribute("nextUrl");
-            return "redirect:" + nextUrl;
-        }
-
-        return "redirect:/";
+        // Redirige según el rol
+        String rol = authenticated.getRol();
+        if ("STAFF".equals(rol))
+            return "redirect:/staff/index";
+        else if ("PAP".equals(rol))
+            return "redirect:/PAP/index";
+        else
+            return "redirect:/OVIUser/index";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/";
+    }
+
+    @GetMapping("/logoutConfirm")
+    public String logoutConfirm(Model model, HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        String cancelUrl;
+
+        if (user == null) {
+            cancelUrl = "/";
+        } else if ("STAFF".equals(user.getRol())) {
+            cancelUrl = "/staff/index";
+        } else if ("PAP".equals(user.getRol())) {
+            cancelUrl = "/PAP/index";
+        } else {
+            cancelUrl = "/OVIUser/index";
+        }
+
+        model.addAttribute("cancelUrl", cancelUrl);
+        return "logoutConfirm";
     }
 }

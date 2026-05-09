@@ -7,7 +7,11 @@
 </head>
 <body>
 <header class="top-bar">
-  <div class="logo"><img src="/static/images/logo-ovi.png" alt="Logo OVI" class="logo-img"></div>
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}"
+         alt="Logo OVI"
+         class="logo-img" src="/images/logo-ovi.png">
+  </div>
   <div class="nav-bar">
     <a th:href="@{/}" class="nav-link">Inicio</a>
     <a th:href="@{/admin/list}" class="nav-link">Solicitudes pendientes</a>

@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.security.Principal;
 import java.util.Date;
 import java.util.List;
+import java.util.Random;
 
 @Controller
 @RequestMapping("/OVIUser")
@@ -74,21 +75,22 @@ public class OVIUserController {
     @GetMapping("/available")
     public String listaPATISdisponibles(Model model) {
         List<PATI> disponibles = patiDAO.getAvailablePATIs();
-        model.addAttribute("dispoibles", disponibles);
+        model.addAttribute("disponibles", disponibles);
         return "OVIUser/available";
     }
 
     //Crea una solicitud para un profesional elegido
     @PostMapping("/solicitarRequest")
-    public String solicitarRequest(@RequestParam String dniPAP, int idRequirement, Principal principal) {
+    public String solicitarRequest(@RequestParam String dniPAP, Principal principal) {
 
         Request r = new Request();
+
 
         r.setDNICand(dniPAP);
         r.setDate(new Date());
         r.setStatus("Pendiente");
         r.setDNIUser(principal.getName());
-        r.setIdRequirement(idRequirement);
+        r.setIdRequirement(new Random().nextInt(999999));
         rDAO.addRequest(r);
 
         return "redirect:/OVIUser/estadoSolicitud";

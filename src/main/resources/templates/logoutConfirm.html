@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Cerrar sesión</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+    <div class="logo">
+        <img th:src="@{/images/logo-ovi.png}"
+             alt="Logo OVI"
+             class="logo-img" src="/images/logo-ovi.png">
+    </div>
+</header>
+<main class="container">
+    <div class="header-primary">
+        <h1>Cerrar sesión</h1>
+    </div>
+    <div class="card" style="margin:30px auto; max-width:500px; text-align:center">
+        <p><strong>¿Estás seguro de que deseas cerrar sesión?</strong></p>
+        <form th:action="@{/logout}" method="post">
+            <button type="submit" class="btn btn-primary" style="width:100%;">
+                Sí, cerrar sesión
+            </button>
+        </form>
+        <a th:href="${cancelUrl}" class="btn btn-secondary"
+           style="margin-top:10px; display:block;">Cancelar</a>
+    </div>
+</main>
+</body>
+</html>

@@ -10,7 +10,9 @@
 
 <header class="top-bar">
   <div class="logo">
-    <img src="/static/images/logo-ovi.png" class="logo-img">
+    <img th:src="@{/images/logo-ovi.png}"
+         alt="Logo OVI"
+         class="logo-img" src="/images/logo-ovi.png">
   </div>
 </header>
 
@@ -26,7 +28,6 @@
     <a th:href="@{OVIUser/add.hmtl}" class="btn btn-primary" style="width:100%; margin-bottom:20px;">
       Registrarme como OVIUser
     </a>
-FALTA INICIAR SESION <a
     <a th:href="@{/register/pati}" class="btn btn-secondary" style="width:100%;">
       Registrarme como PAP/PATI
     </a>

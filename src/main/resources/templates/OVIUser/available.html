@@ -3,24 +3,32 @@
 <head>
   <meta charset="UTF-8">
   <title>Profesionales disponibles</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:ref="@{css/style.css}">
+  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{css/style.css}">
 </head>
 <body>
+
 <header class="top-bar">
-  <div class="logo"><img src="/static/images/logo-ovi.png" alt="Logo OVI" class="logo-img"></div>
-  <div class="nav-bar">
-    <a href="/templates/OVIUser/OVIindex.html" class="nav-link">Inicio</a>
-    <a href="/templates/OVIUser/available.html" class="nav-link">Solicitar profesional</a>
-    <a href="/templates/OVIUser/estadoSolicitud.html" class="nav-link">Mis solicitudes</a>
-    <a href="/templates/OVIUser/list.html" class="nav-link">Mis contratos</a>
-    <a href="/logout" class="nav-link">Cerrar sesión</a>
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}"
+         alt="Logo OVI"
+         class="logo-img"
+         src="/images/logo-ovi.png">
   </div>
+  <nav class="nav-bar">
+    <a th:href="@{/OVIUser/index}" class="nav-link">Inicio</a>
+    <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+    <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
+    <a th:href="@{/OVIUser/list}" class="nav-link">Mis contratos</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
 </header>
-<div class="container">
+
+<main class="container">
   <div class="header-primary">
     <h1>Solicitar asistencia personal</h1>
     <p>Elige un profesional para iniciar una solicitud</p>
   </div>
+
   <div style="padding:20px">
     <div th:if="${#lists.isEmpty(disponibles)}" class="alert-info">
       No hay profesionales disponibles en este momento.
@@ -33,8 +41,8 @@
           <p><strong>Email:</strong> <span th:text="${p.mail}"></span></p>
           <p><strong>Especialidades:</strong></p>
           <span th:if="${p.specialties == null or p.specialties.isEmpty()}">
-            Sin especialidades
-          </span>
+              Sin especialidades
+            </span>
           <ul th:unless="${p.specialties == null or p.specialties.isEmpty()}">
             <li th:each="spec : ${p.specialties}" th:text="${spec.value}"></li>
           </ul>
@@ -46,6 +54,7 @@
       </div>
     </div>
   </div>
-</div>
+</main>
+
 </body>
 </html>
