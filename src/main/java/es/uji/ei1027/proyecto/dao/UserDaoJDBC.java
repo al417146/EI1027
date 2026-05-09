@@ -5,10 +5,12 @@ import org.jasypt.util.password.BasicPasswordEncryptor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;
+import org.springframework.stereotype.Repository;
 
 import java.util.Collection;
 
-public class UserDaoJDBC implements UserDao {
+@Repository
+public class UserDaoJDBC extends UserDao {
     @Autowired
     private JdbcTemplate jdbcTemplate;
 
@@ -36,7 +38,7 @@ public class UserDaoJDBC implements UserDao {
         }
     }
 
-    @Override
+
     public Collection<UserDetails> listAllUsers() {
         return jdbcTemplate.query(
                 "SELECT * FROM User",
