@@ -1,18 +1,16 @@
 package es.uji.ei1027.proyecto.modelo;
 
-import java.util.Date;
-
 public class Has {
 
-    String DNIPati;
+    int DNIPati;
     String idSpeciality;
 
 
-    public String getDNIPati() {
+    public int getDNIPati() {
         return DNIPati;
     }
 
-    public void setDNIPati(String DNIPati) {
+    public void setDNIPati(int DNIPati) {
         this.DNIPati = DNIPati;
     }
 

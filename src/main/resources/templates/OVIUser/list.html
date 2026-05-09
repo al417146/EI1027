@@ -25,7 +25,14 @@
             <div class="table-responsive">
                 <table class="data-table">
                     <thead>
-                    <tr><th>Nombre</th><th>Teléfono</th><th>Email</th><th>Contrato</th><th>Acciones</th> </thead>
+                    <tr><th>Nombre</th>
+                        <th>Teléfono</th>
+                        <th>Email</th>
+                        <th>Contrato</th>
+                        <th>Acciones</th>
+                    </tr>
+                    </thead>
+
                     <tbody>
                     <tr th:each="p : ${patis}">
                         <td th:text="${p.name}"></td>

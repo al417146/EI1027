@@ -40,14 +40,28 @@ public class AdminController {
     public String showMatching(Model model, @PathVariable int idRequest) {
 
         Request request = requestDAO.getRequest(idRequest);
+        if (request == null){
+            model.addAttribute("error", "Solicitud no encontrada");
+            return "error";
+        }
+
         OVIUser user = oviUserDAO.getOVIUser(request.getDNIUser());
         Requirements req = requirementsDAO.getRequirement(request.getIdRequirement());
 
+        //Candidatos que coinciden con los requisitos
         List<PATI> candidates = patiDAO.findMatch(
                 user.getAddress(),
                 user.getGender(),
                 req.getTopic()
         );
+
+        //Asignamos las especialidades a cada candidato
+        //para mostrarlo en la vista
+
+        for (PATI p : candidates){
+            p.setSpecialties(patiDAO.getSpecialtiesForPati(p.getDNI()));
+        }
+
 
         model.addAttribute("request", request);
         model.addAttribute("user", user);
@@ -63,11 +77,11 @@ public class AdminController {
 
         Request request = requestDAO.getRequest(idRequest);
 
-        request.setStatus("APPROVED");
-        request.setDNICand(DNICand);
-
-        requestDAO.updateRequest(request);
-
+        if (request != null && "Pendiente".equals(request.getStatus())) {
+            request.setStatus("Aceptado");
+            request.setDNICand(DNICand);
+            requestDAO.updateRequest(request);
+        }
         return "redirect:/admin/list";
     }
 }

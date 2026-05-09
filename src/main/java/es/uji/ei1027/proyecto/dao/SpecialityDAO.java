@@ -27,7 +27,7 @@ public class SpecialityDAO {
                 speciality.getDescrip());
     }
 
-    public void deleteSpeciality(String idSpeciality) {
+    public void deleteSpeciality(int idSpeciality) {
         jdbcTemplate.update("DELETE FROM Speciality WHERE idSpeciality=?", idSpeciality);
     }
 
@@ -37,7 +37,7 @@ public class SpecialityDAO {
                 speciality.getIdSpeciality());
     }
 
-    public Speciality getSpeciality(String idSpeciality) {
+    public Speciality getSpeciality(int idSpeciality) {
         try {
             return jdbcTemplate.queryForObject(
                     "SELECT * FROM Speciality WHERE idSpeciality=?",

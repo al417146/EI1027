@@ -37,13 +37,13 @@ public class SpecialityController {
     }
 
     @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable String id) {
+    public String delete(@PathVariable int id) {
         specialityDAO.deleteSpeciality(id);
         return "redirect:../list";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable String id) {
+    public String edit(Model model, @PathVariable int id) {
         model.addAttribute("speciality", specialityDAO.getSpeciality(id));
         return "templates/Speciality/update";
     }

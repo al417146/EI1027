@@ -31,6 +31,13 @@
           <h3 th:text="${p.name}"></h3>
           <p><strong>Teléfono:</strong> <span th:text="${p.phone}"></span></p>
           <p><strong>Email:</strong> <span th:text="${p.mail}"></span></p>
+          <p><strong>Especialidades:</strong></p>
+          <span th:if="${p.specialties == null or p.specialties.isEmpty()}">
+            Sin especialidades
+          </span>
+          <ul th:unless="${p.specialties == null or p.specialties.isEmpty()}">
+            <li th:each="spec : ${p.specialties}" th:text="${spec.value}"></li>
+          </ul>
           <form th:action="@{/OVIUser/solicitarRequest}" method="post">
             <input type="hidden" name="dniPAP" th:value="${p.DNI}">
             <button type="submit" class="btn btn-success">Solicitar este profesional</button>
