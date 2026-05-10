@@ -18,11 +18,11 @@ public class patiDAO {
     private JdbcTemplate jdbcTemplate;
 
     public int countPATIsByOVIUser(String dni) {
-        String sql = "SELECT COUNT(*) FROM PATI p " +
-                "JOIN Contract c ON p.DNI = c.DNICand " +
-                "JOIN Request r ON c.idContract = r.idContract " +
-                "JOIN OVIUser o ON o.DNI = r.DNIUser " +
-                "WHERE o.DNI = ?";
+        String sql = "SELECT COUNT(*) FROM pap_pati p " +
+                "JOIN contract c ON p.dni = c.dnipati " +
+                "JOIN request r ON c.idcontract = r.idcontract " +
+                "JOIN oviuser o ON o.dni = r.dniuser " +
+                "WHERE o.dni = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, dni);
     }
 
@@ -35,11 +35,11 @@ public class patiDAO {
         try {
             List<PATI> patis = jdbcTemplate.query(
                     "SELECT p.* " +
-                            "FROM PATI p " +
-                            "JOIN Contract c ON p.DNI = c.DNICand " +
-                            "JOIN Request r ON c.idContract = r.idContract " +
-                            "JOIN OVIUser o ON o.DNI = r.DNIUser " +
-                            "WHERE o.DNI = ?",
+                            "FROM pap_pati p " +
+                            "JOIN contract c ON p.dni = c.dnipati " +
+                            "JOIN request r ON c.idcontract = r.idcontract " +
+                            "JOIN oviuser o ON o.dni = r.dniuser " +
+                            "WHERE o.dni = ?",
                     new PATIRowMapper(),
                     dniOviUser
             );
@@ -55,13 +55,13 @@ public class patiDAO {
 
     public HashMap<Integer, String> getSpecialtiesForPati(String dniPati) {
         try {
-            String sql = "SELECT s.idSpeciality, s.descrip FROM Speciality s " +
-                    "JOIN Has h ON s.idSpeciality = h.idSpeciality " +
-                    "WHERE h.DNIPati = ?";
+            String sql = "SELECT s.idspeciality, s.descrip FROM speciality s " +
+                    "JOIN has h ON s.idspeciality = h.idspeciality " +
+                    "WHERE h.dnipati = ?";
             return jdbcTemplate.query(sql, rs -> {
                 HashMap<Integer, String> hashMap = new HashMap<>();
                 while (rs.next()) {
-                    hashMap.put(rs.getInt("idSpeciality"), rs.getString("descrip"));
+                    hashMap.put(rs.getInt("idspeciality"), rs.getString("descrip"));
                 }
                 return hashMap;
             }, dniPati);
@@ -72,7 +72,9 @@ public class patiDAO {
 
     public List<PATI> getAvailablePATIs() {
         try {
-            List<PATI> patis = jdbcTemplate.query("SELECT * FROM PATI WHERE status = 'Aceptado'", new PATIRowMapper());
+            List<PATI> patis = jdbcTemplate.query(
+                    "SELECT * FROM pap_pati WHERE status = 'Aceptado'",
+                    new PATIRowMapper());
             for (PATI p : patis) {
                 p.setSpecialties(getSpecialtiesForPati(p.getDNI()));
             }
@@ -83,7 +85,7 @@ public class patiDAO {
     }
 
     public void addPATI(PATI p){
-        jdbcTemplate.update("INSERT INTO PATI VALUES (?,?,?,?,?,?,?,?)",
+        jdbcTemplate.update("INSERT INTO pap_pati VALUES (?,?,?,?,?,?,?,?)",
                 p.getDNI(),
                 p.getName(),
                 p.getBirthDate(),
@@ -95,13 +97,12 @@ public class patiDAO {
     }
 
     public void deletePATI(String DNI){
-        jdbcTemplate.update("DELETE FROM PATI WHERE DNI=?",
-                DNI);
+        jdbcTemplate.update("DELETE FROM pap_pati WHERE dni=?", DNI);
     }
 
     public void updatePATI(PATI p){
-        jdbcTemplate.update("UPDATE PATI SET name=?, birth_date=?, " +
-                        "gender=?, phone=?, mail=?, address=?, status=? WHERE DNI=?",
+        jdbcTemplate.update("UPDATE pap_pati SET name=?, birth_date=?, " +
+                        "gender=?, phone=?, mail=?, address=?, status=? WHERE dni=?",
                 p.getName(),
                 p.getBirthDate(),
                 p.getGender(),
@@ -115,7 +116,7 @@ public class patiDAO {
     public PATI getPATI(String DNI){
         try{
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM PATI WHERE DNI=?",
+                    "SELECT * FROM pap_pati WHERE dni=?",
                     new PATIRowMapper(),
                     DNI);
         } catch(EmptyResultDataAccessException e){
@@ -125,8 +126,7 @@ public class patiDAO {
 
     public List<PATI> getPATIs(){
         try{
-            return jdbcTemplate.query("SELECT * FROM PATI",
-                    new PATIRowMapper());
+            return jdbcTemplate.query("SELECT * FROM pap_pati", new PATIRowMapper());
         } catch(EmptyResultDataAccessException e){
             return new ArrayList<>();
         }
@@ -136,13 +136,13 @@ public class patiDAO {
         try {
             String sql =
                     "SELECT DISTINCT p.* " +
-                            "FROM PATI p " +
-                            "JOIN HAS h ON p.DNI = h.DNIPati " +
-                            "JOIN SPECIALITY s ON h.idSpeciality = s.idSpeciality " +
+                            "FROM pap_pati p " +
+                            "JOIN has h ON p.dni = h.dnipati " +
+                            "JOIN speciality s ON h.idspeciality = s.idspeciality " +
                             "WHERE p.status = 'Aceptado' " +
                             "AND p.gender = ? " +
                             "AND p.address LIKE ? " +
-                            "AND s.speciality = ?";
+                            "AND s.descrip = ?";
 
             return jdbcTemplate.query(
                     sql,
@@ -156,7 +156,4 @@ public class patiDAO {
             return new ArrayList<>();
         }
     }
-
-
-
 }

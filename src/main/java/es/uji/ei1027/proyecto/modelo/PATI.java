@@ -10,7 +10,7 @@ public class PATI {
     String DNI;
     String name;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date birthDate;
 
     String gender;

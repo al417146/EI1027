@@ -3,15 +3,12 @@
 <head>
   <meta charset="UTF-8">
   <title>Solicitudes pendientes</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:ref="@{css/style.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <header class="top-bar">
-
   <div class="logo">
-    <img th:src="@{/images/logo-ovi.png}"
-         alt="Logo OVI"
-         class="logo-img" src="/images/logo-ovi.png">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
   </div>
   <nav class="nav-bar">
     <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
@@ -34,8 +31,10 @@
       <tr>
         <th>ID</th>
         <th>Usuario</th>
-        <th>Profesional</th>
         <th>Fecha</th>
+        <th>Zona preferida</th>
+        <th>Especialidad</th>
+        <th>Género preferido</th>
         <th>Estado</th>
         <th>Acciones</th>
       </tr>
@@ -44,12 +43,14 @@
       <tr th:each="s : ${solicitudes}">
         <td th:text="${s.idRequest}"></td>
         <td th:text="${s.DNIUser}"></td>
-        <td th:text="${s.DNICand}"></td>
-        <td th:text="${s.date}"></td>
+        <td th:text="${#dates.format(s.date, 'dd/MM/yyyy')}"></td>
+        <td th:text="${s.preferredZone}"></td>
+        <td th:text="${s.preferredSpeciality}"></td>
+        <td th:text="${s.preferredGender}"></td>
         <td><span class="estado-pendiente" th:text="${s.status}"></span></td>
         <td>
-          <a th:href="@{/staff/solicitudes/aceptar/{id}(id=${s.idRequest})}"
-             class="btn btn-success">Aceptar</a>
+          <a th:href="@{/staff/solicitudes/match/{id}(id=${s.idRequest})}"
+             class="btn btn-outline">Ver candidatos</a>
           <a th:href="@{/staff/solicitudes/denegar/{id}(id=${s.idRequest})}"
              class="btn btn-secondary">Denegar</a>
         </td>

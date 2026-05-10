@@ -9,7 +9,7 @@ public class OVIUser {
     String DNI;
     String name;
 
-    @DateTimeFormat(pattern = "dd-MM-yyyy")
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     Date birthDate;
 
     String gender;
@@ -17,6 +17,7 @@ public class OVIUser {
     String mail;
     String address;
     String status;
+    String password;
 
     public String getDNI() {
         return DNI;
@@ -75,6 +76,8 @@ public class OVIUser {
     }
 
     public String getStatus() { return status; }
+    public String getPassword() { return password; }
+    public void setPassword(String password) { this.password = password; }
 
     public void setStatus(String status) { this.status = status; }
 

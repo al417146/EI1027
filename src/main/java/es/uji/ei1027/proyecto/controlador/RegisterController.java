@@ -2,6 +2,7 @@ package es.uji.ei1027.proyecto.controlador;
 
 import es.uji.ei1027.proyecto.Validator.OVIUserValidator;
 import es.uji.ei1027.proyecto.dao.OVIUserDAO;
+import es.uji.ei1027.proyecto.dao.UserDao;
 import es.uji.ei1027.proyecto.dao.patiDAO;
 import es.uji.ei1027.proyecto.modelo.OVIUser;
 import es.uji.ei1027.proyecto.modelo.PATI;
@@ -22,6 +23,9 @@ public class RegisterController {
     @Autowired
     private patiDAO patiDAO;
 
+    @Autowired
+    private UserDao userDao;
+
     // 1. Página inicial para elegir tipo de registro
     @GetMapping("/register")
     public String chooseType() {
@@ -39,13 +43,13 @@ public class RegisterController {
     @PostMapping("/register/oviuser")
     public String processOVIUser(@ModelAttribute("oviuser") OVIUser user,
                                  BindingResult bindingResult) {
-
         new OVIUserValidator().validate(user, bindingResult);
-
         if (bindingResult.hasErrors())
             return "OVIUser/add";
-
+        user.setStatus("Pendiente");
         oviUserDAO.addOVIUser(user);
+        // Guardar credenciales
+        userDao.addUser(user.getDNI(), user.getPassword(), "OVIUSER");
         return "redirect:/login";
     }
 
@@ -66,10 +70,10 @@ public class RegisterController {
     }
 
     // 6. Login
-    @GetMapping("/login")
+    /*@GetMapping("/login")
     public String login() {
         return "login";   // → templates/login.html
-    }
+    }*/
 }
 
 

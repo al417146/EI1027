@@ -52,7 +52,7 @@ public class LoginController {
         else if ("PAP".equals(rol))
             return "redirect:/PAP/index";
         else
-            return "redirect:/OVIUser/index";
+            return "redirect:/OVIUser/OVIIndex";
     }
 
     @GetMapping("/logout")
@@ -73,7 +73,7 @@ public class LoginController {
         } else if ("PAP".equals(user.getRol())) {
             cancelUrl = "/PAP/index";
         } else {
-            cancelUrl = "/OVIUser/index";
+            cancelUrl = "/OVIUser/OVIIndex";
         }
 
         model.addAttribute("cancelUrl", cancelUrl);

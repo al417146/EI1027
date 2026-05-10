@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Panel de administración</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:ref="@{css/style.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <header class="top-bar">
@@ -32,6 +32,11 @@
         <h3>Usuarios OVI</h3>
         <p>Lista de todos los usuarios OVI registrados.</p>
         <a th:href="@{/staff/oviusers}" class="btn btn-primary">Ver usuarios</a>
+        <div class="tarjeta-candidato">
+          <h3>Propuestas de asistencia</h3>
+          <p>Gestionar solicitudes y asignar profesionales.</p>
+          <a th:href="@{/admin/list}" class="btn btn-primary">Ver propuestas</a>
+        </div>
       </div>
       <div class="tarjeta-candidato">
         <h3>Solicitudes pendientes</h3>

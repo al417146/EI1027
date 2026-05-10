@@ -1,40 +1,43 @@
 package es.uji.ei1027.proyecto.dao;
 
 import es.uji.ei1027.proyecto.modelo.UserDetails;
-import org.jasypt.util.password.BasicPasswordEncryptor;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
-import java.util.HashMap;
-import java.util.Map;
+import javax.sql.DataSource;
 
 @Repository
 public class UserDao {
+    private JdbcTemplate jdbcTemplate;
 
-    private final Map<String, UserDetails> knownUsers = new HashMap<>();
-
-    public UserDao() {
-        BasicPasswordEncryptor enc = new BasicPasswordEncryptor();
-
-        // Staff hardcodeado en memoria
-        UserDetails staff = new UserDetails();
-        staff.setDni("admin");
-        staff.setPassword(enc.encryptPassword("admin123"));
-        staff.setRol("STAFF");
-        knownUsers.put("admin", staff);
+    @Autowired
+    public void setDataSource(DataSource dataSource) {
+        jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-
     public UserDetails loadUserByUsername(String dni, String password) {
-        UserDetails user = knownUsers.get(dni.trim());
-        if (user == null) return null;
-
-        BasicPasswordEncryptor enc = new BasicPasswordEncryptor();
-        if (enc.checkPassword(password, user.getPassword())) {
-            UserDetails safeUser = new UserDetails();
-            safeUser.setDni(user.getDni());
-            safeUser.setRol(user.getRol());
-            return safeUser;
+        try {
+            UserDetails user = jdbcTemplate.queryForObject(
+                    "SELECT * FROM userdetails WHERE dni = ? AND password = ?",
+                    (rs, rowNum) -> {
+                        UserDetails u = new UserDetails();
+                        u.setDni(rs.getString("dni"));
+                        u.setPassword(rs.getString("password"));
+                        u.setRol(rs.getString("rol"));
+                        return u;
+                    },
+                    dni.trim(), password
+            );
+            return user;
+        } catch (EmptyResultDataAccessException e) {
+            return null;
         }
-        return null;
+    }
+    public void addUser(String dni, String password, String rol) {
+        jdbcTemplate.update(
+                "INSERT INTO userdetails (dni, password, rol) VALUES (?, ?, ?)",
+                dni, password, rol);
     }
 }

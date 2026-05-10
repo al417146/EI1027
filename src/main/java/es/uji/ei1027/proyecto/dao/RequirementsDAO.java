@@ -28,7 +28,7 @@ public class RequirementsDAO {
     }
 
     public void deleteRequirement(int idRequirement){
-        jdbcTemplate.update("DELETE FROM Requirements WHERE idRequirement=?",
+        jdbcTemplate.update("DELETE FROM requirement WHERE idRequirement=?",
                 idRequirement);
     }
 
@@ -42,7 +42,7 @@ public class RequirementsDAO {
     public Requirements getRequirement(int id){
         try{
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM Requirements WHERE idRequirement=?",
+                    "SELECT * FROM requirement WHERE idRequirement=?",
                     new RequirementsRowMapper(),
                     id);
         } catch(EmptyResultDataAccessException e){
@@ -52,7 +52,7 @@ public class RequirementsDAO {
 
     public List<Requirements> getRequirements(){
         try{
-            return jdbcTemplate.query("SELECT * FROM Requirements",
+            return jdbcTemplate.query("SELECT * FROM requirement",
                     new RequirementsRowMapper());
         } catch(EmptyResultDataAccessException e){
             return new ArrayList<>();

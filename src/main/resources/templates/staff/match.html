@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidatos para la solicitud</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+    <div class="logo">
+        <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+    </div>
+    <nav class="nav-bar">
+        <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
+        <a th:href="@{/staff/solicitudes}" class="nav-link">Solicitudes</a>
+        <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+    </nav>
+</header>
+<main class="container">
+    <div class="header-primary">
+        <h1>Candidatos para solicitud #<span th:text="${request.idRequest}"></span></h1>
+        <p>Usuario: <span th:text="${user.name}"></span> — Zona: <span th:text="${request.preferredZone}"></span></p>
+    </div>
+    <div style="padding:20px">
+        <div th:if="${#lists.isEmpty(candidates)}" class="alert-info">
+            No hay candidatos disponibles que coincidan con las preferencias.
+        </div>
+        <div th:unless="${#lists.isEmpty(candidates)}" class="lista-candidatos">
+            <div th:each="cand : ${candidates}" class="tarjeta-candidato">
+                <h3 th:text="${cand.name}"></h3>
+                <p><strong>DNI:</strong> <span th:text="${cand.DNI}"></span></p>
+                <p><strong>Dirección:</strong> <span th:text="${cand.address}"></span></p>
+                <p><strong>Especialidades:</strong></p>
+                <ul th:unless="${#maps.isEmpty(cand.specialties)}">
+                    <li th:each="spec : ${cand.specialties}" th:text="${spec.value}"></li>
+                </ul>
+                <span th:if="${cand.specialties == null or #maps.isEmpty(cand.specialties)}">Sin especialidades</span>
+                <form th:action="@{/staff/solicitudes/aprobar}" method="post" style="margin-top:10px">
+                    <input type="hidden" name="idRequest" th:value="${request.idRequest}">
+                    <input type="hidden" name="dniCand" th:value="${cand.DNI}">
+                    <button type="submit" class="btn btn-success">Asignar este profesional</button>
+                </form>
+            </div>
+        </div>
+        <div style="margin-top:20px">
+            <a th:href="@{/staff/solicitudes}" class="btn btn-secondary">Volver</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>
