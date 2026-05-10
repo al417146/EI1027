@@ -1,9 +1,11 @@
 package es.uji.ei1027.proyecto.Validator;
 
 import es.uji.ei1027.proyecto.modelo.Request;
+import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 
+@Component
 public class RequestValidator implements Validator {
     @Override
     public boolean supports(Class<?> clazz) {

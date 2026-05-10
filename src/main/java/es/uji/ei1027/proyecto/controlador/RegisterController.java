@@ -25,26 +25,25 @@ public class RegisterController {
     // 1. Página inicial para elegir tipo de registro
     @GetMapping("/register")
     public String chooseType() {
-        return "register";   // → templates/register.html
+        return "register";
     }
 
     // 2. Registro OVIUser (GET)
     @GetMapping("/register/oviuser")
     public String showOVIUserForm(Model model) {
         model.addAttribute("oviuser", new OVIUser());
-        return "OVIUser/add";   // → templates/OVIUser/add.html
+        return "OVIUser/add";
     }
 
     // 3. Registro OVIUser (POST)
     @PostMapping("/register/oviuser")
     public String processOVIUser(@ModelAttribute("oviuser") OVIUser user,
                                  BindingResult bindingResult) {
-
         new OVIUserValidator().validate(user, bindingResult);
-
         if (bindingResult.hasErrors())
             return "OVIUser/add";
 
+        user.setStatus("Pendiente");
         oviUserDAO.addOVIUser(user);
         return "redirect:/login";
     }
@@ -53,23 +52,15 @@ public class RegisterController {
     @GetMapping("/register/pati")
     public String showPATIForm(Model model) {
         model.addAttribute("pati", new PATI());
-        return "PatiRegister";   // → templates/PatiRegister.html
+        return "PatiRegister";
     }
 
     // 5. Registro PATI (POST)
     @PostMapping("/register/pati")
     public String processPATI(@ModelAttribute("pati") PATI pati,
                               BindingResult bindingResult) {
-
+        pati.setStatus("Pendiente");
         patiDAO.addPATI(pati);
         return "redirect:/login";
     }
-
-    // 6. Login
-    @GetMapping("/login")
-    public String login() {
-        return "login";   // → templates/login.html
-    }
 }
-
-

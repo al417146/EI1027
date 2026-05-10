@@ -6,18 +6,7 @@
     <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{css/style.css}">
 </head>
 <body>
-<header class="top-bar">
-    <div class="logo">
-        <img th:src="@{/images/logo-ovi.png}"
-             alt="Logo OVI"
-             class="logo-img" src="/images/logo-ovi.png">
-    </div>
-    <div class="nav-bar">
-        <a th:href="@{/login}" class="nav-link">Inicio</a>
-
-    </div>
-</header>
-<div class="container">
+<header class="top-bar"><main class="container">
     <div class="header-primary">
         <h1>Registro de nuevo usuario OVI</h1>
         <p>Completa todos los campos para crear tu cuenta</p>
@@ -26,27 +15,32 @@
         <form th:action="@{/OVIUser/add}" th:object="${oviuser}" method="post">
             <div class="form-group">
                 <label for="DNI">DNI</label>
-                <input type="text" id="DNI" th:field="*{DNI}" class="form-control" placeholder="12345678A">
+                <input type="text" id="DNI" th:field="*{DNI}"
+                       class="form-control" placeholder="12345678A">
                 <div th:if="${#fields.hasErrors('DNI')}" th:errors="*{DNI}" class="error"></div>
             </div>
             <div class="form-group">
                 <label for="name">Nombre completo</label>
-                <input type="text" id="name" th:field="*{name}" class="form-control" placeholder="Nombre Apellidos">
+                <input type="text" id="name" th:field="*{name}"
+                       class="form-control" placeholder="Nombre Apellidos">
                 <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>
             </div>
             <div class="form-group">
                 <label for="birthDate">Fecha de nacimiento</label>
                 <input type="date" id="birthDate" th:field="*{birthDate}" class="form-control">
-                <div th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}" class="error"></div>
+                <div th:if="${#fields.hasErrors('birthDate')}"
+                     th:errors="*{birthDate}" class="error"></div>
             </div>
             <div class="form-group">
                 <label for="mail">Correo electrónico</label>
-                <input type="email" id="mail" th:field="*{mail}" class="form-control" placeholder="usuario@ejemplo.com">
+                <input type="email" id="mail" th:field="*{mail}"
+                       class="form-control" placeholder="usuario@ejemplo.com">
                 <div th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="error"></div>
             </div>
             <div class="form-group">
                 <label for="phone">Teléfono</label>
-                <input type="text" id="phone" th:field="*{phone}" class="form-control" placeholder="+34 123 456 789">
+                <input type="text" id="phone" th:field="*{phone}"
+                       class="form-control" placeholder="+34 123 456 789">
                 <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error"></div>
             </div>
             <div class="form-group">
@@ -57,17 +51,21 @@
                     <option value="F">Femenino</option>
                     <option value="O">Otro</option>
                 </select>
-                <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="error"></div>
+                <div th:if="${#fields.hasErrors('gender')}"
+                     th:errors="*{gender}" class="error"></div>
             </div>
             <div class="form-group">
                 <label for="address">Dirección</label>
-                <input type="text" id="address" th:field="*{address}" class="form-control" placeholder="Calle, número, ciudad">
-                <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></div>
+                <input type="text" id="address" th:field="*{address}"
+                       class="form-control" placeholder="Calle, número, ciudad">
+                <div th:if="${#fields.hasErrors('address')}"
+                     th:errors="*{address}" class="error"></div>
             </div>
             <button type="submit" class="btn btn-primary">Crear cuenta</button>
-            <a href="/templates/login.html" class="btn btn-secondary">Cancelar</a>
+            <a th:href="@{/login}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
-</div>
+</main>
+</header>
 </body>
 </html>

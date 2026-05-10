@@ -12,7 +12,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -21,6 +20,7 @@ import java.util.Random;
 @RequestMapping("/OVIUser")
 public class OVIUserController {
 
+    @Autowired
     private OVIUserDAO oviUserDAO;
 
     @Autowired
@@ -35,191 +35,179 @@ public class OVIUserController {
     @Autowired
     private RequirementsDAO requirementsDAO;
 
-   @Autowired
-   private RequestValidator requestValidator;
+    @Autowired
+    private RequestValidator requestValidator;
 
     /*
     ######################################
         PARTE PRINCIPAL USUARIO OVI
     ######################################
      */
-    //Panel principal
-    @GetMapping("/index")
+
+    // Panel principal
+    @RequestMapping(value = "/OVIndex", method = RequestMethod.GET)
     public String index() {
-        return "OVIUser/index";
+        return "OVIUser/OVIndex";
     }
 
-    //Listamos los PATI asociados a este OVIUser
-    @GetMapping("/list")
-    public String listPATIS(Model model, Principal p) {
+    // Listamos los PATI asociados a este OVIUser
+    @RequestMapping(value = "/list", method = RequestMethod.GET)
+    public String listPATIS(Model model, HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
 
-        String dniOVI = p.getName();
-        List<PATI> lista = patiDAO.getPATIsByOVIUser(dniOVI);
-
-        // Siempre pasamos la lista (puede estar vacía)
+        List<PATI> lista = patiDAO.getPATIsByOVIUser(user.getDni());
         model.addAttribute("patis", lista);
-
         return lista.isEmpty() ? "OVIUser/listError" : "OVIUser/list";
     }
 
-    //Mostramos la información del contrato de un profesional
-    @GetMapping("/templates/Contrato/{DNICand}")
+    // Mostramos la información del contrato de un profesional
+    @RequestMapping(value = "/contrato/{DNICand}", method = RequestMethod.GET)
     public String mandarContrato(Model model, @PathVariable String DNICand) {
-
         Contract contract = cDAO.getContractByPATI(DNICand);
         model.addAttribute("contrato", contract);
-        return "templates/Contrato/info";
+        return "OVIUser/contrato";
     }
 
-    //Mostramos los profesionales disponibles para solicitar
-    @GetMapping("/available")
+    // Mostramos los profesionales disponibles para solicitar
+    @RequestMapping(value = "/available", method = RequestMethod.GET)
     public String listaPATISdisponibles(Model model) {
         List<PATI> disponibles = patiDAO.getAvailablePATIs();
         model.addAttribute("disponibles", disponibles);
         return "OVIUser/available";
     }
 
-    //Crea una solicitud para un profesional elegido
-    @PostMapping("/solicitarRequest")
-    public String solicitarRequest(@RequestParam String dniPAP, Principal principal) {
+    // Crea una solicitud para un profesional elegido
+    @RequestMapping(value = "/solicitarRequest", method = RequestMethod.POST)
+    public String solicitarRequest(@RequestParam String dniPAP, HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
 
         Request r = new Request();
-
-
         r.setDNICand(dniPAP);
         r.setDate(new Date());
         r.setStatus("Pendiente");
-        r.setDNIUser(principal.getName());
+        r.setDNIUser(user.getDni());
         r.setIdRequirement(new Random().nextInt(999999));
         rDAO.addRequest(r);
-
         return "redirect:/OVIUser/estadoSolicitud";
     }
 
     // Mostramos un formulario para añadir la fecha de fin a un contrato
-    @GetMapping("/contrato/finalizar/{idContract}")
-    public String showFinalizarContratoForm(@PathVariable String idContract, Model model, Principal principal) {
+    @RequestMapping(value = "/contrato/finalizar/{idContract}", method = RequestMethod.GET)
+    public String showFinalizarContratoForm(@PathVariable String idContract,
+                                            Model model, HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
 
         Contract contract = cDAO.getContractById(idContract);
-        // Verificamos que el OVIUser autenticado es el dueño (a través de la request asociada)
         Request request = rDAO.getRequestById(contract.getIdRequest());
-        if (request == null || !request.getDNIUser().equals(principal.getName())) {
+        if (request == null || !request.getDNIUser().equals(user.getDni()))
             return "error/403";
-        }
+
         model.addAttribute("contract", contract);
-        model.addAttribute("fechaFin", null);
         return "OVIUser/finalizarContrato";
     }
 
     // Procesamos la fecha de fin
-    @PostMapping("/contrato/finalizar")
+    @RequestMapping(value = "/contrato/finalizar", method = RequestMethod.POST)
     public String finalizarContrato(@RequestParam String idContract,
                                     @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") Date dateEnd,
-                                    Principal principal) {
+                                    HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+
         Contract contract = cDAO.getContractById(idContract);
         Request request = rDAO.getRequestById(contract.getIdRequest());
-        if (request == null || !request.getDNIUser().equals(principal.getName())) {
+        if (request == null || !request.getDNIUser().equals(user.getDni()))
             return "error/403";
-        }
+
         cDAO.updateContractEndDate(idContract, dateEnd);
         return "redirect:/OVIUser/list";
     }
 
-    //Ver estado de las solicitudes
-    @GetMapping("/estadoSolicitud")
-    public String verEstadoSolicitudes(Model model, Principal principal) {
+    // Ver estado de las solicitudes
+    @RequestMapping(value = "/estadoSolicitud", method = RequestMethod.GET)
+    public String verEstadoSolicitudes(Model model, HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
 
-        List<Request> solicitudes = rDAO.getRequestsByUser(principal.getName());
+        List<Request> solicitudes = rDAO.getRequestsByUser(user.getDni());
         model.addAttribute("solicitudes", solicitudes);
         return "OVIUser/estadoSolicitud";
     }
 
-
     // Mostrar formulario de edición del perfil propio
-    @GetMapping("/profile")
-    public String showProfileForm(Model model, Principal principal) {
-        String dni = principal.getName();
-        OVIUser user = oviUserDAO.getOVIUser(dni);
-        model.addAttribute("oviuser", user);
+    @RequestMapping(value = "/profile", method = RequestMethod.GET)
+    public String showProfileForm(Model model, HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+
+        OVIUser oviUser = oviUserDAO.getOVIUser(user.getDni());
+        model.addAttribute("oviuser", oviUser);
         return "OVIUser/profile";
     }
 
-    // Elimina la cuenta
-    @PostMapping("/deleteAccount")
-    public String deleteOwnAccount(HttpSession session, Principal principal) {
-        String dni = principal.getName();
-        oviUserDAO.deleteOVIUser(dni);
-        session.invalidate();  // Cierra la sesión
-        return "redirect:/iniciarSesion?deleted";
-    }
-
     // Procesar actualización del perfil
-    @PostMapping("/profile")
-    public String updateProfile(@ModelAttribute("oviuser") OVIUser user,
+    @RequestMapping(value = "/profile", method = RequestMethod.POST)
+    public String updateProfile(@ModelAttribute("oviuser") OVIUser oviUser,
                                 BindingResult bindingResult,
-                                Principal principal) {
-        // Validar
-        OVIUserValidator validator = new OVIUserValidator();
-        validator.validate(user, bindingResult);
+                                HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
 
+        OVIUserValidator validator = new OVIUserValidator();
+        validator.validate(oviUser, bindingResult);
         if (bindingResult.hasErrors())
             return "OVIUser/profile";
 
-
-        // Asegurar que el DNI no se modifica (o se fuerza el mismo)
-        user.setDNI(principal.getName());
-        oviUserDAO.updateOVIUser(user);
-        return "redirect:/OVIUser/index?updated";
+        oviUser.setDNI(user.getDni());
+        oviUserDAO.updateOVIUser(oviUser);
+        return "redirect:/OVIUser/OVIndex";
     }
 
+    // Elimina la cuenta
+    @RequestMapping(value = "/deleteAccount", method = RequestMethod.POST)
+    public String deleteOwnAccount(HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
 
-    //Mostramos un formulario para crear una solicitud genérica (sin elegir profesional)
-    @GetMapping("/requestAssistance")
+        oviUserDAO.deleteOVIUser(user.getDni());
+        session.invalidate();
+        return "redirect:/login";
+    }
+
+    // Mostrar formulario para crear una solicitud genérica
+    @RequestMapping(value = "/requestAssistance", method = RequestMethod.GET)
     public String showRequestAssistance(Model model) {
-
-        List<Requirements> requirements = requirementsDAO.getRequirements(); // Necesitas inyectar RequirementsDAO
+        List<Requirements> requirements = requirementsDAO.getRequirements();
         model.addAttribute("requirements", requirements);
         model.addAttribute("request", new Request());
         return "OVIUser/requestAssistance";
     }
 
-    //Se procesa la solicitud
-    @PostMapping("/requestAssistance")
+    // Procesar solicitud genérica
+    @RequestMapping(value = "/requestAssistance", method = RequestMethod.POST)
     public String processRequestAssistance(@ModelAttribute("request") Request request,
                                            BindingResult bindingResult,
-                                           Principal principal) {
+                                           HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
 
         requestValidator.validate(request, bindingResult);
-
         if (bindingResult.hasErrors())
             return "OVIUser/requestAssistance";
 
-
-        request.setDNIUser(principal.getName());
+        request.setDNIUser(user.getDni());
         request.setDate(new Date());
         request.setStatus("Pendiente");
-        request.setDNICand(null);       // sin profesional aún
-        request.setIdContract(0);       // Se pondrá en 0, ya que no hay un contrato hecho
+        request.setDNICand(null);
+        request.setIdContract(0);
         request.setIdNeg(null);
         rDAO.addRequest(request);
         return "redirect:/OVIUser/estadoSolicitud";
     }
 
-   // Cambiar el añadir
-    // AÑADIR (POST)
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
-    public String processAddSubmit(@ModelAttribute("oviuser") OVIUser user,
-                                   BindingResult bindingResult) {
-
-        OVIUserValidator validator = new OVIUserValidator();
-        validator.validate(user, bindingResult);
-        if (bindingResult.hasErrors())
-            return "index";
-
-        user.setStatus("Pendiente");   //Mientras que no haya sido aceptado por el staff, se pone en pendiente
-        oviUserDAO.addOVIUser(user);
-        return "redirect:/index";
-    }
     /*
     ########################################################
         PARTE PARA EL MANEJO DE OVIUSERS PARA EL STAFF
@@ -229,14 +217,21 @@ public class OVIUserController {
     // AÑADIR (GET)
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     public String addUser(Model model) {
-
         model.addAttribute("oviuser", new OVIUser());
-
         return "Staff/OVIadd";
+    }
 
+    // AÑADIR (POST)
+    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    public String processAddSubmit(@ModelAttribute("oviuser") OVIUser user,
+                                   BindingResult bindingResult) {
+        OVIUserValidator validator = new OVIUserValidator();
+        validator.validate(user, bindingResult);
+        if (bindingResult.hasErrors())
+            return "Staff/OVIadd";
+
+        user.setStatus("Pendiente");
+        oviUserDAO.addOVIUser(user);
+        return "redirect:/staff/index";
     }
 }
-
-
-
-

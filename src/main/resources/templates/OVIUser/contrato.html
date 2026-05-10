@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Información del contrato</title>
+    <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+    <div class="logo">
+        <img th:src="@{/images/logo-ovi.png}"
+             alt="Logo OVI"
+             class="logo-img"
+             src="/images/logo-ovi.png">
+    </div>
+    <nav class="nav-bar">
+        <a th:href="@{/OVIUser/index}" class="nav-link">Inicio</a>
+        <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+        <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
+        <a th:href="@{/OVIUser/list}" class="nav-link">Mis contratos</a>
+        <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+    </nav>
+</header>
+<main class="container">
+    <div class="header-primary">
+        <h1>Información del contrato</h1>
+    </div>
+    <div class="card" style="margin:20px">
+        <div th:if="${contrato == null}" class="alert-info">
+            No se encontró información del contrato.
+        </div>
+        <div th:unless="${contrato == null}">
+            <p><strong>ID Contrato:</strong>
+                <span th:text="${contrato.idContract}"></span></p>
+            <p><strong>Profesional (DNI):</strong>
+                <span th:text="${contrato.DNICand}"></span></p>
+            <p><strong>Fecha inicio:</strong>
+                <span th:text="${#dates.format(contrato.dateStart, 'dd/MM/yyyy')}"></span></p>
+            <p><strong>Fecha fin:</strong>
+                <span th:if="${contrato.dateEnd != null}"
+                      th:text="${#dates.format(contrato.dateEnd, 'dd/MM/yyyy')}"></span>
+                <span th:if="${contrato.dateEnd == null}"
+                      class="estado-aprobada">Activo</span>
+            </p>
+        </div>
+        <a th:href="@{/OVIUser/list}" class="btn btn-secondary">Volver</a>
+    </div>
+</main>
+</body>
+</html>
