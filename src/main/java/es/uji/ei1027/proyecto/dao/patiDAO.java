@@ -85,7 +85,7 @@ public class patiDAO {
     }
 
     public void addPATI(PATI p){
-        jdbcTemplate.update("INSERT INTO pap_pati VALUES (?,?,?,?,?,?,?,?)",
+        jdbcTemplate.update("INSERT INTO pap_pati (dni, name, birth_date, gender, phone, mail, address, status) VALUES (?,?,?,?,?,?,?,?)",
                 p.getDNI(),
                 p.getName(),
                 p.getBirthDate(),
@@ -137,21 +137,16 @@ public class patiDAO {
             String sql =
                     "SELECT DISTINCT p.* " +
                             "FROM pap_pati p " +
-                            "JOIN has h ON p.dni = h.dnipati " +
-                            "JOIN speciality s ON h.idspeciality = s.idspeciality " +
                             "WHERE p.status = 'Aceptado' " +
-                            "AND p.gender = ? " +
-                            "AND p.address LIKE ? " +
-                            "AND s.descrip = ?";
+                            "AND (? IS NULL OR ? = '' OR p.gender = ?) " +
+                            "AND (? IS NULL OR ? = '' OR p.address ILIKE ?)";
 
             return jdbcTemplate.query(
                     sql,
                     new PATIRowMapper(),
-                    gender,
-                    "%" + address + "%",
-                    topic
+                    gender, gender, gender,
+                    address, address, "%" + address + "%"
             );
-
         } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }

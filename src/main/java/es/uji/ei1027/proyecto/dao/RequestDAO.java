@@ -73,16 +73,16 @@ public class RequestDAO {
 
     public void updateRequest(Request r){
         jdbcTemplate.update("UPDATE request SET dniuser=?, date=?, status=?, " +
-                        "idcontract=?, idneg=?, idrequirement=? WHERE idrequest=?",
+                        "idcontract=?, idneg=?, idrequirement=?, dnicand=? WHERE idrequest=?",
                 r.getDNIUser(),
                 r.getDate(),
                 r.getStatus(),
                 r.getIdContract(),
                 r.getIdNeg(),
                 r.getIdRequirement(),
+                r.getDNICand(),
                 r.getIdRequest()
         );
-
     }
 
     public Request getRequest(int idRequest){
