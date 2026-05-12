@@ -46,7 +46,7 @@ public class ContractController {
    }
 
    @RequestMapping(value = "/update/{idContract}", method = RequestMethod.GET)
-   public String editContract(@PathVariable String idContract, Model model) {
+   public String editContract(@PathVariable int idContract, Model model) {
       Contract contract = cDAO.getContractById(idContract);
       model.addAttribute("contract", contract);
       return "contract/update";
