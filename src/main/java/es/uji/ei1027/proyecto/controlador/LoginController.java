@@ -18,6 +18,11 @@ public class LoginController {
     @Autowired
     private UserDao userDao;
 
+    @GetMapping("/")
+    public String home() {
+        return "index";
+    }
+
     @GetMapping("/login")
     public String login(Model model) {
         model.addAttribute("user", new UserDetails());
@@ -58,7 +63,7 @@ public class LoginController {
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @GetMapping("/logoutConfirm")

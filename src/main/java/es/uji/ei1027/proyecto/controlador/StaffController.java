@@ -1,5 +1,6 @@
 package es.uji.ei1027.proyecto.controlador;
 
+import es.uji.ei1027.proyecto.dao.ContractDAO;
 import es.uji.ei1027.proyecto.dao.OVIUserDAO;
 import es.uji.ei1027.proyecto.dao.RequestDAO;
 import es.uji.ei1027.proyecto.dao.patiDAO;
@@ -24,6 +25,9 @@ public class StaffController {
 
     @Autowired
     private patiDAO patiDAO;
+
+    @Autowired
+    private ContractDAO cDAO;
 
     private boolean isStaff(HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");

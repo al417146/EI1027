@@ -2,6 +2,8 @@ package es.uji.ei1027.proyecto.controlador;
 
 import es.uji.ei1027.proyecto.dao.SpecialityDAO;
 import es.uji.ei1027.proyecto.modelo.Speciality;
+import es.uji.ei1027.proyecto.modelo.UserDetails;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,39 +20,50 @@ public class SpecialityController {
         this.specialityDAO = specialityDAO;
     }
 
-    @RequestMapping("/list")
-    public String list(Model model) {
+    private boolean isStaff(HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        return user != null && "STAFF".equals(user.getRol());
+    }
+
+    @GetMapping("/list")
+    public String list(Model model, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
         model.addAttribute("specialities", specialityDAO.getSpecialities());
-        return "templates/Speciality/list";
+        return "Speciality/list";
     }
 
     @GetMapping("/add")
-    public String add(Model model) {
+    public String add(Model model, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
         model.addAttribute("speciality", new Speciality());
-        return "templates/Speciality/add";
+        return "Speciality/add";
     }
 
     @PostMapping("/add")
-    public String processAdd(@ModelAttribute Speciality speciality) {
+    public String processAdd(@ModelAttribute Speciality speciality, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
         specialityDAO.addSpeciality(speciality);
-        return "redirect:list";
+        return "redirect:/speciality/list";
     }
 
-    @RequestMapping("/delete/{id}")
-    public String delete(@PathVariable int id) {
+    @GetMapping("/delete/{id}")
+    public String delete(@PathVariable int id, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
         specialityDAO.deleteSpeciality(id);
-        return "redirect:../list";
+        return "redirect:/speciality/list";
     }
 
     @GetMapping("/edit/{id}")
-    public String edit(Model model, @PathVariable int id) {
+    public String edit(Model model, @PathVariable int id, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
         model.addAttribute("speciality", specialityDAO.getSpeciality(id));
-        return "templates/Speciality/update";
+        return "Speciality/update";
     }
 
     @PostMapping("/edit")
-    public String processEdit(@ModelAttribute Speciality speciality) {
+    public String processEdit(@ModelAttribute Speciality speciality, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
         specialityDAO.updateSpeciality(speciality);
-        return "redirect:list";
+        return "redirect:/speciality/list";
     }
 }

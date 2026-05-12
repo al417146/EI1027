@@ -5,20 +5,19 @@ import org.springframework.jdbc.core.RowMapper;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Date;
 
 public final class ContractRowMapper implements RowMapper<Contract> {
 
     @Override
     public Contract mapRow(ResultSet rs, int rowNum) throws SQLException {
         Contract contract = new Contract();
-
-        contract.setIdContract(rs.getInt("idContract"));
-        contract.setDateStart(rs.getObject("dateStart", Date.class));
-        contract.setDateEnd(rs.getObject("dateEnd", Date.class));
-        contract.setIdRequest(rs.getInt("idRequest"));
-        contract.setDNICand(rs.getString("DNICand"));
-
+        contract.setIdContract(rs.getInt("idcontract"));
+        java.sql.Date sqlStart = rs.getDate("datestart");
+        contract.setDateStart(sqlStart != null ? new java.util.Date(sqlStart.getTime()) : null);
+        java.sql.Date sqlEnd = rs.getDate("dateend");
+        contract.setDateEnd(sqlEnd != null ? new java.util.Date(sqlEnd.getTime()) : null);
+        contract.setIdRequest(rs.getInt("idrequest"));
+        contract.setDNICand(rs.getString("dnicand"));
         return contract;
     }
 }

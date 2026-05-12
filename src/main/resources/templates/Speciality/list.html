@@ -12,11 +12,11 @@
     <div class="logo">
         <img th:src="@{/images/logo-ovi.png}"
              alt="Logo OVI"
-             class="logo-img" src="/images/logo-ovi.png">
+             class="logo-img" src="/static/css/images/logo-ovi.png">
     </div>
     <div class="nav-bar">
-        <a href="/" class="nav-link">Inicio</a>
-        <a href="/templates/Speciality/list.html" class="nav-link">Especialidades</a>
+        <a th:href="@{/}" class="nav-link">Inicio</a>
+        <a th:href="@{/speciality/list}" class="nav-link">Especialidades</a>
 
     </div>
 </header>
@@ -52,8 +52,8 @@
             </div>
         </div>
         <div style="margin-top:20px">
-            <a href="/templates/Speciality/add.html" class="btn btn-primary">Añadir especialidad</a>
-            <a href="/" class="btn btn-secondary">Volver</a>
+            <a th:href="@{/speciality/add}" class="btn btn-primary">Añadir especialidad</a>
+            <a th:href="@{/}" class="btn btn-secondary">Volver</a>
         </div>
     </div>
 </div>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>OVI - Oficina para la Vida Independiente</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+    <div class="logo">
+        <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+    </div>
+</header>
+<main class="container">
+    <div class="header-primary" style="text-align:center; padding: 40px 0;">
+        <h1>Bienvenido a la OVI</h1>
+        <p>Oficina para la Vida Independiente</p>
+    </div>
+    <div class="card" style="max-width:500px; margin:0 auto; text-align:center; padding:30px;">
+        <h2>¿Qué deseas hacer?</h2>
+        <div style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
+            <a th:href="@{/login}" class="btn btn-primary">Iniciar sesión</a>
+            <a th:href="@{/register}" class="btn btn-secondary">Registrarse</a>
+        </div>
+    </div>
+    <div class="tarjeta-candidato">
+        <h3>Especialidades</h3>
+        <p>Gestionar especialidades de los profesionales.</p>
+        <a th:href="@{/speciality/list}" class="btn btn-primary">Ver especialidades</a>
+    </div>
+</main>
+</body>
+</html>
