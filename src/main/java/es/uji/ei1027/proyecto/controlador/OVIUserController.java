@@ -86,7 +86,7 @@ public class OVIUserController {
 
     // Mostramos un formulario para añadir la fecha de fin a un contrato
     @GetMapping("/contrato/finalizar/{idContract}")
-    public String showFinalizarContratoForm(@PathVariable String idContract, Model model, HttpSession session) {
+    public String showFinalizarContratoForm(@PathVariable int idContract, Model model, HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
         Contract contract = cDAO.getContractById(idContract);
@@ -101,7 +101,7 @@ public class OVIUserController {
 
     // Procesamos la fecha de fin
     @PostMapping("/contrato/finalizar")
-    public String finalizarContrato(@RequestParam String idContract,
+    public String finalizarContrato(@RequestParam int idContract,
                                     @RequestParam @DateTimeFormat(pattern = "dd-MM-yyyy") Date dateEnd,
                                     HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");

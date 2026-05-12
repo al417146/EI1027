@@ -46,7 +46,7 @@ public class ContractController {
    }
 
    @RequestMapping(value = "/update/{idContract}", method = RequestMethod.GET)
-   public String editContract(@PathVariable String idContract, Model model) {
+   public String editContract(@PathVariable int idContract, Model model) {
       Contract contract = cDAO.getContractById(idContract);
       model.addAttribute("contract", contract);
       return "contract/update";
@@ -69,7 +69,7 @@ public class ContractController {
       return "redirect:../list";
    }
 
-   @RequestMapping(value = "/templates/Contrato/{DNICand}", method = RequestMethod.GET)
+  /* @RequestMapping(value = "/templates/Contrato/{DNICand}", method = RequestMethod.GET)
    public String mandarContrato(@PathVariable String DNICand, Model model){
 
       Contract c = cDAO.getContractsByPATI(DNICand);
@@ -81,5 +81,5 @@ public class ContractController {
 
       model.addAttribute("contract", c);
       return "contract/info";
-   }
+   }*/
 }
