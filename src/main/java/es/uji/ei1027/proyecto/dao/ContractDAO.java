@@ -23,8 +23,8 @@ public class ContractDAO {
     }
 
     public void addContract(Contract c){
-        jdbcTemplate.update("INSERT INTO Contract VALUES (?,?,?,?,?)",
-                c.getIdContract(),
+        jdbcTemplate.update(
+                "INSERT INTO contract (datestart, dateend, idrequest, dnicand) VALUES (?,?,?,?)",
                 c.getDateStart(),
                 c.getDateEnd(),
                 c.getIdRequest(),
@@ -32,13 +32,12 @@ public class ContractDAO {
     }
 
     public void deleteContract(int idContract){
-        jdbcTemplate.update("DELETE FROM Contract WHERE idContract=?",
-                        idContract);
+        jdbcTemplate.update("DELETE FROM contract WHERE idcontract=?", idContract);
     }
 
     public void updateContract(Contract c){
-        jdbcTemplate.update("UPDATE Contract SET dateStart=?, " +
-                        "dateEnd=?, idRequest=?, DNICand=? WHERE idContract=?",
+        jdbcTemplate.update(
+                "UPDATE contract SET datestart=?, dateend=?, idrequest=?, dnicand=? WHERE idcontract=?",
                 c.getDateStart(),
                 c.getDateEnd(),
                 c.getIdRequest(),
@@ -46,25 +45,26 @@ public class ContractDAO {
                 c.getIdContract());
     }
 
-    public void updateContractEndDate(String idContract, Date dateEnd){
-        jdbcTemplate.update("UPDATE Contract SET dateEnd = ? WHERE idContract = ?",
+    public void updateContractEndDate(int idContract, Date dateEnd){
+        jdbcTemplate.update("UPDATE contract SET dateend = ? WHERE idcontract = ?",
                 dateEnd, idContract);
     }
 
     public Contract getContract(int idContract){
         try{
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM Contract WHERE idContract=?",
+                    "SELECT * FROM contract WHERE idcontract=?",
                     new ContractRowMapper(), idContract);
         } catch(EmptyResultDataAccessException e){
             return null;
         }
     }
 
-    public Contract getContractByPATI(String DNICand) {
+    public Contract getContractByPATI(String dniCand) {
         try {
-            return jdbcTemplate.queryForObject("SELECT * FROM Contract WHERE DNICand = ?",
-                    new Object[]{DNICand}, new ContractRowMapper());
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM contract WHERE dnicand = ?",
+                    new ContractRowMapper(), dniCand);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
@@ -72,28 +72,29 @@ public class ContractDAO {
 
     public List<Contract> getContracts(){
         try{
-            return jdbcTemplate.query("SELECT * FROM Contract", new ContractRowMapper());
+            return jdbcTemplate.query("SELECT * FROM contract", new ContractRowMapper());
         } catch(EmptyResultDataAccessException e){
             return new ArrayList<>();
         }
     }
 
-    public Contract getContractById(String idContract) {
+    public Contract getContractById(int idContract) {
         try {
-            return jdbcTemplate.queryForObject("SELECT * FROM Contract WHERE idContract = ?",
-                    new Object[]{idContract}, new ContractRowMapper());
+            return jdbcTemplate.queryForObject(
+                    "SELECT * FROM contract WHERE idcontract = ?",
+                    new ContractRowMapper(), idContract);
         } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-    public Contract getContractsByPATI(String dniPati) {
+    public List<Contract> getContractsByUser(String dniUser) {
         try {
-            return jdbcTemplate.queryForObject(
-                    "SELECT * FROM Contract WHERE DNICand = ?",
-                    new ContractRowMapper(), dniPati);
+            return jdbcTemplate.query(
+                    "SELECT c.* FROM contract c JOIN request r ON c.idrequest = r.idrequest WHERE r.dniuser = ?",
+                    new ContractRowMapper(), dniUser);
         } catch (EmptyResultDataAccessException e) {
-            return null;
+            return new ArrayList<>();
         }
     }
 }

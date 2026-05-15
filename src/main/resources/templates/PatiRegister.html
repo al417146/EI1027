@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <title>Registro PATI</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:ref="@{css/style.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 
 <body>
@@ -51,7 +51,12 @@
       <div class="form-group">
         <label>Género</label>
         <label>
-          <input type="text" th:field="*{gender}" required>
+          <select th:field="*{gender}" required>
+          <option value="">Selecciona</option>
+          <option value="M">Masculino</option>
+          <option value="F">Femenino</option>
+          <option value="O">Otro</option>
+        </select>
         </label>
       </div>
 
@@ -76,12 +81,12 @@
         </label>
       </div>
 
-      <div class="form-group">
+      <!--<div class="form-group">
         <label>Especialidades</label>
         <label>
           <textarea th:field="*{specialties}" placeholder="Ej: 1: Cocina, 2: Movilidad..."></textarea>
         </label>
-      </div>
+      </div>-->
 
       <button type="submit" class="btn btn-secondary" style="width:100%;">Registrarse</button>
 

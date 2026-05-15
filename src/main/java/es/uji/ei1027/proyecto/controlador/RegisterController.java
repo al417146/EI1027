@@ -2,6 +2,7 @@ package es.uji.ei1027.proyecto.controlador;
 
 import es.uji.ei1027.proyecto.Validator.OVIUserValidator;
 import es.uji.ei1027.proyecto.dao.OVIUserDAO;
+import es.uji.ei1027.proyecto.dao.UserDao;
 import es.uji.ei1027.proyecto.dao.patiDAO;
 import es.uji.ei1027.proyecto.modelo.OVIUser;
 import es.uji.ei1027.proyecto.modelo.PATI;
@@ -22,17 +23,20 @@ public class RegisterController {
     @Autowired
     private patiDAO patiDAO;
 
+    @Autowired
+    private UserDao userDao;
+
     // 1. Página inicial para elegir tipo de registro
     @GetMapping("/register")
     public String chooseType() {
-        return "register";
+        return "register";   // → templates/register.html
     }
 
     // 2. Registro OVIUser (GET)
     @GetMapping("/register/oviuser")
     public String showOVIUserForm(Model model) {
         model.addAttribute("oviuser", new OVIUser());
-        return "OVIUser/add";
+        return "OVIUser/add";   // → templates/OVIUser/add.html
     }
 
     // 3. Registro OVIUser (POST)
@@ -42,9 +46,10 @@ public class RegisterController {
         new OVIUserValidator().validate(user, bindingResult);
         if (bindingResult.hasErrors())
             return "OVIUser/add";
-
         user.setStatus("Pendiente");
         oviUserDAO.addOVIUser(user);
+        // Guardar credenciales
+        userDao.addUser(user.getDNI(), user.getPassword(), "OVIUSER");
         return "redirect:/login";
     }
 
@@ -52,15 +57,23 @@ public class RegisterController {
     @GetMapping("/register/pati")
     public String showPATIForm(Model model) {
         model.addAttribute("pati", new PATI());
-        return "PatiRegister";
+        return "PatiRegister";   // → templates/PatiRegister.html
     }
 
     // 5. Registro PATI (POST)
     @PostMapping("/register/pati")
     public String processPATI(@ModelAttribute("pati") PATI pati,
                               BindingResult bindingResult) {
-        pati.setStatus("Pendiente");
+
         patiDAO.addPATI(pati);
         return "redirect:/login";
     }
+
+    // 6. Login
+    /*@GetMapping("/login")
+    public String login() {
+        return "login";   // → templates/login.html
+    }*/
 }
+
+

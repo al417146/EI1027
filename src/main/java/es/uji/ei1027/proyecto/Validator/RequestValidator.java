@@ -1,10 +1,9 @@
-package es.uji.ei1027.proyecto.Validator;
+/*package es.uji.ei1027.proyecto.Validator;
 
 import es.uji.ei1027.proyecto.modelo.Request;
 import org.springframework.stereotype.Component;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
 @Component
 public class RequestValidator implements Validator {
     @Override
@@ -40,6 +39,25 @@ public class RequestValidator implements Validator {
         // No es obligatorio en el momento de creación, pero si se asigna debe tener formato válido
         if (r.getDNICand() != null && r.getDNICand().trim().isEmpty()) {
             errors.rejectValue("DNICand", "invalid", "El DNI del candidato no puede estar vacío");
+        }
+    }
+}*/
+package es.uji.ei1027.proyecto.Validator;
+import es.uji.ei1027.proyecto.modelo.Request;
+import org.springframework.stereotype.Component;
+import org.springframework.validation.Errors;
+import org.springframework.validation.Validator;
+@Component
+public class RequestValidator implements Validator {
+    @Override
+    public boolean supports(Class<?> clazz) {
+        return Request.class.equals(clazz);
+    }
+    @Override
+    public void validate(Object target, Errors errors) {
+        Request r = (Request) target;
+        if (r.getPreferredZone() == null || r.getPreferredZone().trim().isEmpty()) {
+            errors.rejectValue("preferredZone", "required", "La zona preferida es obligatoria");
         }
     }
 }

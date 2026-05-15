@@ -3,17 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <title>Mis solicitudes</title>
-  <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{css/style.css}">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <header class="top-bar">
   <div class="logo">
-    <img th:src="@{/images/logo-ovi.png}"
-         alt="Logo OVI"
-         class="logo-img" src="/images/logo-ovi.png">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
   </div>
   <nav class="nav-bar">
-    <a th:href="@{/OVIUser/OVIndex}" class="nav-link">Inicio</a>
+    <a th:href="@{/OVIUser/OVIIndex}" class="nav-link">Inicio</a>
     <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
     <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
     <a th:href="@{/OVIUser/list}" class="nav-link">Mis contratos</a>
@@ -32,24 +30,29 @@
       <div class="table-responsive">
         <table class="data-table">
           <thead>
-          <tr><th>ID</th><th>Fecha</th><th>Estado</th><th>Profesional</th> </thead>
+          <tr>
+            <th>ID</th>
+            <th>Fecha</th>
+            <th>Estado</th>
+            <th>Profesional asignado</th>
+          </tr>
+          </thead>
           <tbody>
           <tr th:each="s : ${solicitudes}">
             <td th:text="${s.idRequest}"></td>
-            <td th:text="${#dates.format(s.date, 'dd/MM/yyyy')}"></td>
+            <td th:text="${s.date != null} ? ${#dates.format(s.date, 'dd/MM/yyyy')} : '-'"></td>
             <td>
-                                <span th:class="${s.status == 'Pendiente de aprobación por staff'} ? 'estado-pendiente' :
-                                               ${s.status == 'Aceptada'} ? 'estado-aprobada' : 'estado-rechazada'}"
-                                      th:text="${s.status}"></span>
+              <span th:class="${s.status == 'Aceptada'} ? 'estado-aprobada' : (${s.status == 'Denegada'} ? 'estado-rechazada' : 'estado-pendiente')"
+                    th:text="${s.status}"></span>
             </td>
-            <td th:text="${s.DNICand}"></td>
+            <td th:text="${s.DNICand != null} ? ${s.DNICand} : 'Sin asignar'"></td>
           </tr>
           </tbody>
         </table>
       </div>
     </div>
     <div style="margin-top:20px">
-      <a href="/templates/OVIUser/OVIndex.html" class="btn btn-secondary">Volver</a>
+      <a th:href="@{/OVIUser/OVIIndex}" class="btn btn-secondary">Volver</a>
     </div>
   </div>
 </div>

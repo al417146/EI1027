@@ -3,10 +3,11 @@
 <head>
     <title>Gestionar Especialidades</title>
     <meta charset="UTF-8"/>
-    <link rel="stylesheet" type="text/css" href="/static/css/style.css" th:href="@{css/style.css}">
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
--- De esta parte se encarga el staff--
+<!-- De esta parte se encarga el staff-- -->
+
 <header class="top-bar">
     <div class="logo">
         <img th:src="@{/images/logo-ovi.png}"
@@ -14,8 +15,8 @@
              class="logo-img" src="/images/logo-ovi.png">
     </div>
     <div class="nav-bar">
-        <a href="/" class="nav-link">Inicio</a>
-        <a href="/templates/Speciality/list.html" class="nav-link">Especialidades</a>
+        <a th:href="@{/}" class="nav-link">Inicio</a>
+        <a th:href="@{/speciality/list}" class="nav-link">Especialidades</a>
 
     </div>
 </header>
@@ -51,8 +52,8 @@
             </div>
         </div>
         <div style="margin-top:20px">
-            <a href="/templates/Speciality/add.html" class="btn btn-primary">Añadir especialidad</a>
-            <a href="/" class="btn btn-secondary">Volver</a>
+            <a th:href="@{/speciality/add}" class="btn btn-primary">Añadir especialidad</a>
+            <a th:href="@{/}" class="btn btn-secondary">Volver</a>
         </div>
     </div>
 </div>

@@ -22,7 +22,8 @@ public class OVIUserDAO {
     }
 
     public void addOVIUser(OVIUser u){
-        jdbcTemplate.update("INSERT INTO OVIUser VALUES (?,?,?,?,?,?,?,?)",
+        jdbcTemplate.update(
+                "INSERT INTO oviuser (dni, name, birth_date, gender, phone, mail, address, status) VALUES (?,?,?,?,?,?,?,?)",
                 u.getDNI(),
                 u.getName(),
                 u.getBirthDate(),
@@ -31,41 +32,47 @@ public class OVIUserDAO {
                 u.getMail(),
                 u.getAddress(),
                 u.getStatus());
-
     }
 
     public void deleteOVIUser(String DNI){
-        jdbcTemplate.update("DELETE FROM OVIUser WHERE DNI=?",
-                DNI);
+        jdbcTemplate.update("DELETE FROM oviuser WHERE dni=?", DNI);
     }
 
     public void updateOVIUser(OVIUser u){
-        jdbcTemplate.update("UPDATE OVIUser SET name=?, birthDate=?, gender=?, phone=?, mail=?, address=? WHERE DNI=?",
+        jdbcTemplate.update(
+                "UPDATE oviuser SET name=?, birth_date=?, gender=?, phone=?, mail=?, address=?, status=? WHERE dni=?",
                 u.getName(),
                 u.getBirthDate(),
                 u.getGender(),
                 u.getPhone(),
                 u.getMail(),
                 u.getAddress(),
+                u.getStatus(),
                 u.getDNI());
     }
 
     public OVIUser getOVIUser(String DNI){
-        try{
+        try {
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM OVIUser WHERE DNI=?",
-                    new OVIUserRowMapper(),
-                    DNI);
-        } catch(EmptyResultDataAccessException e){
+                    "SELECT * FROM oviuser WHERE dni=?",
+                    new OVIUserRowMapper(), DNI);
+        } catch(EmptyResultDataAccessException e) {
             return null;
         }
     }
-
     public List<OVIUser> getOVIUsers(){
-        try{
-            return jdbcTemplate.query("SELECT * FROM OVIUser",
-                    new OVIUserRowMapper());
-        } catch(EmptyResultDataAccessException e){
+        try {
+            return jdbcTemplate.query("SELECT * FROM oviuser", new OVIUserRowMapper());
+        } catch(EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+    public List<OVIUser> getOVIUsersByStatus(String status) {
+        try {
+            return jdbcTemplate.query(
+                    "SELECT * FROM oviuser WHERE status = ?",
+                    new OVIUserRowMapper(), status);
+        } catch (org.springframework.dao.EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }
     }

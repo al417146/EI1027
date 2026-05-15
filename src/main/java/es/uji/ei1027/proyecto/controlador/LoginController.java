@@ -1,11 +1,7 @@
 package es.uji.ei1027.proyecto.controlador;
 
 import es.uji.ei1027.proyecto.Validator.SessionUserValidator;
-import es.uji.ei1027.proyecto.dao.OVIUserDAO;
 import es.uji.ei1027.proyecto.dao.UserDao;
-import es.uji.ei1027.proyecto.dao.patiDAO;
-import es.uji.ei1027.proyecto.modelo.OVIUser;
-import es.uji.ei1027.proyecto.modelo.PATI;
 import es.uji.ei1027.proyecto.modelo.UserDetails;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +18,10 @@ public class LoginController {
     @Autowired
     private UserDao userDao;
 
-    @Autowired
-    private OVIUserDAO oviUserDAO;
-
-    @Autowired
-    private patiDAO patiDAO;
+    @GetMapping("/")
+    public String home() {
+        return "index";
+    }
 
     @GetMapping("/login")
     public String login(Model model) {
@@ -55,30 +50,20 @@ public class LoginController {
 
         session.setAttribute("user", authenticated);
 
-        // Cargar la entidad completa según el rol
+        // Redirige según el rol
         String rol = authenticated.getRol();
-        if ("STAFF".equals(rol)) {
-            session.setAttribute("currentUserName", authenticated.getDni());
+        if ("STAFF".equals(rol))
             return "redirect:/staff/index";
-        }
-        else if ("PAP".equals(rol)) {
-            PATI pati = patiDAO.getPATI(authenticated.getDni());
-            session.setAttribute("currentUser", pati);
-            session.setAttribute("currentUserName", pati.getName());
+        else if ("PAP".equals(rol))
             return "redirect:/PAP/index";
-        }
-        else {
-            OVIUser oviUser = oviUserDAO.getOVIUser(authenticated.getDni());
-            session.setAttribute("currentUser", oviUser);
-            session.setAttribute("currentUserName", oviUser.getName());
-            return "redirect:/OVIUser/OVIndex";
-        }
+        else
+            return "redirect:/OVIUser/OVIIndex";
     }
 
     @GetMapping("/logout")
     public String logout(HttpSession session) {
         session.invalidate();
-        return "redirect:/";
+        return "redirect:/login";
     }
 
     @GetMapping("/logoutConfirm")
@@ -93,7 +78,7 @@ public class LoginController {
         } else if ("PAP".equals(user.getRol())) {
             cancelUrl = "/PAP/index";
         } else {
-            cancelUrl = "/OVIUser/OVIndex";
+            cancelUrl = "/OVIUser/OVIIndex";
         }
 
         model.addAttribute("cancelUrl", cancelUrl);

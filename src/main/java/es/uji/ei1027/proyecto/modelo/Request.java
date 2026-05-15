@@ -15,8 +15,10 @@ public class Request {
     int idContract;
     String idNeg;        // id de la negociación
     int idRequirement;   // requisito asociado
-
     String DNICand;      // DNI del PAP/PATI
+    String preferredGender;
+    String preferredZone;
+    String preferredSpeciality;
 
     public String getDNIUser() { return DNIUser; }
     public void setDNIUser(String DNIUser) { this.DNIUser = DNIUser; }
@@ -45,4 +47,13 @@ public class Request {
     public void setDNICand(String DNICand) {
         this.DNICand = DNICand;
     }
+
+    public String getPreferredGender() { return preferredGender; }
+    public void setPreferredGender(String preferredGender) { this.preferredGender = preferredGender; }
+
+    public String getPreferredZone() { return preferredZone; }
+    public void setPreferredZone(String preferredZone) { this.preferredZone = preferredZone; }
+
+    public String getPreferredSpeciality() { return preferredSpeciality; }
+    public void setPreferredSpeciality(String preferredSpeciality) { this.preferredSpeciality = preferredSpeciality; }
 }
