@@ -15,7 +15,7 @@ public class SessionUserValidator implements Validator {
         UserDetails user = (UserDetails) obj;
 
         if (user.getDni() == null || user.getDni().trim().isEmpty()) {
-            errors.rejectValue("dni", "obligatorio", "El DNI es obligatorio"); // ✅ corregido
+            errors.rejectValue("dni", "obligatorio", "El DNI es obligatorio");
         }
 
         if (user.getPassword() == null || user.getPassword().trim().isEmpty()) {
