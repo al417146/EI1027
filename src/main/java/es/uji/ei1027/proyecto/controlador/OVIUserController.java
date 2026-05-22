@@ -37,6 +37,9 @@ public class OVIUserController {
     @Autowired
     private RequestValidator requestValidator;
 
+    @Autowired
+    private RequestCandidatesDAO requestCandidatesDAO;
+
     // Panel principal
     @GetMapping("/OVIIndex")
     public String index() {
@@ -206,5 +209,38 @@ public class OVIUserController {
         user.setStatus("Pendiente");
         oviUserDAO.addOVIUser(user);
         return "redirect:/OVIIndex";
+    }
+    @GetMapping("/verCandidatos/{idRequest}")
+    public String verCandidatos(@PathVariable int idRequest, Model model, HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+        Request request = rDAO.getRequest(idRequest);
+        List<PATI> candidatos = requestCandidatesDAO.getCandidatesForRequest(idRequest);
+        for (PATI p : candidatos) {
+            p.setSpecialties(patiDAO.getSpecialtiesForPati(p.getDNI()));
+        }
+        model.addAttribute("request", request);
+        model.addAttribute("candidatos", candidatos);
+        return "OVIUser/verCandidatos";
+    }
+
+    @PostMapping("/elegirCandidato")
+    public String elegirCandidato(@RequestParam int idRequest,
+                                  @RequestParam String dniCand,
+                                  HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+        Request request = rDAO.getRequest(idRequest);
+        if (request != null) {
+            request.setStatus("Aceptada");
+            request.setDNICand(dniCand);
+            rDAO.updateRequest(request);
+            Contract contract = new Contract();
+            contract.setDateStart(new java.util.Date());
+            contract.setIdRequest(idRequest);
+            contract.setDNICand(dniCand);
+            cDAO.addContract(contract);
+        }
+        return "redirect:/OVIUser/estadoSolicitud";
     }
 }

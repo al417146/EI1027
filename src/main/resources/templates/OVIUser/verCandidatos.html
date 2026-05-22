@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Candidatos propuestos</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+    <div class="logo">
+        <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+    </div>
+    <nav class="nav-bar">
+        <a th:href="@{/OVIUser/OVIIndex}" class="nav-link">Inicio</a>
+        <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
+        <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+    </nav>
+</header>
+<main class="container">
+    <div class="header-primary">
+        <h1>Candidatos propuestos</h1>
+        <p>El staff ha seleccionado estos profesionales para tu solicitud. Elige el que prefieras.</p>
+    </div>
+    <div style="padding:20px">
+        <div th:if="${#lists.isEmpty(candidatos)}" class="alert-info">
+            No hay candidatos propuestos aún.
+        </div>
+        <div th:unless="${#lists.isEmpty(candidatos)}" class="lista-candidatos">
+            <div th:each="cand : ${candidatos}" class="tarjeta-candidato">
+                <h3 th:text="${cand.name}"></h3>
+                <p><strong>Teléfono:</strong> <span th:text="${cand.phone}"></span></p>
+                <p><strong>Email:</strong> <span th:text="${cand.mail}"></span></p>
+                <p><strong>Dirección:</strong> <span th:text="${cand.address}"></span></p>
+                <p><strong>Especialidades:</strong></p>
+                <ul th:unless="${cand.specialties == null or #maps.isEmpty(cand.specialties)}">
+                    <li th:each="spec : ${cand.specialties}" th:text="${spec.value}"></li>
+                </ul>
+                <span th:if="${cand.specialties == null or #maps.isEmpty(cand.specialties)}">Sin especialidades</span>
+                <form th:action="@{/OVIUser/elegirCandidato}" method="post" style="margin-top:10px">
+                    <input type="hidden" name="idRequest" th:value="${request.idRequest}">
+                    <input type="hidden" name="dniCand" th:value="${cand.DNI}">
+                    <button type="submit" class="btn btn-success">Elegir este profesional</button>
+                </form>
+            </div>
+        </div>
+        <div style="margin-top:20px">
+            <a th:href="@{/OVIUser/estadoSolicitud}" class="btn btn-secondary">Volver</a>
+        </div>
+    </div>
+</main>
+</body>
+</html>

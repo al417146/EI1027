@@ -1,5 +1,6 @@
 package es.uji.ei1027.proyecto.controlador;
 
+import es.uji.ei1027.proyecto.dao.RequestCandidatesDAO;
 import es.uji.ei1027.proyecto.dao.ContractDAO;
 import es.uji.ei1027.proyecto.dao.OVIUserDAO;
 import es.uji.ei1027.proyecto.dao.RequestDAO;
@@ -16,6 +17,9 @@ import java.util.List;
 @Controller
 @RequestMapping("/staff")
 public class StaffController {
+
+    @Autowired
+    private RequestCandidatesDAO requestCandidatesDAO;
 
     @Autowired
     private OVIUserDAO oviUserDAO;
@@ -86,15 +90,25 @@ public class StaffController {
     }
 
     // Asignar candidato y cambiar estado a "Propuesta enviada"
-    @PostMapping("/solicitudes/aprobar")
-    public String aprobarSolicitud(@RequestParam int idRequest,
-                                   @RequestParam String dniCand,
-                                   HttpSession session) {
+    @PostMapping("/solicitudes/proposta")
+    public String enviarProposta(@RequestParam int idRequest,
+                                 @RequestParam(required = false) List<String> dniCands,
+                                 HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
+        if (dniCands == null || dniCands.isEmpty())
+            return "redirect:/staff/solicitudes/match/" + idRequest;
+
+        // Eliminar candidatos anteriores y guardar los nuevos
+        requestCandidatesDAO.deleteCandidates(idRequest);
+        for (String dni : dniCands) {
+            requestCandidatesDAO.addCandidate(idRequest, dni);
+        }
+
+        // Actualizar estado de la solicitud
         Request request = requestDAO.getRequest(idRequest);
         if (request != null) {
             request.setStatus("Propuesta enviada");
-            request.setDNICand(dniCand);
+            request.setDNICand(null); // ya no usamos un solo candidato
             requestDAO.updateRequest(request);
         }
         return "redirect:/staff/solicitudes";

@@ -29,7 +29,6 @@
     <table th:unless="${#lists.isEmpty(solicitudes)}" class="data-table">
       <thead>
       <tr>
-        <th>ID</th>
         <th>Usuario</th>
         <th>Fecha</th>
         <th>Zona preferida</th>
@@ -41,7 +40,6 @@
       </thead>
       <tbody>
       <tr th:each="s : ${solicitudes}">
-        <td th:text="${s.idRequest}"></td>
         <td th:text="${s.DNIUser}"></td>
         <td th:text="${#dates.format(s.date, 'dd/MM/yyyy')}"></td>
         <td th:text="${s.preferredZone}"></td>

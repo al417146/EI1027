@@ -31,21 +31,28 @@
         <table class="data-table">
           <thead>
           <tr>
-            <th>ID</th>
             <th>Fecha</th>
+            <th>Zona</th>
+            <th>Especialidad</th>
             <th>Estado</th>
-            <th>Profesional asignado</th>
+            <th>Acción</th>
           </tr>
           </thead>
           <tbody>
           <tr th:each="s : ${solicitudes}">
-            <td th:text="${s.idRequest}"></td>
             <td th:text="${s.date != null} ? ${#dates.format(s.date, 'dd/MM/yyyy')} : '-'"></td>
+            <td th:text="${s.preferredZone}"></td>
+            <td th:text="${s.preferredSpeciality}"></td>
             <td>
               <span th:class="${s.status == 'Aceptada'} ? 'estado-aprobada' : (${s.status == 'Denegada'} ? 'estado-rechazada' : 'estado-pendiente')"
                     th:text="${s.status}"></span>
             </td>
-            <td th:text="${s.DNICand != null} ? ${s.DNICand} : 'Sin asignar'"></td>
+            <td>
+              <a th:if="${s.status == 'Propuesta enviada'}"
+                 th:href="@{/OVIUser/verCandidatos/{id}(id=${s.idRequest})}"
+                 class="btn btn-primary">Ver candidatos</a>
+              <span th:unless="${s.status == 'Propuesta enviada'}">—</span>
+            </td>
           </tr>
           </tbody>
         </table>
