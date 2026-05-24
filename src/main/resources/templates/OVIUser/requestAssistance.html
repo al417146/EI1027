@@ -16,7 +16,7 @@
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
-<div class="container">
+<main class="container">
   <div class="header-primary">
     <h1>Solicitar asistencia personal</h1>
     <p>Indica tus preferencias para encontrar el profesional más adecuado</p>
@@ -24,26 +24,34 @@
   <div class="card" style="margin:20px">
     <form th:action="@{/OVIUser/requestAssistance}" th:object="${request}" method="post">
       <div class="form-group">
-        <label>Género preferido del profesional</label>
-        <select th:field="*{preferredGender}" class="form-select">
+        <label for="preferredGender">Género preferido del profesional</label>
+        <select id="preferredGender" th:field="*{preferredGender}" class="form-control">
           <option value="">Sin preferencia</option>
           <option value="M">Masculino</option>
           <option value="F">Femenino</option>
           <option value="O">Otro</option>
         </select>
+        <div th:if="${#fields.hasErrors('preferredGender')}"
+             th:errors="*{preferredGender}" class="error"></div>
       </div>
       <div class="form-group">
-        <label>Zona preferida</label>
-        <input type="text" th:field="*{preferredZone}" class="form-control" placeholder="Ej: Castellón, Valencia...">
+        <label for="preferredZone">Zona preferida</label>
+        <input type="text" id="preferredZone" th:field="*{preferredZone}"
+               class="form-control" placeholder="Ej: Castellón, Valencia...">
+        <div th:if="${#fields.hasErrors('preferredZone')}"
+             th:errors="*{preferredZone}" class="error"></div>
       </div>
       <div class="form-group">
-        <label>Especialidad requerida</label>
-        <input type="text" th:field="*{preferredSpeciality}" class="form-control" placeholder="Ej: fisioterapia, cuidados...">
+        <label for="preferredSpeciality">Especialidad requerida</label>
+        <input type="text" id="preferredSpeciality" th:field="*{preferredSpeciality}"
+               class="form-control" placeholder="Ej: fisioterapia, cuidados...">
+        <div th:if="${#fields.hasErrors('preferredSpeciality')}"
+             th:errors="*{preferredSpeciality}" class="error"></div>
       </div>
       <button type="submit" class="btn btn-primary">Enviar solicitud</button>
       <a th:href="@{/OVIUser/OVIIndex}" class="btn btn-secondary">Cancelar</a>
     </form>
   </div>
-</div>
+</main>
 </body>
 </html>

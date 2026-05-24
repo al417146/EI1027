@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/speciality")
+@RequestMapping("/Speciality")
 public class SpecialityController {
 
     private SpecialityDAO specialityDAO;
@@ -43,14 +43,14 @@ public class SpecialityController {
     public String processAdd(@ModelAttribute Speciality speciality, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         specialityDAO.addSpeciality(speciality);
-        return "redirect:/speciality/list";
+        return "redirect:/Speciality/list";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable int id, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         specialityDAO.deleteSpeciality(id);
-        return "redirect:/speciality/list";
+        return "redirect:/Speciality/list";
     }
 
     @GetMapping("/edit/{id}")
@@ -64,6 +64,6 @@ public class SpecialityController {
     public String processEdit(@ModelAttribute Speciality speciality, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         specialityDAO.updateSpeciality(speciality);
-        return "redirect:/speciality/list";
+        return "redirect:/Speciality/list";
     }
 }
