@@ -12,25 +12,30 @@
   </div>
   <nav class="nav-bar">
     <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
+    <a th:href="@{/staff/oviusers}" class="nav-link">Usuarios OVI</a>
     <a th:href="@{/staff/solicitudes}" class="nav-link">Solicitudes</a>
+    <a th:href="@{/staff/patis}" class="nav-link">Profesionales</a>
+    <a th:href="@{/speciality/list}" class="nav-link">Especialidades</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
 <main class="container">
   <div class="header-primary">
-    <h1>Candidatos para solicitud #<span th:text="${request.idRequest}"></span></h1>
-    <p>Usuario: <span th:text="${user.name}"></span> —
-       Zona: <span th:text="${request.preferredZone}"></span> —
-       Especialidad: <span th:text="${request.preferredSpeciality}"></span> —
-       Género: <span th:text="${request.preferredGender}"></span>
+    <h1>Propuesta de candidatos para solicitud #<span th:text="${request.idRequest}"></span></h1>
+    <p>Usuario: <span th:text="${user.name}"></span> (DNI: <span th:text="${user.DNI}"></span>)</p>
+    <p>Zona preferida: <span th:text="${request.preferredZone}"></span> |
+      Especialidad: <span th:text="${request.preferredSpeciality}"></span> |
+      Género: <span th:text="${request.preferredGender}"></span>
     </p>
   </div>
   <div style="padding:20px">
+    <div th:if="${param.error != null}" class="alert-info">
+      Debes seleccionar al menos un candidato.
+    </div>
     <div th:if="${#lists.isEmpty(candidates)}" class="alert-info">
       No hay candidatos disponibles que coincidan con las preferencias.
     </div>
     <div th:unless="${#lists.isEmpty(candidates)}">
-      <p>Selecciona uno o varios candidatos para enviar la propuesta al usuario:</p>
       <form th:action="@{/staff/solicitudes/proposta}" method="post">
         <input type="hidden" name="idRequest" th:value="${request.idRequest}">
         <div class="lista-candidatos">

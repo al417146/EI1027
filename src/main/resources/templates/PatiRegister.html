@@ -5,96 +5,67 @@
   <title>Registro PATI</title>
   <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
-
 <body>
-
 <header class="top-bar">
   <div class="logo">
-    <img th:src="@{/images/logo-ovi.png}"
-         alt="Logo OVI"
-         class="logo-img" src="/static/images/logo-ovi.png">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
   </div>
 </header>
-
-<div class="container">
-
+<main class="container">
   <div class="header-primary">
     <h1>Registro PAP/PATI</h1>
     <p>Introduce tus datos y especialidades</p>
   </div>
-
   <div class="card" style="max-width:600px; margin:30px auto;">
-
     <form th:action="@{/register/pati}" th:object="${pati}" method="post">
-
       <div class="form-group">
-        <label>DNI</label>
-        <label>
-          <input type="text" th:field="*{DNI}" required>
-        </label>
+        <label for="DNI">DNI</label>
+        <input type="text" id="DNI" th:field="*{DNI}" class="form-control" required>
+        <div th:if="${#fields.hasErrors('DNI')}" th:errors="*{DNI}" class="error"></div>
       </div>
-
       <div class="form-group">
-        <label>Nombre completo</label>
-        <label>
-          <input type="text" th:field="*{name}" required>
-        </label>
+        <label for="name">Nombre completo</label>
+        <input type="text" id="name" th:field="*{name}" class="form-control" required>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>
       </div>
-
       <div class="form-group">
-        <label>Fecha de nacimiento</label>
-        <label>
-          <input type="date" th:field="*{birthDate}" required>
-        </label>
+        <label for="birthDate">Fecha de nacimiento</label>
+        <input type="date" id="birthDate" th:field="*{birthDate}" class="form-control" required>
+        <div th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}" class="error"></div>
       </div>
-
       <div class="form-group">
-        <label>Género</label>
-        <label>
-          <select th:field="*{gender}" required>
+        <label for="gender">Género</label>
+        <select id="gender" th:field="*{gender}" class="form-control" required>
           <option value="">Selecciona</option>
           <option value="M">Masculino</option>
           <option value="F">Femenino</option>
           <option value="O">Otro</option>
         </select>
-        </label>
+        <div th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}" class="error"></div>
       </div>
-
       <div class="form-group">
-        <label>Teléfono</label>
-        <label>
-          <input type="text" th:field="*{phone}" required>
-        </label>
+        <label for="phone">Teléfono</label>
+        <input type="text" id="phone" th:field="*{phone}" class="form-control" required>
+        <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error"></div>
       </div>
-
       <div class="form-group">
-        <label>Email</label>
-        <label>
-          <input type="text" th:field="*{mail}" required>
-        </label>
+        <label for="mail">Email</label>
+        <input type="email" id="mail" th:field="*{mail}" class="form-control" required>
+        <div th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="error"></div>
       </div>
-
       <div class="form-group">
-        <label>Dirección</label>
-        <label>
-          <input type="text" th:field="*{address}" required>
-        </label>
+        <label for="address">Dirección</label>
+        <input type="text" id="address" th:field="*{address}" class="form-control" required>
+        <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></div>
       </div>
-
-      <!--<div class="form-group">
-        <label>Especialidades</label>
-        <label>
-          <textarea th:field="*{specialties}" placeholder="Ej: 1: Cocina, 2: Movilidad..."></textarea>
-        </label>
-      </div>-->
-
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password" class="form-control" required>
+        <div th:if="${#fields.hasErrors('password')}" th:errors="${passwordError}" class="error"></div>
+      </div>
       <button type="submit" class="btn btn-secondary" style="width:100%;">Registrarse</button>
-
     </form>
-
   </div>
-
-</div>
-
+</main>
 </body>
 </html>

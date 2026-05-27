@@ -12,11 +12,14 @@
          class="logo-img" src="/static/images/logo-ovi.png">
   </div>
   <nav class="nav-bar">
-  <a th:href="@{/OVIUser/OVIndex}" class="nav-link">Inicio</a>
-  <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
-  <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
-  <a th:href="@{/OVIUser/list}" class="nav-link">Mis contratos</a>
-  <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+    <a th:href="@{/OVIUser/OVIIndex}" class="nav-link">Inicio</a>
+    <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+    <a th:href="@{/OVIUser/requestAssistance}" class="nav-link">Solicitar asistencia</a>
+    <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
+    <a th:href="@{/OVIUser/list}" class="nav-link">Mis PAP/PATIS</a>
+    <a th:href="@{/OVIUser/misContratos}" class="nav-link">Mis contratos</a>
+    <a th:href="@{/OVIUser/profile}" class="nav-link">Editar mi perfil</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
 <div class="container">
@@ -34,7 +37,7 @@
         <input type="text" id="dateEnd" name="dateEnd" class="form-control" placeholder="dd-MM-yyyy" required>
       </div>
       <button type="submit" class="btn btn-warning">Registrar finalización</button>
-      <a href="/templates/OVIUser/OVIndex.html" class="btn btn-secondary">Cancelar</a>
+      <a th:href="@{/OVIUser/misContratos}" class="btn btn-secondary">Cancelar</a>
     </form>
   </div>
 </div>

@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Random;
@@ -19,6 +20,7 @@ import java.util.Random;
 @Controller
 @RequestMapping("/OVIUser")
 public class OVIUserController {
+
     @Autowired
     private OVIUserDAO oviUserDAO;
 
@@ -37,9 +39,6 @@ public class OVIUserController {
     @Autowired
     private RequestValidator requestValidator;
 
-    @Autowired
-    private RequestCandidatesDAO requestCandidatesDAO;
-
     // Panel principal
     @GetMapping("/OVIIndex")
     public String index() {
@@ -57,11 +56,11 @@ public class OVIUserController {
     }
 
     // Mostramos la información del contrato de un profesional
-    @GetMapping("/templates/Contrato/{DNICand}")
+    @GetMapping("/contrato/{DNICand}")
     public String mandarContrato(Model model, @PathVariable String DNICand) {
         Contract contract = cDAO.getContractByPATI(DNICand);
         model.addAttribute("contrato", contract);
-        return "templates/Contrato/info";
+        return "Contrato/info";  // La vista debe estar en templates/Contrato/info.html
     }
 
     // Mostramos los profesionales disponibles para solicitar
@@ -145,7 +144,7 @@ public class OVIUserController {
         if (user == null) return "redirect:/login";
         oviUserDAO.deleteOVIUser(user.getDni());
         session.invalidate();
-        return "redirect:/iniciarSesion?deleted";
+        return "redirect:/login?deleted";
     }
 
     // Procesar actualización del perfil
@@ -192,14 +191,14 @@ public class OVIUserController {
     }
 
     // AÑADIR OVIUser (GET) — para el Staff
-    @RequestMapping(value = "/add", method = RequestMethod.GET)
+    @GetMapping("/add")
     public String addUser(Model model) {
         model.addAttribute("oviuser", new OVIUser());
         return "Staff/OVIadd";
     }
 
     // AÑADIR OVIUser (POST)
-    @RequestMapping(value = "/add", method = RequestMethod.POST)
+    @PostMapping("/add")
     public String processAddSubmit(@ModelAttribute("oviuser") OVIUser user,
                                    BindingResult bindingResult) {
         OVIUserValidator validator = new OVIUserValidator();
@@ -208,17 +207,27 @@ public class OVIUserController {
             return "OVIUser/add";
         user.setStatus("Pendiente");
         oviUserDAO.addOVIUser(user);
-        return "redirect:/OVIIndex";
+        return "redirect:/OVIUser/OVIIndex";  // Corregido
     }
+
     @GetMapping("/verCandidatos/{idRequest}")
     public String verCandidatos(@PathVariable int idRequest, Model model, HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
+
         Request request = rDAO.getRequest(idRequest);
-        List<PATI> candidatos = requestCandidatesDAO.getCandidatesForRequest(idRequest);
-        for (PATI p : candidatos) {
-            p.setSpecialties(patiDAO.getSpecialtiesForPati(p.getDNI()));
+        if (request == null || !request.getDNIUser().equals(user.getDni()))
+            return "redirect:/OVIUser/estadoSolicitud";
+
+        List<PATI> candidatos = new java.util.ArrayList<>();
+        if (request.getDNICand() != null && !request.getDNICand().isEmpty()) {
+            PATI pati = patiDAO.getPATI(request.getDNICand());
+            if (pati != null) {
+                pati.setSpecialties(patiDAO.getSpecialtiesForPati(pati.getDNI()));
+                candidatos.add(pati);
+            }
         }
+
         model.addAttribute("request", request);
         model.addAttribute("candidatos", candidatos);
         return "OVIUser/verCandidatos";
@@ -230,17 +239,51 @@ public class OVIUserController {
                                   HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
+
         Request request = rDAO.getRequest(idRequest);
-        if (request != null) {
+        if (request != null && request.getDNIUser().equals(user.getDni())) {
             request.setStatus("Aceptada");
             request.setDNICand(dniCand);
             rDAO.updateRequest(request);
+
             Contract contract = new Contract();
-            contract.setDateStart(new java.util.Date());
+            contract.setDateStart(new Date());
             contract.setIdRequest(idRequest);
             contract.setDNICand(dniCand);
             cDAO.addContract(contract);
         }
         return "redirect:/OVIUser/estadoSolicitud";
+    }
+    @GetMapping("/misContratos")
+    public String listMisContratos(Model model, HttpSession session,
+                                   @RequestParam(value = "tipo", required = false, defaultValue = "activos") String tipo) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+
+        List<Contract> todosContratos = cDAO.getContractsByUser(user.getDni());
+        Date hoy = new Date();
+
+        List<Contract> filtrados = new ArrayList<>();
+        for (Contract c : todosContratos) {
+            boolean activo = (c.getDateEnd() == null || c.getDateEnd().after(hoy)) && c.getDateStart().before(hoy);
+            boolean pasado = c.getDateEnd() != null && c.getDateEnd().before(hoy);
+            boolean futuro = c.getDateStart().after(hoy);
+
+            if ("activos".equals(tipo) && activo) filtrados.add(c);
+            else if ("pasados".equals(tipo) && pasado) filtrados.add(c);
+            else if ("futuros".equals(tipo) && futuro) filtrados.add(c);
+            else if ("todos".equals(tipo)) filtrados.add(c);
+            else if ("activos".equals(tipo) && !activo) {} // no añadir
+            else if ("pasados".equals(tipo) && !pasado) {}
+            else if ("futuros".equals(tipo) && !futuro) {}
+            else if (!"activos".equals(tipo) && !"pasados".equals(tipo) && !"futuros".equals(tipo) && !"todos".equals(tipo)) {
+                // por defecto, activos
+                if (activo) filtrados.add(c);
+            }
+        }
+
+        model.addAttribute("contratos", filtrados);
+        model.addAttribute("tipoActual", tipo);
+        return "OVIUser/misContratos";
     }
 }

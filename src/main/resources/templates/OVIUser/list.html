@@ -13,10 +13,13 @@
              class="logo-img" src="/static/images/logo-ovi.png">
     </div>
     <nav class="nav-bar">
-        <a th:href="@{/OVIUser/OVIndex}" class="nav-link">Inicio</a>
+        <a th:href="@{/OVIUser/OVIIndex}" class="nav-link">Inicio</a>
         <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+        <a th:href="@{/OVIUser/requestAssistance}" class="nav-link">Solicitar asistencia</a>
         <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
-        <a th:href="@{/OVIUser/list}" class="nav-link">Mis contratos</a>
+        <a th:href="@{/OVIUser/list}" class="nav-link">Mis PAP/PATIS</a>
+        <a th:href="@{/OVIUser/misContratos}" class="nav-link">Mis contratos</a>
+        <a th:href="@{/OVIUser/profile}" class="nav-link">Editar mi perfil</a>
         <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
     </nav>
 </header>
@@ -36,14 +39,13 @@
                         <th>Acciones</th>
                     </tr>
                     </thead>
-
                     <tbody>
                     <tr th:each="p : ${patis}">
                         <td th:text="${p.name}"></td>
                         <td th:text="${p.phone}"></td>
                         <td th:text="${p.mail}"></td>
                         <td>
-                            <a th:href="@{/OVIUser/Contrato/{dni}(dni=${p.DNI})}" class="btn btn-outline">Ver contrato</a>
+                            <a th:href="@{/OVIUser/contrato/{dni}(dni=${p.DNI})}" class="btn btn-outline">Ver contrato</a>
                         </td>
                         <td>
                             <a th:if="${contractMap != null and contractMap.get(p.DNI) != null and contractMap.get(p.DNI).dateEnd == null}"
@@ -56,7 +58,7 @@
             </div>
         </div>
         <div style="margin-top:20px">
-            <a href="/templates/OVIUser/OVIndex.html" class="btn btn-secondary">Volver</a>
+            <a th:href="@{/OVIUser/OVIIndex}" class="btn btn-secondary">Volver</a>
         </div>
     </div>
 </div>

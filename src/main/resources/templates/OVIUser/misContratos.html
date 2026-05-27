@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis contratos</title>
+  <link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/OVIUser/OVIIndex}" class="nav-link">Inicio</a>
+    <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+    <a th:href="@{/OVIUser/requestAssistance}" class="nav-link">Solicitar asistencia</a>
+    <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
+    <a th:href="@{/OVIUser/list}" class="nav-link">Mis PAP/PATIS</a>
+    <a th:href="@{/OVIUser/misContratos}" class="nav-link">Mis contratos</a>
+    <a th:href="@{/OVIUser/profile}" class="nav-link">Editar mi perfil</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1>Mis contratos</h1>
+    <div class="filtros">
+      <a th:href="@{/OVIUser/misContratos(tipo='activos')}" class="btn" th:classappend="${tipoActual == 'activos'} ? 'btn-primary' : 'btn-secondary'">Activos</a>
+      <a th:href="@{/OVIUser/misContratos(tipo='pasados')}" class="btn" th:classappend="${tipoActual == 'pasados'} ? 'btn-primary' : 'btn-secondary'">Pasados</a>
+      <a th:href="@{/OVIUser/misContratos(tipo='futuros')}" class="btn" th:classappend="${tipoActual == 'futuros'} ? 'btn-primary' : 'btn-secondary'">Futuros</a>
+      <a th:href="@{/OVIUser/misContratos(tipo='todos')}" class="btn" th:classappend="${tipoActual == 'todos'} ? 'btn-primary' : 'btn-secondary'">Todos</a>
+    </div>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(contratos)}" class="alert-info">
+      No hay contratos en esta categoría.
+    </div>
+    <div th:unless="${#lists.isEmpty(contratos)}">
+      <table class="data-table">
+        <thead>
+        <tr>
+          <th>ID Contrato</th>
+          <th>Profesional (DNI)</th>
+          <th>Fecha inicio</th>
+          <th>Fecha fin</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="c : ${contratos}">
+          <td th:text="${c.idContract}"></td>
+          <td th:text="${c.DNICand}"></td>
+          <td th:text="${#dates.format(c.dateStart, 'dd/MM/yyyy')}"></td>
+          <td th:text="${c.dateEnd != null ? #dates.format(c.dateEnd, 'dd/MM/yyyy') : 'En curso'}"></td>
+          <td>
+            <span th:if="${c.dateEnd != null and c.dateEnd.before(new java.util.Date())}" class="estado-pasado">Finalizado</span>
+            <span th:if="${c.dateStart.after(new java.util.Date())}" class="estado-futuro">Programado</span>
+            <span th:if="${c.dateEnd == null and c.dateStart.before(new java.util.Date())}" class="estado-activo">Activo</span>
+          </td>
+          <td>
+            <a th:if="${c.dateEnd == null and c.dateStart.before(new java.util.Date())}"
+               th:href="@{/OVIUser/contrato/finalizar/{id}(id=${c.idContract})}"
+               class="btn btn-warning">Finalizar</a>
+            <span th:unless="${c.dateEnd == null and c.dateStart.before(new java.util.Date())}">—</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</main>
+</body>
+</html>
