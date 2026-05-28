@@ -13,12 +13,15 @@
   <nav class="nav-bar">
     <a th:href="@{/OVIUser/OVIIndex}" class="nav-link">Inicio</a>
     <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+    <a th:href="@{/OVIUser/requestAssistance}" class="nav-link">Solicitar asistencia</a>
     <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
-    <a th:href="@{/OVIUser/list}" class="nav-link">Mis contratos</a>
+    <a th:href="@{/OVIUser/list}" class="nav-link">Mis PAP/PATIS</a>
+    <a th:href="@{/OVIUser/misContratos}" class="nav-link">Mis contratos</a>
+    <a th:href="@{/OVIUser/profile}" class="nav-link">Editar mi perfil</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
-<div class="container">
+<main class="container">
   <div class="header-secondary">
     <h1>Estado de mis solicitudes</h1>
   </div>
@@ -27,41 +30,40 @@
       No has realizado ninguna solicitud.
     </div>
     <div th:unless="${#lists.isEmpty(solicitudes)}">
-      <div class="table-responsive">
-        <table class="data-table">
-          <thead>
-          <tr>
-            <th>Fecha</th>
-            <th>Zona</th>
-            <th>Especialidad</th>
-            <th>Estado</th>
-            <th>Acción</th>
-          </tr>
-          </thead>
-          <tbody>
-          <tr th:each="s : ${solicitudes}">
-            <td th:text="${s.date != null} ? ${#dates.format(s.date, 'dd/MM/yyyy')} : '-'"></td>
-            <td th:text="${s.preferredZone}"></td>
-            <td th:text="${s.preferredSpeciality}"></td>
-            <td>
-              <span th:class="${s.status == 'Aceptada'} ? 'estado-aprobada' : (${s.status == 'Denegada'} ? 'estado-rechazada' : 'estado-pendiente')"
+      <table class="data-table">
+        <thead>
+        <tr>
+          <th>Fecha</th>
+          <th>Zona</th>
+          <th>Especialidad</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${solicitudes}">
+          <td th:text="${s.date != null} ? ${#dates.format(s.date, 'dd/MM/yyyy')} : '-'"></td>
+          <td th:text="${s.preferredZone}"></td>
+          <td th:text="${s.preferredSpeciality}"></td>
+          <td>
+              <span th:class="${s.status == 'Aceptada'} ? 'estado-aprobada' :
+                              (${s.status == 'Denegada'} ? 'estado-rechazada' : 'estado-pendiente')"
                     th:text="${s.status}"></span>
-            </td>
-            <td>
-              <a th:if="${s.status == 'Propuesta enviada'}"
-                 th:href="@{/OVIUser/verCandidatos/{id}(id=${s.idRequest})}"
-                 class="btn btn-primary">Ver candidatos</a>
-              <span th:unless="${s.status == 'Propuesta enviada'}">—</span>
-            </td>
-          </tr>
-          </tbody>
-        </table>
-      </div>
+          </td>
+          <td>
+            <a th:if="${s.status == 'Propuesta enviada'}"
+               th:href="@{/OVIUser/verCandidatos/{id}(id=${s.idRequest})}"
+               class="btn btn-primary">Ver candidatos</a>
+            <span th:unless="${s.status == 'Propuesta enviada'}">—</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
     </div>
     <div style="margin-top:20px">
       <a th:href="@{/OVIUser/OVIIndex}" class="btn btn-secondary">Volver</a>
     </div>
   </div>
-</div>
+</main>
 </body>
 </html>

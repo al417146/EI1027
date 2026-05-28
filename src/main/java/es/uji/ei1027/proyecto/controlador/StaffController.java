@@ -1,11 +1,13 @@
 package es.uji.ei1027.proyecto.controlador;
 
-import es.uji.ei1027.proyecto.dao.RequestCandidatesDAO;
-import es.uji.ei1027.proyecto.dao.ContractDAO;
 import es.uji.ei1027.proyecto.dao.OVIUserDAO;
+import es.uji.ei1027.proyecto.dao.RequestCandidatesDAO;
 import es.uji.ei1027.proyecto.dao.RequestDAO;
 import es.uji.ei1027.proyecto.dao.patiDAO;
-import es.uji.ei1027.proyecto.modelo.*;
+import es.uji.ei1027.proyecto.modelo.OVIUser;
+import es.uji.ei1027.proyecto.modelo.PATI;
+import es.uji.ei1027.proyecto.modelo.Request;
+import es.uji.ei1027.proyecto.modelo.UserDetails;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,9 +21,6 @@ import java.util.List;
 public class StaffController {
 
     @Autowired
-    private RequestCandidatesDAO requestCandidatesDAO;
-
-    @Autowired
     private OVIUserDAO oviUserDAO;
 
     @Autowired
@@ -31,7 +30,7 @@ public class StaffController {
     private patiDAO patiDAO;
 
     @Autowired
-    private ContractDAO cDAO;
+    private RequestCandidatesDAO requestCandidatesDAO;
 
     private boolean isStaff(HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
@@ -44,83 +43,15 @@ public class StaffController {
         return "staff/index";
     }
 
+    // Listar todos los OVIUsers
     @GetMapping("/oviusers")
     public String listarOVIUsers(Model model, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
-        model.addAttribute("usuarios", oviUserDAO.getOVIUsersByStatus("Pendiente"));
+        model.addAttribute("usuarios", oviUserDAO.getOVIUsers());
         return "staff/oviusers";
     }
 
-    @GetMapping("/solicitudes")
-    public String listarSolicitudes(Model model, HttpSession session) {
-        if (!isStaff(session)) return "redirect:/login";
-        model.addAttribute("solicitudes", requestDAO.getPendingRequests());
-        return "staff/solicitudes";
-    }
-
-    @GetMapping("/patis")
-    public String listarPATIs(Model model, HttpSession session) {
-        if (!isStaff(session)) return "redirect:/login";
-        model.addAttribute("patis", patiDAO.getPATIs());
-        return "staff/patis";
-    }
-
-    // Matching: mostrar candidatos para una solicitud
-    @GetMapping("/solicitudes/match/{idRequest}")
-    public String matchCandidatos(@PathVariable int idRequest, Model model, HttpSession session) {
-        if (!isStaff(session)) return "redirect:/login";
-        Request request = requestDAO.getRequest(idRequest);
-        if (request == null) return "redirect:/staff/solicitudes";
-
-        OVIUser user = oviUserDAO.getOVIUser(request.getDNIUser());
-
-        List<PATI> candidates = patiDAO.findMatch(
-                request.getPreferredZone(),
-                request.getPreferredGender(),
-                request.getPreferredSpeciality()
-        );
-        for (PATI p : candidates) {
-            p.setSpecialties(patiDAO.getSpecialtiesForPati(p.getDNI()));
-        }
-
-        model.addAttribute("request", request);
-        model.addAttribute("user", user);
-        model.addAttribute("candidates", candidates);
-        return "staff/match";
-    }
-
-    // Asignar candidato y cambiar estado a "Propuesta enviada"
-    @PostMapping("/solicitudes/proposta")
-    public String enviarProposta(@RequestParam int idRequest,
-                                 @RequestParam(required = false) List<String> dniCands,
-                                 HttpSession session) {
-        if (!isStaff(session)) return "redirect:/login";
-        if (dniCands == null || dniCands.isEmpty())
-            return "redirect:/staff/solicitudes/match/" + idRequest;
-
-        // Eliminar candidatos anteriores y guardar los nuevos
-        requestCandidatesDAO.deleteCandidates(idRequest);
-        for (String dni : dniCands) {
-            requestCandidatesDAO.addCandidate(idRequest, dni);
-        }
-
-        // Actualizar estado de la solicitud
-        Request request = requestDAO.getRequest(idRequest);
-        if (request != null) {
-            request.setStatus("Propuesta enviada");
-            request.setDNICand(null); // ya no usamos un solo candidato
-            requestDAO.updateRequest(request);
-        }
-        return "redirect:/staff/solicitudes";
-    }
-
-    @GetMapping("/solicitudes/denegar/{idRequest}")
-    public String denegarSolicitud(@PathVariable int idRequest, HttpSession session) {
-        if (!isStaff(session)) return "redirect:/login";
-        requestDAO.updateRequestStatus(idRequest, "Denegada", 0);
-        return "redirect:/staff/solicitudes";
-    }
-
+    // Aceptar OVIUser
     @GetMapping("/oviusers/aceptar/{dni}")
     public String aceptarOVIUser(@PathVariable String dni, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
@@ -130,6 +61,7 @@ public class StaffController {
         return "redirect:/staff/oviusers";
     }
 
+    // Denegar OVIUser
     @GetMapping("/oviusers/denegar/{dni}")
     public String denegarOVIUser(@PathVariable String dni, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
@@ -139,6 +71,40 @@ public class StaffController {
         return "redirect:/staff/oviusers";
     }
 
+    // Listar solicitudes pendientes (todas las que tienen estado "Pendiente")
+    @GetMapping("/solicitudes")
+    public String listarSolicitudes(Model model, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
+        // Asumiendo que requestDAO.getPendingRequests() devuelve las solicitudes con estado "Pendiente"
+        model.addAttribute("solicitudes", requestDAO.getPendingRequests());
+        return "staff/solicitudes";
+    }
+
+    // Aceptar solicitud
+    @GetMapping("/solicitudes/aceptar/{idRequest}")
+    public String aceptarSolicitud(@PathVariable int idRequest, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
+        requestDAO.updateRequestStatus(idRequest, "Aceptada", 0);
+        return "redirect:/staff/solicitudes";
+    }
+
+    // Denegar solicitud
+    @GetMapping("/solicitudes/denegar/{idRequest}")
+    public String denegarSolicitud(@PathVariable int idRequest, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
+        requestDAO.updateRequestStatus(idRequest, "Denegada", 0);
+        return "redirect:/staff/solicitudes";
+    }
+
+    // Listar todos los profesionales (PATI)
+    @GetMapping("/patis")
+    public String listarPATIs(Model model, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
+        model.addAttribute("patis", patiDAO.getPATIs());
+        return "staff/patis";
+    }
+
+    // Aceptar PATI
     @GetMapping("/patis/aceptar/{dni}")
     public String aceptarPATI(@PathVariable String dni, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
@@ -148,6 +114,7 @@ public class StaffController {
         return "redirect:/staff/patis";
     }
 
+    // Denegar PATI
     @GetMapping("/patis/denegar/{dni}")
     public String denegarPATI(@PathVariable String dni, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
@@ -155,5 +122,56 @@ public class StaffController {
         p.setStatus("Denegado");
         patiDAO.updatePATI(p);
         return "redirect:/staff/patis";
+    }
+
+    // Mostrar formulario para seleccionar candidatos para una solicitud
+    @GetMapping("/match/{idRequest}")
+    public String showMatchForm(@PathVariable int idRequest, Model model, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
+
+        Request request = requestDAO.getRequest(idRequest);
+        if (request == null) {
+            model.addAttribute("error", "Solicitud no encontrada");
+            return "error";
+        }
+
+        OVIUser user = oviUserDAO.getOVIUser(request.getDNIUser());
+        List<PATI> candidates = patiDAO.findMatch(
+                request.getPreferredZone(),
+                request.getPreferredGender(),
+                request.getPreferredSpeciality()
+        );
+
+        for (PATI p : candidates)
+            p.setSpecialties(patiDAO.getSpecialtiesForPati(p.getDNI()));
+
+
+        model.addAttribute("request", request);
+        model.addAttribute("user", user);
+        model.addAttribute("candidates", candidates);
+        return "staff/match";
+    }
+
+    // Procesar la selección de candidatos y enviar propuesta
+    @PostMapping("/solicitudes/propuesta")
+    public String enviarPropuesta(@RequestParam int idRequest,
+                                  @RequestParam(value = "dniCands", required = false) List<String> dniCands,
+                                  HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
+
+        if (dniCands == null || dniCands.isEmpty()) {
+            return "redirect:/staff/match/" + idRequest + "?error=noCandidates";
+        }
+
+        // Guardar los candidatos seleccionados en request_candidates
+        requestCandidatesDAO.deleteCandidates(idRequest);
+        for (String dni : dniCands) {
+            requestCandidatesDAO.addCandidate(idRequest, dni);
+        }
+
+        // Cambiar estado de la solicitud a "Propuesta enviada"
+        requestDAO.updateRequestStatus(idRequest, "Propuesta enviada", 0);
+
+        return "redirect:/staff/solicitudes";
     }
 }

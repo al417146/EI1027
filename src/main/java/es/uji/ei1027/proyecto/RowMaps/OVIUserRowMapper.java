@@ -4,6 +4,7 @@ import org.springframework.jdbc.core.RowMapper;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 public final class OVIUserRowMapper implements RowMapper<OVIUser> {
+
     public OVIUser mapRow(ResultSet rs, int rowNum) throws SQLException {
         OVIUser user = new OVIUser();
         user.setDNI(rs.getString("dni"));

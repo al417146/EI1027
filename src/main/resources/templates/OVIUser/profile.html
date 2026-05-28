@@ -10,10 +10,9 @@
     <div class="logo">
         <img th:src="@{/images/logo-ovi.png}"
              alt="Logo OVI"
-             class="logo-img" src="/images/logo-ovi.png">
+             class="logo-img" src="/static/images/logo-ovi.png">
     </div></header>
 <div class="container">
-
     <div class="header-primary">
         <h1>Actualizar mis datos</h1>
     </div>
@@ -44,7 +43,7 @@
                 <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></div>
             </div>
             <button type="submit" class="btn btn-primary">Guardar cambios</button>
-            <a href="/templates/OVIUser/OVIIndex.html" class="btn btn-secondary">Cancelar</a>
+            <a th:href="@{/OVIUser/OVIIndex}" class="btn btn-secondary">Cancelar</a>
         </form>
     </div>
 </div>

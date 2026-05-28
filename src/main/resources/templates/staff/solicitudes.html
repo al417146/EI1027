@@ -15,6 +15,7 @@
     <a th:href="@{/staff/oviusers}" class="nav-link">Usuarios OVI</a>
     <a th:href="@{/staff/solicitudes}" class="nav-link">Solicitudes</a>
     <a th:href="@{/staff/patis}" class="nav-link">Profesionales</a>
+    <a th:href="@{/speciality/list}" class="nav-link">Especialidades</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
@@ -26,35 +27,37 @@
     <div th:if="${#lists.isEmpty(solicitudes)}" class="alert-info">
       No hay solicitudes pendientes.
     </div>
-    <table th:unless="${#lists.isEmpty(solicitudes)}" class="data-table">
-      <thead>
-      <tr>
-        <th>Usuario</th>
-        <th>Fecha</th>
-        <th>Zona preferida</th>
-        <th>Especialidad</th>
-        <th>Género preferido</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="s : ${solicitudes}">
-        <td th:text="${s.DNIUser}"></td>
-        <td th:text="${#dates.format(s.date, 'dd/MM/yyyy')}"></td>
-        <td th:text="${s.preferredZone}"></td>
-        <td th:text="${s.preferredSpeciality}"></td>
-        <td th:text="${s.preferredGender}"></td>
-        <td><span class="estado-pendiente" th:text="${s.status}"></span></td>
-        <td>
-          <a th:href="@{/staff/solicitudes/match/{id}(id=${s.idRequest})}"
-             class="btn btn-outline">Ver candidatos</a>
-          <a th:href="@{/staff/solicitudes/denegar/{id}(id=${s.idRequest})}"
-             class="btn btn-secondary">Denegar</a>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div th:unless="${#lists.isEmpty(solicitudes)}">
+      <table class="data-table">
+        <thead>
+        <tr>
+          <th>ID</th>
+          <th>Usuario (DNI)</th>
+          <th>Fecha</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="s : ${solicitudes}">
+          <td th:text="${s.idRequest}"></td>
+          <td th:text="${s.DNIUser}"></td>
+          <td th:text="${#dates.format(s.date, 'dd/MM/yyyy')}"></td>
+          <td>
+            <span th:if="${s.status == 'Pendiente'}" class="estado-pendiente" th:text="${s.status}"></span>
+            <span th:if="${s.status == 'Propuesta enviada'}" class="estado-pendiente" th:text="${s.status}"></span>
+            <span th:if="${s.status == 'Aceptada'}" class="estado-aprobada" th:text="${s.status}"></span>
+            <span th:if="${s.status == 'Denegada'}" class="estado-rechazada" th:text="${s.status}"></span>
+          </td>
+          <td>
+            <a th:href="@{/staff/match/{id}(id=${s.idRequest})}" class="btn btn-outline">Generar propuesta</a>
+            <a th:href="@{/staff/solicitudes/aceptar/{id}(id=${s.idRequest})}" class="btn btn-success">Aceptar</a>
+            <a th:href="@{/staff/solicitudes/denegar/{id}(id=${s.idRequest})}" class="btn btn-secondary">Denegar</a>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <br>
     <a th:href="@{/staff/index}" class="btn btn-primary">Volver</a>
   </div>

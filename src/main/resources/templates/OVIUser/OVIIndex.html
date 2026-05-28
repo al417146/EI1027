@@ -8,31 +8,27 @@
 <body>
 <header class="top-bar">
   <div class="logo">
-    <img th:src="@{/images/logo-ovi.png}"
-         alt="Logo OVI"
-         class="logo-img" src="/images/logo-ovi.png">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
   </div>
   <nav class="nav-bar">
-
     <a th:href="@{/OVIUser/OVIIndex}" class="nav-link">Inicio</a>
-    <a th:href="@{/OVIUser/available}" class="btn btn-primary">Solicitar profesional</a>
+    <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+    <a th:href="@{/OVIUser/requestAssistance}" class="nav-link">Solicitar asistencia</a>
     <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
-    <a th:href="@{/OVIUser/list}" class="nav-link">Mis contratos</a>
-    <a th:href="@{/OVIUser/profile}" class="btn btn-outline">Editar mi perfil</a>
-    <a th:href="@{/logout}" class="nav-link">Cerrar sesión</a>
-
+    <a th:href="@{/OVIUser/list}" class="nav-link">Mis PAP/PATIS</a>
+    <a th:href="@{/OVIUser/misContratos}" class="nav-link">Mis contratos</a>
+    <a th:href="@{/OVIUser/profile}" class="nav-link">Editar mi perfil</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
-<div class="container">
+<main class="container">
   <div class="header-primary">
-    <h1 th:if="${#authentication != null}">
-      Bienvenido, <span th:text="${#authentication.name}"></span>
-    </h1>
+    <h1>Bienvenido</h1>
     <p>Oficina para la Vida Independiente</p>
   </div>
   <div class="card" style="margin:20px; text-align:center">
     <h2>¿Qué deseas hacer?</h2>
-    <div style="display: flex; gap: 15px; justify-content: center; margin-top: 20px;">
+    <div style="display:flex; gap:15px; justify-content:center; margin-top:20px;">
       <a th:href="@{/OVIUser/available}" class="btn btn-primary">Solicitar nuevo profesional</a>
       <a th:href="@{/OVIUser/requestAssistance}" class="btn btn-primary">Solicitar asistencia</a>
       <a th:href="@{/OVIUser/estadoSolicitud}" class="btn btn-secondary">Ver estado de solicitudes</a>
@@ -40,6 +36,6 @@
       <a th:href="@{/activity/list}" class="btn btn-outline">Ver actividades</a>
     </div>
   </div>
-</div>
+</main>
 </body>
 </html>

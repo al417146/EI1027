@@ -7,17 +7,15 @@
 </head>
 <body>
 <header class="top-bar">
-
   <div class="logo">
-    <img th:src="@{/images/logo-ovi.png}"
-         alt="Logo OVI"
-         class="logo-img" src="/images/logo-ovi.png">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
   </div>
   <nav class="nav-bar">
     <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
     <a th:href="@{/staff/oviusers}" class="nav-link">Usuarios OVI</a>
     <a th:href="@{/staff/solicitudes}" class="nav-link">Solicitudes</a>
     <a th:href="@{/staff/patis}" class="nav-link">Profesionales</a>
+    <a th:href="@{/speciality/list}" class="nav-link">Especialidades</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
@@ -29,48 +27,40 @@
     <div th:if="${#lists.isEmpty(usuarios)}" class="alert-info">
       No hay usuarios registrados.
     </div>
-    <table th:unless="${#lists.isEmpty(usuarios)}" class="data-table">
-      <thead>
-      <tr>
-        <th>DNI</th>
-        <th>Nombre</th>
-        <th>Teléfono</th>
-        <th>Email</th>
-        <th>Dirección</th>
-        <th>Estado</th>
-        <th>Acciones</th>
-      </tr>
-      </thead>
-      <tbody>
-      <tr th:each="u : ${usuarios}">
-        <td th:text="${u.DNI}"></td>
-        <td th:text="${u.name}"></td>
-        <td th:text="${u.phone}"></td>
-        <td th:text="${u.mail}"></td>
-        <td th:text="${u.address}"></td>
-        <td>
-                        <span th:if="${u.status == 'Aceptado'}"
-                              class="estado-aprobada" th:text="${u.status}"></span>
-          <span th:if="${u.status == 'Denegado'}"
-                class="estado-rechazada" th:text="${u.status}"></span>
-          <span th:if="${u.status == 'Pendiente'}"
-                class="estado-pendiente" th:text="${u.status}"></span>
-        </td>
-        <td>
-
-          <span th:if="${u.status == 'Aceptado'}"
-                class="estado-aprobada">Ya aceptado</span>
-
-          <span th:unless="${u.status == 'Aceptado'}">
-                            <a th:href="@{/staff/oviusers/aceptar/{dni}(dni=${u.DNI})}"
-                               class="btn btn-success">Aceptar</a>
-                            <a th:href="@{/staff/oviusers/denegar/{dni}(dni=${u.DNI})}"
-                               class="btn btn-secondary">Denegar</a>
-                        </span>
-        </td>
-      </tr>
-      </tbody>
-    </table>
+    <div th:unless="${#lists.isEmpty(usuarios)}">
+      <table class="data-table">
+        <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Nombre</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Estado</th>
+          <th>Acciones</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="u : ${usuarios}">
+          <td th:text="${u.DNI}"></td>
+          <td th:text="${u.name}"></td>
+          <td th:text="${u.phone}"></td>
+          <td th:text="${u.mail}"></td>
+          <td>
+            <span th:if="${u.status == 'Aceptado'}" class="estado-aprobada" th:text="${u.status}"></span>
+            <span th:if="${u.status == 'Denegado'}" class="estado-rechazada" th:text="${u.status}"></span>
+            <span th:if="${u.status == 'Pendiente'}" class="estado-pendiente" th:text="${u.status}"></span>
+          </td>
+          <td>
+            <th:block th:if="${u.status == 'Pendiente'}">
+              <a th:href="@{/staff/oviusers/aceptar/{dni}(dni=${u.DNI})}" class="btn btn-success">Aceptar</a>
+              <a th:href="@{/staff/oviusers/denegar/{dni}(dni=${u.DNI})}" class="btn btn-secondary">Denegar</a>
+            </th:block>
+            <span th:if="${u.status != 'Pendiente'}" class="estado-info">Ya gestionado</span>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
     <br>
     <a th:href="@{/staff/index}" class="btn btn-primary">Volver</a>
   </div>
