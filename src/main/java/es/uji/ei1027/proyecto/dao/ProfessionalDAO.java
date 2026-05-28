@@ -10,62 +10,50 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
-@Repository
 
+@Repository
 public class ProfessionalDAO {
 
     private JdbcTemplate jdbcTemplate;
 
     @Autowired
-    public void setDataSource(DataSource dataSource){
+    public void setDataSource(DataSource dataSource) {
         jdbcTemplate = new JdbcTemplate(dataSource);
     }
 
-    public void addProfessional(Professional p){
-        jdbcTemplate.update("INSERT INTO Professional VALUES (?,?,?,?,?,?,?,?)",
-                p.getDNI(),
-                p.getName(),
-                p.getPhone(),
-                p.getMail(),
-                p.getGenre(),
-                p.getAddress(),
-                p.getUniqueSpeciality(),
-                p.getDate());
+    public void addProfessional(Professional p) {
+        jdbcTemplate.update(
+            "INSERT INTO professional (dni, name, genre, phone, email, address, speciality) VALUES (?,?,?,?,?,?,?)",
+            p.getDNI(), p.getName(), p.getGenre(), p.getPhone(),
+            p.getMail(), p.getAddress(), p.getUniqueSpeciality());
     }
 
-    public void deleteProfessional(String DNI){
-        jdbcTemplate.update("DELETE FROM Professional WHERE DNI=?",
-                DNI);
+    public void deleteProfessional(String dni) {
+        jdbcTemplate.update("DELETE FROM professional WHERE dni=?", dni);
     }
 
-    public void updateProfessional(Professional p){
-        jdbcTemplate.update("UPDATE Professional SET name=?, phone=?, mail=?, genre=?, address=?, uniqueSpeciality=?, age=? WHERE DNI=?",
-                p.getName(),
-                p.getPhone(),
-                p.getMail(),
-                p.getGenre(),
-                p.getAddress(),
-                p.getUniqueSpeciality(),
-                p.getDate(),
-                p.getDNI());
+    public void updateProfessional(Professional p) {
+        jdbcTemplate.update(
+            "UPDATE professional SET name=?, genre=?, phone=?, email=?, address=?, speciality=? WHERE dni=?",
+            p.getName(), p.getGenre(), p.getPhone(), p.getMail(),
+            p.getAddress(), p.getUniqueSpeciality(), p.getDNI());
     }
 
-    public Professional getProfessional(String DNI){
-        try{
+    public Professional getProfessional(String dni) {
+        try {
             return jdbcTemplate.queryForObject(
-                    "SELECT * FROM Professional WHERE DNI=?",
-                    new ProfessionalRowMapper(),
-                    DNI);
-        } catch(EmptyResultDataAccessException e){
+                "SELECT * FROM professional WHERE dni=?",
+                new ProfessionalRowMapper(), dni);
+        } catch (EmptyResultDataAccessException e) {
             return null;
         }
     }
 
-    public List<Professional> getProfessionals(){
-        try{
-            return jdbcTemplate.query("SELECT * FROM Professional",
-                    new ProfessionalRowMapper());
-        } catch(EmptyResultDataAccessException e){
+    public List<Professional> getProfessionals() {
+        try {
+            return jdbcTemplate.query("SELECT * FROM professional",
+                new ProfessionalRowMapper());
+        } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }
     }

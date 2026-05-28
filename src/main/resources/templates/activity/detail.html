@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Detalle actividad</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/activity/list}" class="nav-link">Actividades</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1 th:text="${activity.name}"></h1>
+    <span th:if="${activity.type == 'formacio'}" class="estado-pendiente">Formación</span>
+    <span th:if="${activity.type == 'divulgacio'}" class="estado-aprobada">Divulgación</span>
+  </div>
+  <div class="card" style="margin:20px; padding:20px">
+    <p><strong>Lugar:</strong> <span th:text="${activity.place}"></span></p>
+    <p><strong>Fecha:</strong> <span th:text="${activity.actDate != null} ? ${#dates.format(activity.actDate, 'dd/MM/yyyy')} : '-'"></span></p>
+    <p th:if="${activity.description != null}"><strong>Descripción:</strong> <span th:text="${activity.description}"></span></p>
+    <p th:if="${activity.type == 'formacio' and activity.maxParticipants != null}">
+      <strong>Plazas:</strong> <span th:text="${numInscrits}"></span> / <span th:text="${activity.maxParticipants}"></span>
+    </p>
+    <div th:if="${activity.type == 'formacio' and session.user != null and session.user.rol == 'OVIUSER'}" style="margin-top:20px">
+      <div th:if="${jaInscrit}" class="alert-info">Ya estás inscrito en esta actividad.</div>
+      <form th:unless="${jaInscrit}" th:action="@{/activity/inscriure/{id}(id=${activity.idActivity})}" method="post">
+        <button type="submit" class="btn btn-primary">Inscribirme</button>
+      </form>
+    </div>
+    <div th:if="${session.user != null and session.user.rol == 'STAFF'}" style="margin-top:20px">
+      <a th:href="@{/activity/edit/{id}(id=${activity.idActivity})}" class="btn btn-outline">Editar</a>
+      <a th:href="@{/activity/assistencia/{id}(id=${activity.idActivity})}" class="btn btn-secondary">Registrar asistencia</a>
+      <a th:href="@{/activity/delete/{id}(id=${activity.idActivity})}" class="btn btn-secondary"
+         onclick="return confirm('¿Eliminar esta actividad?')">Eliminar</a>
+    </div>
+  </div>
+  <a th:href="@{/activity/list}" class="btn btn-secondary" style="margin:20px">Volver</a>
+</main>
+</body>
+</html>

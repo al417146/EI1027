@@ -64,8 +64,9 @@ public class RegisterController {
     @PostMapping("/register/pati")
     public String processPATI(@ModelAttribute("pati") PATI pati,
                               BindingResult bindingResult) {
-
+        pati.setStatus("Pendiente");
         patiDAO.addPATI(pati);
+        userDao.addUser(pati.getDNI(), pati.getPassword(), "PAP");
         return "redirect:/login";
     }
 

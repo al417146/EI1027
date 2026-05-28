@@ -18,6 +18,7 @@ public class PATI {
     String mail;
     String address;
     String status;
+    String password;
     HashMap<Integer, String> specialties;
 
     public HashMap<Integer, String> getSpecialties() {
@@ -89,6 +90,10 @@ public class PATI {
     }
 
     public void setStatus(String status) { this.status = status; }
+
+    public String getPassword() { return password; }
+
+    public void setPassword(String password) { this.password = password; }
 
     @Override
     public String toString() {

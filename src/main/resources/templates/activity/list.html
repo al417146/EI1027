@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Actividades OVI</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/}" class="nav-link">Inicio</a>
+    <a th:href="@{/activity/list}" class="nav-link">Actividades</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1>Agenda de actividades OVI</h1>
+    <p>Cursos, charlas y actos organizados por la OVI</p>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(activitats)}" class="alert-info">
+      No hay actividades programadas.
+    </div>
+    <div th:unless="${#lists.isEmpty(activitats)}" class="lista-candidatos">
+      <div th:each="a : ${activitats}" class="tarjeta-candidato">
+        <div style="display:flex; justify-content:space-between; align-items:center;">
+          <h3 th:text="${a.name}"></h3>
+          <span th:if="${a.type == 'formacio'}" class="estado-pendiente">Formación</span>
+          <span th:if="${a.type == 'divulgacio'}" class="estado-aprobada">Divulgación</span>
+        </div>
+        <p><strong>Lugar:</strong> <span th:text="${a.place}"></span></p>
+        <p><strong>Fecha:</strong> <span th:text="${a.actDate != null} ? ${#dates.format(a.actDate, 'dd/MM/yyyy')} : '-'"></span></p>
+        <p th:if="${a.description != null}"><strong>Descripción:</strong> <span th:text="${a.description}"></span></p>
+        <p th:if="${a.type == 'formacio' and a.maxParticipants != null}">
+          <strong>Plazas máximas:</strong> <span th:text="${a.maxParticipants}"></span>
+        </p>
+        <a th:href="@{/activity/detail/{id}(id=${a.idActivity})}" class="btn btn-outline">Ver detalle</a>
+      </div>
+    </div>
+    <div style="margin-top:20px" th:if="${session.user != null and session.user.rol == 'STAFF'}">
+      <a th:href="@{/activity/add}" class="btn btn-primary">Nueva actividad</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

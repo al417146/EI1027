@@ -1,54 +1,17 @@
 package es.uji.ei1027.proyecto.modelo;
 
 public class Registration {
-    String DNIUser, DNIAssistant, code;
-    int idAct;
-    boolean attendance;
+    int idRegist;
+    int idActivity;
+    String dniUser;
+    boolean attended;
 
-    public String getDNIUser() {
-        return DNIUser;
-    }
-
-    public void setDNIUser(String DNIUser) {
-        this.DNIUser = DNIUser;
-    }
-
-    public String getDNIAssistant() {
-        return DNIAssistant;
-    }
-
-    public void setDNIAssistant(String DNIAssistant) {
-        this.DNIAssistant = DNIAssistant;
-    }
-
-    public String getCode() {
-        return code;
-    }
-
-    public void setCode(String code) {
-        this.code = code;
-    }
-
-    public int getIdAct() { return idAct;}
-
-    public void setIdAct(int idAct) { this.idAct = idAct;}
-
-    public boolean isAttendace() {
-        return attendance;
-    }
-
-    public void setAttendace(boolean attendace) {
-        this.attendance = attendace;
-    }
-
-    @Override
-    public String toString() {
-        return "Registration {" +
-                " DNIUser = '" + DNIUser + '\'' +
-                ", DNIAssistant = '" + DNIAssistant + '\'' +
-                ", code = '" + code + '\'' +
-                ", idAct = " + idAct +
-                ", attendance = " + attendance +
-                '}';
-    }
+    public int getIdRegist() { return idRegist; }
+    public void setIdRegist(int idRegist) { this.idRegist = idRegist; }
+    public int getIdActivity() { return idActivity; }
+    public void setIdActivity(int idActivity) { this.idActivity = idActivity; }
+    public String getDniUser() { return dniUser; }
+    public void setDniUser(String dniUser) { this.dniUser = dniUser; }
+    public boolean isAttended() { return attended; }
+    public void setAttended(boolean attended) { this.attended = attended; }
 }
