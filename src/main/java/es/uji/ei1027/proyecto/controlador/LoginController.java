@@ -8,9 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 @Controller
 public class LoginController {
@@ -60,7 +58,7 @@ public class LoginController {
             return "redirect:/OVIUser/OVIIndex";
     }
 
-    @GetMapping("/logout")
+    @RequestMapping(value = "/logout", method = {RequestMethod.GET, RequestMethod.POST})
     public String logout(HttpSession session) {
         session.invalidate();
         return "redirect:/login";
@@ -83,5 +81,11 @@ public class LoginController {
 
         model.addAttribute("cancelUrl", cancelUrl);
         return "logoutConfirm";
+    }
+
+    @GetMapping("/encryptAll")
+    public String encryptAll() {
+        userDao.encryptExistingPasswords();
+        return "redirect:/login";
     }
 }

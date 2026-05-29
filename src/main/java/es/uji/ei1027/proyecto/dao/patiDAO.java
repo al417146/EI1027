@@ -150,5 +150,11 @@ public class patiDAO {
         } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }
+
+    }
+    public void addSpecialityToPATI(String dniPati, int idSpeciality) {
+        jdbcTemplate.update(
+                "INSERT INTO has (idspeciality, dnipati) VALUES (?, ?)",
+                idSpeciality, dniPati);
     }
 }

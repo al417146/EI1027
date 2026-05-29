@@ -7,6 +7,7 @@ import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
+import java.util.List;
 
 @Repository
 public class UserDao {
@@ -53,5 +54,22 @@ public class UserDao {
                 "INSERT INTO userdetails (dni, password, rol) VALUES (?, ?, ?)",
                 dni, encryptedPassword, rol
         );
+    }
+
+    public void encryptExistingPasswords() {
+        List<UserDetails> users = jdbcTemplate.query(
+                "SELECT dni, password, rol FROM userdetails",
+                (rs, rowNum) -> {
+                    UserDetails u = new UserDetails();
+                    u.setDni(rs.getString("dni"));
+                    u.setPassword(rs.getString("password"));
+                    u.setRol(rs.getString("rol"));
+                    return u;
+                });
+        for (UserDetails u : users) {
+            String encrypted = passwordEncryptor.encryptPassword(u.getPassword());
+            jdbcTemplate.update("UPDATE userdetails SET password=? WHERE dni=?",
+                    encrypted, u.getDni());
+        }
     }
 }

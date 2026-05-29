@@ -28,7 +28,7 @@
     <p th:if="${activity.type == 'formacio' and activity.maxParticipants != null}">
       <strong>Plazas:</strong> <span th:text="${numInscrits}"></span> / <span th:text="${activity.maxParticipants}"></span>
     </p>
-    <div th:if="${activity.type == 'formacio' and session.user != null and session.user.rol == 'OVIUSER'}" style="margin-top:20px">
+    <div th:if="${activity.type == 'formacio' and session.user != null and (session.user.rol == 'OVIUSER' or session.user.rol == 'PAP')}" style="margin-top:20px">
       <div th:if="${jaInscrit}" class="alert-info">Ya estás inscrito en esta actividad.</div>
       <form th:unless="${jaInscrit}" th:action="@{/activity/inscriure/{id}(id=${activity.idActivity})}" method="post">
         <button type="submit" class="btn btn-primary">Inscribirme</button>
@@ -41,7 +41,10 @@
          onclick="return confirm('¿Eliminar esta actividad?')">Eliminar</a>
     </div>
   </div>
-  <a th:href="@{/activity/list}" class="btn btn-secondary" style="margin:20px">Volver</a>
-</main>
+  <a th:if="${session.user != null and session.user.rol == 'PAP'}"
+     th:href="@{/PAP/index}" class="btn btn-secondary" style="margin:20px">Volver al inicio</a>
+  <a th:if="${session.user != null and session.user.rol == 'OVIUSER'}"
+     th:href="@{/OVIUser/OVIIndex}" class="btn btn-secondary" style="margin:20px">Volver al inicio</a>
+  <a th:href="@{/activity/list}" class="btn btn-outline" style="margin:20px">Ver todas las actividades</a></main>
 </body>
 </html>

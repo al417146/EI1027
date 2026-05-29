@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Formadores</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
+    <a th:href="@{/staff/formadores/list}" class="nav-link">Formadores</a>
+    <a th:href="@{/activity/list}" class="nav-link">Actividades</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1>Gestión de formadores</h1>
+    <p>Formadores y ponentes de actividades OVI</p>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(formadores)}" class="alert-info">
+      No hay formadores registrados.
+    </div>
+    <table th:unless="${#lists.isEmpty(formadores)}" class="data-table">
+      <thead>
+        <tr>
+          <th>DNI</th>
+          <th>Nombre</th>
+          <th>Teléfono</th>
+          <th>Email</th>
+          <th>Especialidad</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="p : ${formadores}">
+          <td th:text="${p.DNI}"></td>
+          <td th:text="${p.name}"></td>
+          <td th:text="${p.phone}"></td>
+          <td th:text="${p.mail}"></td>
+          <td th:text="${p.uniqueSpeciality}"></td>
+          <td>
+            <a th:href="@{/staff/formadores/edit/{dni}(dni=${p.DNI})}" class="btn btn-outline">Editar</a>
+            <a th:href="@{/staff/formadores/delete/{dni}(dni=${p.DNI})}" class="btn btn-secondary"
+               onclick="return confirm('¿Eliminar este formador?')">Eliminar</a>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:20px">
+      <a th:href="@{/staff/formadores/add}" class="btn btn-primary">Añadir formador</a>
+      <a th:href="@{/staff/index}" class="btn btn-secondary">Volver</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

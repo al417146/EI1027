@@ -2,6 +2,7 @@ package es.uji.ei1027.proyecto.controlador;
 
 import es.uji.ei1027.proyecto.Validator.OVIUserValidator;
 import es.uji.ei1027.proyecto.dao.OVIUserDAO;
+import es.uji.ei1027.proyecto.dao.SpecialityDAO;
 import es.uji.ei1027.proyecto.dao.UserDao;
 import es.uji.ei1027.proyecto.dao.patiDAO;
 import es.uji.ei1027.proyecto.modelo.OVIUser;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import java.util.List;
+
 @Controller
 public class RegisterController {
 
@@ -26,6 +29,9 @@ public class RegisterController {
 
     @Autowired
     private UserDao userDao;
+
+    @Autowired
+    private SpecialityDAO specialityDAO;
 
     @GetMapping("/register")
     public String chooseType() {
@@ -62,17 +68,18 @@ public class RegisterController {
     @GetMapping("/register/pati")
     public String showPATIForm(Model model) {
         model.addAttribute("pati", new PATI());
+        model.addAttribute("specialities", specialityDAO.getSpecialities());
         return "PatiRegister";
     }
 
-    @PostMapping("/register/pati")
+    /*@PostMapping("/register/pati")
     public String processPATI(@ModelAttribute("pati") PATI pati,
-<<<<<<< HEAD
+//<<<<<<< HEAD
                               BindingResult bindingResult) {
         pati.setStatus("Pendiente");
         patiDAO.addPATI(pati);
         userDao.addUser(pati.getDNI(), pati.getPassword(), "PAP");
-=======
+//=======
                               BindingResult bindingResult,
                               @RequestParam("password") String password) {   // ← recibe la contraseña aparte
         if (password == null || password.trim().isEmpty()) {
@@ -87,7 +94,22 @@ public class RegisterController {
         patiDAO.addPATI(pati);
         userDao.addUser(pati.getDNI(), password, "PAP");   // ← usa la contraseña recibida
 
->>>>>>> origin/main
+//>>>>>>> origin/main
+        return "redirect:/login";
+    }*/
+    @PostMapping("/register/pati")
+    public String processPATI(@ModelAttribute("pati") PATI pati,
+                              BindingResult bindingResult,
+                              @RequestParam(value = "selectedSpecialities", required = false) List<Integer> selectedSpecialities) {
+        if (bindingResult.hasErrors()) return "PatiRegister";
+        pati.setStatus("Pendiente");
+        patiDAO.addPATI(pati);
+        userDao.addUser(pati.getDNI(), pati.getPassword(), "PAP");
+        if (selectedSpecialities != null) {
+            for (Integer idSpec : selectedSpecialities) {
+                patiDAO.addSpecialityToPATI(pati.getDNI(), idSpec);
+            }
+        }
         return "redirect:/login";
     }
 }

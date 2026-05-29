@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class RegistrationDAO {
@@ -71,6 +72,18 @@ public class RegistrationDAO {
                 new RegistrationRowMapper(), idRegist);
         } catch (EmptyResultDataAccessException e) {
             return null;
+        }
+    }
+
+    public List<Map<String, Object>> getRegistrationsWithActivityName(String dniUser) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT ar.idregist, ar.idactivity, ar.attended, a.name " +
+                            "FROM activityregistration ar " +
+                            "JOIN activity a ON ar.idactivity = a.idactivity " +
+                            "WHERE ar.dniuser = ?", dniUser);
+        } catch (Exception e) {
+            return new ArrayList<>();
         }
     }
 }

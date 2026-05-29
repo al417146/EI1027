@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Solicitudes pendientes</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/PAP/index}" class="nav-link">Inicio</a>
+    <a th:href="@{/activity/list}" class="nav-link">Actividades</a>
+    <a th:href="@{/PAP/misActividades}" class="nav-link">Mis actividades</a>
+    <a th:href="@{/PAP/solicitudesPendientes}" class="nav-link">Solicitudes</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1>Solicitudes pendientes</h1>
+    <p>Solicitudes de asistencia que te han sido asignadas</p>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(solicitudes)}" class="alert-info">
+      No tienes solicitudes pendientes.
+    </div>
+    <table th:unless="${#lists.isEmpty(solicitudes)}" class="data-table">
+      <thead>
+        <tr>
+          <th>Usuario</th>
+          <th>Fecha</th>
+          <th>Zona</th>
+          <th>Especialidad</th>
+          <th>Estado</th>
+          <th>Acción</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="s : ${solicitudes}">
+          <td th:text="${s.DNIUser}"></td>
+          <td th:text="${s.date != null} ? ${#dates.format(s.date, 'dd/MM/yyyy')} : '-'"></td>
+          <td th:text="${s.preferredZone}"></td>
+          <td th:text="${s.preferredSpeciality}"></td>
+          <td><span class="estado-pendiente" th:text="${s.status}"></span></td>
+          <td>
+            <form th:action="@{/PAP/aceptarSolicitud}" method="post">
+              <input type="hidden" name="idRequest" th:value="${s.idRequest}">
+              <button type="submit" class="btn btn-success">Aceptar</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:20px">
+      <a th:href="@{/PAP/index}" class="btn btn-secondary">Volver</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

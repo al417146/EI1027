@@ -14,7 +14,7 @@
     <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
     <a th:href="@{/staff/oviusers}" class="nav-link">Usuarios OVI</a>
     <a th:href="@{/staff/solicitudes}" class="nav-link">Solicitudes</a>
-    <a th:href="@{/staff/patis}" class="nav-link">Profesionales</a>
+    <a th:href="@{/staff/formadores/list}" class="nav-link">Formadores</a>
     <a th:href="@{/speciality/list}" class="nav-link">Especialidades</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
@@ -37,9 +37,9 @@
         <a th:href="@{/staff/solicitudes}" class="btn btn-primary">Ver solicitudes</a>
       </div>
       <div class="tarjeta-candidato">
-        <h3>Profesionales</h3>
-        <p>Lista de profesionales activos e inactivos.</p>
-        <a th:href="@{/staff/patis}" class="btn btn-primary">Ver profesionales</a>
+        <h3>Formadores</h3>
+        <p>Lista de formadores activos e inactivos.</p>
+        <a th:href="@{/staff/formadores/list}" class="btn btn-primary">Ver formadores</a>
       </div>
       <div class="tarjeta-candidato">
 <<<<<<< HEAD
@@ -48,12 +48,12 @@
         <a th:href="@{/activity/list}" class="btn btn-primary">Ver actividades</a>
 =======
         <h3>Especialidades</h3>
-        <p>Gestionar especialidades de los profesionales.</p>
+        <p>Gestionar especialidades de los formadores.</p>
         <a th:href="@{/speciality/list}" class="btn btn-primary">Ver especialidades</a>
       </div>
       <div class="tarjeta-candidato">
         <h3>Propuestas de asistencia</h3>
-        <p>Gestionar solicitudes y asignar profesionales.</p>
+        <p>Gestionar solicitudes y asignar formadores.</p>
         <a th:href="@{/staff/solicitudes}" class="btn btn-primary">Ver propuestas</a>
 >>>>>>> origin/main
       </div>
