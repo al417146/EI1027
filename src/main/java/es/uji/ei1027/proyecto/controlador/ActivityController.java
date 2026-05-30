@@ -1,17 +1,21 @@
 package es.uji.ei1027.proyecto.controlador;
 
 import es.uji.ei1027.proyecto.dao.ActivityDAO;
+import es.uji.ei1027.proyecto.dao.OVIUserDAO;
 import es.uji.ei1027.proyecto.dao.ProfessionalDAO;
 import es.uji.ei1027.proyecto.dao.RegistrationDAO;
 import es.uji.ei1027.proyecto.modelo.Activity;
+import es.uji.ei1027.proyecto.modelo.OVIUser;
 import es.uji.ei1027.proyecto.modelo.Registration;
 import es.uji.ei1027.proyecto.modelo.UserDetails;
+import es.uji.ei1027.proyecto.service.CertificadoService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -26,6 +30,12 @@ public class ActivityController {
 
     @Autowired
     private ProfessionalDAO professionalDAO;
+
+    @Autowired
+    private CertificadoService certificadoService;
+
+    @Autowired
+    private OVIUserDAO oviUserDAO;
 
     private boolean isStaff(HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
@@ -130,5 +140,27 @@ public class ActivityController {
         if (!isStaff(session)) return "redirect:/login";
         registrationDAO.updateAttendance(idRegist, attended);
         return "redirect:/activity/assistencia/" + idActivity;
+    }
+
+    @GetMapping("/emitirCertificados/{id}")
+    public String emitirCertificados(@PathVariable int id, Model model, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
+        Activity activity = activityDAO.getActivity(id);
+        List<Registration> inscrits = registrationDAO.getRegistrationsByActivity(id);
+        List<String> certificados = new ArrayList<>();
+        for (Registration r : inscrits) {
+            if (r.isAttended()) {
+                OVIUser user = oviUserDAO.getOVIUser(r.getDniUser());
+                if (user != null) {
+                    String cert = certificadoService.generarCertificado(user, activity);
+                    certificadoService.guardarEnHistorialFormador(activity, cert);
+                    String resultado = certificadoService.enviarCertificado(user.getMail(), cert);
+                    certificados.add(resultado);
+                }
+            }
+        }
+        model.addAttribute("activity", activity);
+        model.addAttribute("certificados", certificados);
+        return "activity/certificados";
     }
 }

@@ -5,7 +5,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class Professional {
-    String DNI, name, phone, mail, genre, address, uniqueSpeciality;
+    String DNI, name, phone, mail, genre, address, uniqueSpeciality, historial;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
     Date birthDate;
@@ -74,6 +74,10 @@ public class Professional {
         this.birthDate = birthDate;
     }
 
+    public String getHistorial() { return historial; }
+
+    public void setHistorial(String historial) { this.historial = historial; }
+
     @Override
     public String toString() {
         return "Professional {" +
@@ -84,7 +88,8 @@ public class Professional {
                 ", genre = '" + genre + '\'' +
                 ", address = '" + address + '\'' +
                 ", uniqueSpeciality = '" + uniqueSpeciality + '\'' +
-                ", birthDate = " + birthDate + // Corregido para usar el atributo real
+                ", birthDate = " + birthDate + '\'' +
+                ", historial = " + historial +// Corregido para usar el atributo real
                 '}';
     }
 }

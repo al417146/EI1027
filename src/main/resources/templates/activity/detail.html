@@ -39,6 +39,9 @@
       <a th:href="@{/activity/assistencia/{id}(id=${activity.idActivity})}" class="btn btn-secondary">Registrar asistencia</a>
       <a th:href="@{/activity/delete/{id}(id=${activity.idActivity})}" class="btn btn-secondary"
          onclick="return confirm('¿Eliminar esta actividad?')">Eliminar</a>
+      <a th:if="${activity.type == 'formacio'}"
+         th:href="@{/activity/emitirCertificados/{id}(id=${activity.idActivity})}"
+         class="btn btn-primary">Emitir certificados</a>
     </div>
   </div>
   <a th:if="${session.user != null and session.user.rol == 'PAP'}"

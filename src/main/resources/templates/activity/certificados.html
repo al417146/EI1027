@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Certificados emitidos</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
+    <a th:href="@{/activity/list}" class="nav-link">Actividades</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1>Certificados emitidos</h1>
+    <p>Actividad: <span th:text="${activity.name}"></span></p>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(certificados)}" class="alert-info">
+      No hay participantes con asistencia registrada.
+    </div>
+    <div th:each="cert : ${certificados}">
+      <pre th:text="${cert}" style="background:#f4f6f7; padding:20px; border-radius:8px; margin-bottom:20px; font-family:monospace;"></pre>
+    </div>
+    <a th:href="@{/activity/detail/{id}(id=${activity.idActivity})}" class="btn btn-secondary">Volver</a>
+  </div>
+</main>
+</body>
+</html>

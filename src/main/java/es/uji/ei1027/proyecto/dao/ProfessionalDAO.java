@@ -57,4 +57,20 @@ public class ProfessionalDAO {
             return new ArrayList<>();
         }
     }
+
+    public String getHistorial(String dni) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT historial FROM professional WHERE dni = ?",
+                    String.class, dni);
+        } catch (Exception e) {
+            return null;
+        }
+    }
+
+    public void updateHistorial(String dni, String historial) {
+        jdbcTemplate.update(
+                "UPDATE professional SET historial = ? WHERE dni = ?",
+                historial, dni);
+    }
 }

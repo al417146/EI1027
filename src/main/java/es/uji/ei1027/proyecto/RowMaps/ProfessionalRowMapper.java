@@ -13,6 +13,7 @@ public final class ProfessionalRowMapper implements RowMapper<Professional> {
         p.setGenre(rs.getString("genre"));
         p.setAddress(rs.getString("address"));
         p.setUniqueSpeciality(rs.getString("speciality"));
+        p.setHistorial(rs.getString("historial"));
         return p;
     }
 }
