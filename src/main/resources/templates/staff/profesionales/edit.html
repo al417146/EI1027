@@ -12,7 +12,12 @@
   </div>
   <nav class="nav-bar">
     <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
+    <a th:href="@{/staff/oviusers}" class="nav-link">Usuarios OVI</a>
+    <a th:href="@{/staff/solicitudes}" class="nav-link">Solicitudes</a>
+    <a th:href="@{/staff/patis}" class="nav-link">PAP/PATIS</a>
     <a th:href="@{/staff/formadores/list}" class="nav-link">Formadores</a>
+    <a th:href="@{/speciality/list}" class="nav-link">Especialidades</a>
+    <a th:href="@{/staff/stats}" class="nav-link">Estadísticas</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
@@ -24,28 +29,34 @@
     <form th:action="@{/staff/formadores/edit}" th:object="${professional}" method="post">
       <input type="hidden" th:field="*{DNI}">
       <div class="form-group">
-        <label>DNI</label>
-        <input type="text" th:value="*{DNI}" class="form-control" readonly>
+        <label for="DNI">DNI</label>
+        <input type="text" id="DNI" th:value="*{DNI}" class="form-control" readonly>
+        <div th:if="${#fields.hasErrors('DNI')}" th:errors="*{DNI}" class="error"></div>
       </div>
       <div class="form-group">
-        <label>Nombre completo</label>
-        <input type="text" th:field="*{name}" class="form-control" required>
+        <label for="name">Nombre completo</label>
+        <input type="text" id="name" th:field="*{name}" class="form-control" required>
+        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>
       </div>
       <div class="form-group">
-        <label>Teléfono</label>
-        <input type="text" th:field="*{phone}" class="form-control">
+        <label for="phone">Teléfono</label>
+        <input type="text" id="phone" th:field="*{phone}" class="form-control">
+        <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error"></div>
       </div>
       <div class="form-group">
-        <label>Email</label>
-        <input type="email" th:field="*{mail}" class="form-control">
+        <label for="mail">Email</label>
+        <input type="email" id="mail" th:field="*{mail}" class="form-control">
+        <div th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="error"></div>
       </div>
       <div class="form-group">
-        <label>Dirección</label>
-        <input type="text" th:field="*{address}" class="form-control">
+        <label for="address">Dirección</label>
+        <input type="text" id="address" th:field="*{address}" class="form-control">
+        <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></div>
       </div>
       <div class="form-group">
-        <label>Especialidad</label>
-        <input type="text" th:field="*{uniqueSpeciality}" class="form-control">
+        <label for="uniqueSpeciality">Especialidad</label>
+        <input type="text" id="uniqueSpeciality" th:field="*{uniqueSpeciality}" class="form-control">
+        <div th:if="${#fields.hasErrors('uniqueSpeciality')}" th:errors="*{uniqueSpeciality}" class="error"></div>
       </div>
       <button type="submit" class="btn btn-primary">Guardar cambios</button>
       <a th:href="@{/staff/formadores/list}" class="btn btn-secondary">Cancelar</a>

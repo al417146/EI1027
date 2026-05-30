@@ -89,7 +89,7 @@ public class Professional {
                 ", address = '" + address + '\'' +
                 ", uniqueSpeciality = '" + uniqueSpeciality + '\'' +
                 ", birthDate = " + birthDate + '\'' +
-                ", historial = " + historial +// Corregido para usar el atributo real
+                ", historial = " + historial +
                 '}';
     }
 }

@@ -14,8 +14,10 @@
     <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
     <a th:href="@{/staff/oviusers}" class="nav-link">Usuarios OVI</a>
     <a th:href="@{/staff/solicitudes}" class="nav-link">Solicitudes</a>
+    <a th:href="@{/staff/patis}" class="nav-link">PAP/PATIS</a>
     <a th:href="@{/staff/formadores/list}" class="nav-link">Formadores</a>
     <a th:href="@{/speciality/list}" class="nav-link">Especialidades</a>
+    <a th:href="@{/staff/stats}" class="nav-link">Estadísticas</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
@@ -25,38 +27,53 @@
     <p>Bienvenido al panel de gestión</p>
   </div>
   <div style="padding:20px">
+
     <div class="lista-candidatos">
       <div class="tarjeta-candidato">
         <h3>Usuarios OVI</h3>
         <p>Lista de todos los usuarios OVI registrados.</p>
         <a th:href="@{/staff/oviusers}" class="btn btn-primary">Ver usuarios</a>
       </div>
+
       <div class="tarjeta-candidato">
         <h3>Solicitudes pendientes</h3>
         <p>Solicitudes pendientes de evaluación.</p>
         <a th:href="@{/staff/solicitudes}" class="btn btn-primary">Ver solicitudes</a>
       </div>
+
       <div class="tarjeta-candidato">
         <h3>Formadores</h3>
         <p>Lista de formadores activos e inactivos.</p>
         <a th:href="@{/staff/formadores/list}" class="btn btn-primary">Ver formadores</a>
       </div>
+
       <div class="tarjeta-candidato">
-<<<<<<< HEAD
         <h3>Actividades</h3>
         <p>Gestionar cursos, charlas y actos de la OVI.</p>
         <a th:href="@{/activity/list}" class="btn btn-primary">Ver actividades</a>
-=======
         <h3>Especialidades</h3>
         <p>Gestionar especialidades de los formadores.</p>
         <a th:href="@{/speciality/list}" class="btn btn-primary">Ver especialidades</a>
       </div>
+
       <div class="tarjeta-candidato">
         <h3>Propuestas de asistencia</h3>
         <p>Gestionar solicitudes y asignar formadores.</p>
         <a th:href="@{/staff/solicitudes}" class="btn btn-primary">Ver propuestas</a>
->>>>>>> origin/main
       </div>
+
+      <div class="tarjeta-candidato">
+        <h3>Estadísticas e informes</h3>
+        <p>Consulta las métricas clave sobre servicios, usuarios y actividades.</p>
+        <a th:href="@{/staff/stats}" class="btn btn-primary">Ver estadísticas</a>
+      </div>
+
+      <div class="tarjeta-candidato">
+        <h3>Profesionales PAP/PATI</h3>
+        <p>Gestionar profesionales de asistencia personal.</p>
+        <a th:href="@{/staff/patis}" class="btn btn-primary">Ver profesionales</a>
+      </div>
+
     </div>
   </div>
 </main>

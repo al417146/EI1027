@@ -1,65 +1,77 @@
 package es.uji.ei1027.proyecto.controlador;
 
-
+import es.uji.ei1027.proyecto.dao.ActivityDAO;
 import es.uji.ei1027.proyecto.dao.ContractDAO;
+import es.uji.ei1027.proyecto.dao.RegistrationDAO;
 import es.uji.ei1027.proyecto.dao.RequestDAO;
 import es.uji.ei1027.proyecto.modelo.Contract;
 import es.uji.ei1027.proyecto.modelo.Request;
+import es.uji.ei1027.proyecto.modelo.UserDetails;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.Date;
 import java.util.List;
-import java.util.Random;
-
 
 @Controller
-@RequestMapping("/PAP-PATI")
-public class patiController {
+@RequestMapping("/PAP")
+public class PATIController {
 
     @Autowired
-    RequestDAO requestDAO;
+    private ActivityDAO activityDAO;
 
     @Autowired
-    ContractDAO contractDAO;
+    private RegistrationDAO registrationDAO;
 
-    // Listar las solicitudes pendientes dirigidas a este PAP/PATI
-    @GetMapping("/solicitudesPendientes")
-    public String listSolicitudesPendientes(Model model, Principal principal) {
-        String dniPati = principal.getName();
-        List<Request> solicitudes = requestDAO.getPendingRequestsForPati(dniPati);
-        model.addAttribute("solicitudes", solicitudes);
-        return "PAP-PATI/solicitudesPendientes";
+    @Autowired
+    private RequestDAO requestDAO;
+
+    @Autowired
+    private ContractDAO contractDAO;
+
+    private boolean isPAP(HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        return user != null && "PAP".equals(user.getRol());
     }
 
-    //Acepta una solicitud y genera el contrato
+    @GetMapping("/index")
+    public String index(HttpSession session) {
+        if (!isPAP(session)) return "redirect:/login";
+        return "PAP/index";
+    }
+
+    @GetMapping("/misActividades")
+    public String misActividades(Model model, HttpSession session) {
+        if (!isPAP(session)) return "redirect:/login";
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        model.addAttribute("inscripciones", registrationDAO.getRegistrationsWithActivityName(user.getDni()));
+        return "PAP/misActividades";
+    }
+
+    @GetMapping("/solicitudesPendientes")
+    public String listSolicitudesPendientes(Model model, HttpSession session) {
+        if (!isPAP(session)) return "redirect:/login";
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        List<Request> solicitudes = requestDAO.getPendingRequestsForPati(user.getDni());
+        model.addAttribute("solicitudes", solicitudes);
+        return "PAP/solicitudesPendientes";
+    }
+
     @PostMapping("/aceptarSolicitud")
-    public String acceptRequest(@RequestParam int idRequest){
-        Request r = requestDAO.getRequestById(idRequest);
-
-        if (r == null || "Pendiente".equals(r.getStatus()))
-            return "redirect:/pati/solicitudesPendientes?error=invalid";
-
+    public String acceptRequest(@RequestParam int idRequest, HttpSession session) {
+        if (!isPAP(session)) return "redirect:/login";
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        Request r = requestDAO.getRequest(idRequest);
+        if (r == null) return "redirect:/PAP/solicitudesPendientes?error=invalid";
         Contract contract = new Contract();
-        int idContract =  new Random().nextInt();
-        contract.setIdContract(idContract);
         contract.setDateStart(new Date());
-        contract.setDateEnd(null); //Por predeterminado, los contratos serán indefinidos
         contract.setIdRequest(r.getIdRequest());
-        contract.setDNICand(r.getDNICand());
-
-        r.setIdContract(idContract);
-
+        contract.setDNICand(user.getDni());
         contractDAO.addContract(contract);
-        requestDAO.updateRequestStatus(r.getIdRequest(), "Aceptado", idContract);
-
-        return "redirect:/pati/solicitudesPendientes?success=accepted";
+        requestDAO.updateRequestStatus(r.getIdRequest(), "Aceptada", 0);
+        return "redirect:/PAP/solicitudesPendientes";
     }
 }
-

@@ -1,6 +1,7 @@
 package es.uji.ei1027.proyecto.controlador;
 
 import es.uji.ei1027.proyecto.Validator.OVIUserValidator;
+import es.uji.ei1027.proyecto.Validator.PATIValidator;
 import es.uji.ei1027.proyecto.dao.OVIUserDAO;
 import es.uji.ei1027.proyecto.dao.SpecialityDAO;
 import es.uji.ei1027.proyecto.dao.UserDao;
@@ -72,36 +73,20 @@ public class RegisterController {
         return "PatiRegister";
     }
 
-    /*@PostMapping("/register/pati")
-    public String processPATI(@ModelAttribute("pati") PATI pati,
-//<<<<<<< HEAD
-                              BindingResult bindingResult) {
-        pati.setStatus("Pendiente");
-        patiDAO.addPATI(pati);
-        userDao.addUser(pati.getDNI(), pati.getPassword(), "PAP");
-//=======
-                              BindingResult bindingResult,
-                              @RequestParam("password") String password) {   // ← recibe la contraseña aparte
-        if (password == null || password.trim().isEmpty()) {
-            bindingResult.rejectValue("password", "required", "La contraseña es obligatoria");
-        }
 
-        if (bindingResult.hasErrors()) {
-            return "PatiRegister";
-        }
-
-        pati.setStatus("Pendiente");
-        patiDAO.addPATI(pati);
-        userDao.addUser(pati.getDNI(), password, "PAP");   // ← usa la contraseña recibida
-
-//>>>>>>> origin/main
-        return "redirect:/login";
-    }*/
     @PostMapping("/register/pati")
     public String processPATI(@ModelAttribute("pati") PATI pati,
                               BindingResult bindingResult,
-                              @RequestParam(value = "selectedSpecialities", required = false) List<Integer> selectedSpecialities) {
-        if (bindingResult.hasErrors()) return "PatiRegister";
+                              @RequestParam(value = "selectedSpecialities", required = false) List<Integer> selectedSpecialities,
+                              Model model) {
+
+        PATIValidator validator = new PATIValidator();
+        validator.validate(pati, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("specialities", specialityDAO.getSpecialities());
+            return "PatiRegister";
+        }
         pati.setStatus("Pendiente");
         patiDAO.addPATI(pati);
         userDao.addUser(pati.getDNI(), pati.getPassword(), "PAP");

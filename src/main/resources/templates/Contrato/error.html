@@ -1,10 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Error</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
-
+<header class="top-bar">
+    <div class="logo">
+        <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+    </div>
+</header>
+<main class="container">
+    <div class="header-primary">
+        <h1 th:text="${errorName}">Error</h1>
+    </div>
+    <div class="card" style="margin:30px auto; max-width:600px; text-align:center">
+        <p th:text="${message}">Ha ocurrido un error al procesar tu petición</p>
+        <a th:href="@{${session.user != null ?
+            (session.user.rol == 'STAFF' ? '/staff/index' :
+             (session.user.rol == 'PAP' ? '/PAP/index' : '/OVIUser/OVIIndex')) : '/'}}"
+           class="btn btn-primary">Volver al inicio</a>
+    </div>
+</main>
 </body>
 </html>

@@ -1,5 +1,6 @@
 package es.uji.ei1027.proyecto.controlador;
 
+import es.uji.ei1027.proyecto.Validator.ProfessionalValidator;
 import es.uji.ei1027.proyecto.dao.ProfessionalDAO;
 import es.uji.ei1027.proyecto.modelo.Professional;
 import es.uji.ei1027.proyecto.modelo.UserDetails;
@@ -7,6 +8,7 @@ import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
@@ -36,8 +38,14 @@ public class ProfessionalController {
     }
 
     @PostMapping("/add")
-    public String processAdd(@ModelAttribute Professional professional, HttpSession session) {
+    public String processAdd(@ModelAttribute Professional professional, BindingResult bindingResult, Model model, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
+        ProfessionalValidator validator = new ProfessionalValidator();
+        validator.validate(professional, bindingResult);
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("professional", professional);
+            return "staff/profesionales/add";
+        }
         professionalDAO.addProfessional(professional);
         return "redirect:/staff/formadores/list";
     }
@@ -50,8 +58,22 @@ public class ProfessionalController {
     }
 
     @PostMapping("/edit")
-    public String processEdit(@ModelAttribute Professional professional, HttpSession session) {
-        if (!isStaff(session)) return "redirect:/login";
+    public String processEdit(@ModelAttribute("professional") Professional professional,
+                              BindingResult bindingResult,
+                              Model model,
+                              HttpSession session) {
+        if (!isStaff(session)) {
+            return "redirect:/login";
+        }
+
+        ProfessionalValidator validator = new ProfessionalValidator();
+        validator.validate(professional, bindingResult);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("professional", professional);
+            return "staff/profesionales/edit";
+        }
+
         professionalDAO.updateProfessional(professional);
         return "redirect:/staff/formadores/list";
     }
