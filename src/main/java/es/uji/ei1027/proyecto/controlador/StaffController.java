@@ -1,15 +1,13 @@
 package es.uji.ei1027.proyecto.controlador;
 
-import es.uji.ei1027.proyecto.dao.OVIUserDAO;
-import es.uji.ei1027.proyecto.dao.RequestCandidatesDAO;
-import es.uji.ei1027.proyecto.dao.RequestDAO;
-import es.uji.ei1027.proyecto.dao.patiDAO;
+import es.uji.ei1027.proyecto.dao.*;
 import es.uji.ei1027.proyecto.modelo.OVIUser;
 import es.uji.ei1027.proyecto.modelo.PATI;
 import es.uji.ei1027.proyecto.modelo.Request;
 import es.uji.ei1027.proyecto.modelo.UserDetails;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -31,6 +29,9 @@ public class StaffController {
 
     @Autowired
     private RequestCandidatesDAO requestCandidatesDAO;
+
+    @Autowired
+    private ContractDAO cDAO;
 
     private boolean isStaff(HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
@@ -75,8 +76,7 @@ public class StaffController {
     @GetMapping("/solicitudes")
     public String listarSolicitudes(Model model, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
-        // Asumiendo que requestDAO.getPendingRequests() devuelve las solicitudes con estado "Pendiente"
-        model.addAttribute("solicitudes", requestDAO.getPendingRequests());
+        model.addAttribute("solicitudes", requestDAO.getRequestsWithUserName("Pendiente"));
         return "staff/solicitudes";
     }
 
@@ -153,25 +153,48 @@ public class StaffController {
     }
 
     // Procesar la selección de candidatos y enviar propuesta
-    @PostMapping("/solicitudes/propuesta")
-    public String enviarPropuesta(@RequestParam int idRequest,
-                                  @RequestParam(value = "dniCands", required = false) List<String> dniCands,
-                                  HttpSession session) {
+    @PostMapping("/solicitudes/proposta")
+    public String enviarProposta(@RequestParam int idRequest,
+                                 @RequestParam(required = false) List<String> dniCands,
+                                 HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
+        if (dniCands == null || dniCands.isEmpty())
+            return "redirect:/staff/solicitudes/match/" + idRequest;
 
-        if (dniCands == null || dniCands.isEmpty()) {
-            return "redirect:/staff/match/" + idRequest + "?error=noCandidates";
-        }
-
-        // Guardar los candidatos seleccionados en request_candidates
         requestCandidatesDAO.deleteCandidates(idRequest);
         for (String dni : dniCands) {
             requestCandidatesDAO.addCandidate(idRequest, dni);
         }
 
-        // Cambiar estado de la solicitud a "Propuesta enviada"
-        requestDAO.updateRequestStatus(idRequest, "Propuesta enviada", 0);
-
+        Request request = requestDAO.getRequest(idRequest);
+        if (request != null) {
+            request.setStatus("Propuesta enviada");
+            request.setDNICand(null);
+            requestDAO.updateRequest(request);
+        }
         return "redirect:/staff/solicitudes";
     }
+
+    /*@GetMapping("/match/{idRequest}")
+    public String matchCandidatos(@PathVariable int idRequest, Model model, HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
+        Request request = requestDAO.getRequest(idRequest);
+        if (request == null) return "redirect:/staff/solicitudes";
+
+        OVIUser user = oviUserDAO.getOVIUser(request.getDNIUser());
+
+        List<PATI> candidates = patiDAO.findMatch(
+                request.getPreferredZone(),
+                request.getPreferredGender(),
+                request.getPreferredSpeciality()
+        );
+        for (PATI p : candidates) {
+            p.setSpecialties(patiDAO.getSpecialtiesForPati(p.getDNI()));
+        }
+
+        model.addAttribute("request", request);
+        model.addAttribute("user", user);
+        model.addAttribute("candidates", candidates);
+        return "staff/match";
+    }*/
 }

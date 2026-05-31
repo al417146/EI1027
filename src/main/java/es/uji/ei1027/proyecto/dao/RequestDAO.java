@@ -10,6 +10,8 @@ import org.springframework.stereotype.Repository;
 import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
+
 @Repository
 public class RequestDAO {
 
@@ -111,6 +113,43 @@ public class RequestDAO {
                     new RequestRowMapper()
             );
         } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+    public List<Map<String, Object>> getRequestsWithUserName(String status) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT r.*, o.name as username, p.name as candname " +
+                            "FROM request r " +
+                            "LEFT JOIN oviuser o ON r.dniuser = o.dni " +
+                            "LEFT JOIN pap_pati p ON r.dnicand = p.dni " +
+                            "WHERE r.status = ? ORDER BY r.date DESC", status);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Map<String, Object>> getRequestsWithCandName(String dniUser) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT r.*, p.name as candname " +
+                            "FROM request r " +
+                            "LEFT JOIN pap_pati p ON r.dnicand = p.dni " +
+                            "WHERE r.dniuser = ? ORDER BY r.date DESC", dniUser);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Map<String, Object>> getAllRequestsWithUserName() {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT r.*, o.name as username, p.name as candname " +
+                            "FROM request r " +
+                            "LEFT JOIN oviuser o ON r.dniuser = o.dni " +
+                            "LEFT JOIN pap_pati p ON r.dnicand = p.dni " +
+                            "ORDER BY r.date DESC");
+        } catch (Exception e) {
             return new ArrayList<>();
         }
     }

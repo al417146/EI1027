@@ -12,10 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.Random;
+import java.util.*;
 
 @Controller
 @RequestMapping("/OVIUser")
@@ -38,6 +35,9 @@ public class OVIUserController {
 
     @Autowired
     private RequestValidator requestValidator;
+
+    @Autowired
+    private RequestCandidatesDAO requestCandidatesDAO;
 
     // Panel principal
     @GetMapping("/OVIIndex")
@@ -219,13 +219,9 @@ public class OVIUserController {
         if (request == null || !request.getDNIUser().equals(user.getDni()))
             return "redirect:/OVIUser/estadoSolicitud";
 
-        List<PATI> candidatos = new java.util.ArrayList<>();
-        if (request.getDNICand() != null && !request.getDNICand().isEmpty()) {
-            PATI pati = patiDAO.getPATI(request.getDNICand());
-            if (pati != null) {
-                pati.setSpecialties(patiDAO.getSpecialtiesForPati(pati.getDNI()));
-                candidatos.add(pati);
-            }
+        List<PATI> candidatos = requestCandidatesDAO.getCandidatesForRequest(idRequest);
+        for (PATI p : candidatos) {
+            p.setSpecialties(patiDAO.getSpecialtiesForPati(p.getDNI()));
         }
 
         model.addAttribute("request", request);
@@ -254,13 +250,13 @@ public class OVIUserController {
         }
         return "redirect:/OVIUser/estadoSolicitud";
     }
-    @GetMapping("/misContratos")
+    /*@GetMapping("/misContratos")
     public String listMisContratos(Model model, HttpSession session,
                                    @RequestParam(value = "tipo", required = false, defaultValue = "activos") String tipo) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
 
-        List<Contract> todosContratos = cDAO.getContractsByUser(user.getDni());
+        List<Map<String, Object>> todosContratos = cDAO.getContractsByUserWithName(user.getDni());
         Date hoy = new Date();
 
         List<Contract> filtrados = new ArrayList<>();
@@ -285,5 +281,27 @@ public class OVIUserController {
         model.addAttribute("contratos", filtrados);
         model.addAttribute("tipoActual", tipo);
         return "OVIUser/misContratos";
+    }*/
+    @GetMapping("/misContratos")
+    public String listMisContratos(Model model, HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+        model.addAttribute("contratos", cDAO.getContractsByUserWithName(user.getDni()));
+        return "OVIUser/misContratos";
+    }
+    @PostMapping("/signarContracte")
+    public String signarContracte(@RequestParam int idContract, HttpSession session) {
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        if (user == null) return "redirect:/login";
+        Contract contract = cDAO.getContractById(idContract);
+        String pdf = "========================================\n" +
+                "         CONTRACTE D'ASSISTÈNCIA PERSONAL\n" +
+                "========================================\n" +
+                "ID Contracte: " + idContract + "\n" +
+                "Data d'inici: " + contract.getDateStart() + "\n" +
+                "Signat digitalment per l'OVIUser: " + user.getDni() + "\n" +
+                "========================================\n";
+        cDAO.signarContracte(idContract, pdf);
+        return "redirect:/OVIUser/misContratos";
     }
 }

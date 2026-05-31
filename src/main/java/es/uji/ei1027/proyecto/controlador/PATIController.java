@@ -32,6 +32,9 @@ public class PATIController {
     @Autowired
     private ContractDAO contractDAO;
 
+    @Autowired
+    private ContractDAO cDAO;
+
     private boolean isPAP(HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         return user != null && "PAP".equals(user.getRol());
@@ -55,8 +58,7 @@ public class PATIController {
     public String listSolicitudesPendientes(Model model, HttpSession session) {
         if (!isPAP(session)) return "redirect:/login";
         UserDetails user = (UserDetails) session.getAttribute("user");
-        List<Request> solicitudes = requestDAO.getPendingRequestsForPati(user.getDni());
-        model.addAttribute("solicitudes", solicitudes);
+        model.addAttribute("solicitudes", requestDAO.getRequestsWithUserName("Propuesta enviada"));
         return "PAP/solicitudesPendientes";
     }
 
@@ -73,5 +75,13 @@ public class PATIController {
         contractDAO.addContract(contract);
         requestDAO.updateRequestStatus(r.getIdRequest(), "Aceptada", 0);
         return "redirect:/PAP/solicitudesPendientes";
+    }
+
+    @GetMapping("/misContratos")
+    public String misContratos(Model model, HttpSession session) {
+        if (!isPAP(session)) return "redirect:/login";
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        model.addAttribute("contratos", cDAO.getContractsByPATIWithName(user.getDni()));
+        return "PAP/misContratos";
     }
 }

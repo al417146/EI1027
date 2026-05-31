@@ -5,6 +5,10 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class Contract {
+    String status;
+
+    String pdf;
+
     int idContract;
 
     @DateTimeFormat(pattern = "dd-MM-yyyy")
@@ -48,6 +52,14 @@ public class Contract {
     public String getDNICand() { return DNICand;}
 
     public void setDNICand(String DNICand) {this.DNICand = DNICand;}
+
+    public String getStatus() { return status; }
+
+    public void setStatus(String status) { this.status = status; }
+
+    public String getPdf() { return pdf; }
+
+    public void setPdf(String pdf) { this.pdf = pdf; }
 
     @Override
     public String toString() {

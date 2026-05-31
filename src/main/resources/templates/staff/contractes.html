@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Gestión de contratos</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
+    <a th:href="@{/staff/contractes}" class="nav-link">Contratos</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1>Gestión de contratos</h1>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(contractes)}" class="alert-info">
+      No hay contratos registrados.
+    </div>
+    <table th:unless="${#lists.isEmpty(contractes)}" class="data-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Profesional</th>
+          <th>Fecha inicio</th>
+          <th>Fecha fin</th>
+          <th>Estado</th>
+          <th>Modificar fecha fin</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="c : ${contractes}">
+          <td th:text="${c.idContract}"></td>
+          <td th:text="${c.DNICand}"></td>
+          <td th:text="${c.dateStart}"></td>
+          <td th:text="${c.dateEnd != null} ? ${c.dateEnd} : 'En curso'"></td>
+          <td><span th:text="${c.status}" th:class="${c.status == 'Actiu'} ? 'estado-aprobada' : 'estado-pendiente'"></span></td>
+          <td>
+            <form th:action="@{/staff/contracte/updateDateEnd}" method="post" style="display:flex; gap:5px;">
+              <input type="hidden" name="idContract" th:value="${c.idContract}">
+              <input type="date" name="dateEnd" class="form-control" style="width:150px;">
+              <button type="submit" class="btn btn-outline">Actualizar</button>
+            </form>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <div style="margin-top:20px">
+      <a th:href="@{/staff/index}" class="btn btn-secondary">Volver</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

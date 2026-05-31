@@ -33,8 +33,8 @@
       <table class="data-table">
         <thead>
         <tr>
-          <th>ID</th>
-          <th>Usuario (DNI)</th>
+          <th>DNI</th>
+          <th>Nombre</th>
           <th>Fecha</th>
           <th>Estado</th>
           <th>Acciones</th>
@@ -42,8 +42,8 @@
         </thead>
         <tbody>
         <tr th:each="s : ${solicitudes}">
-          <td th:text="${s.idRequest}"></td>
-          <td th:text="${s.DNIUser}"></td>
+          <td th:text="${s.dniuser}"></td>
+          <td th:text="${s.username}"></td>
           <td th:text="${#dates.format(s.date, 'dd/MM/yyyy')}"></td>
           <td>
             <span th:if="${s.status == 'Pendiente'}" class="estado-pendiente" th:text="${s.status}"></span>
@@ -52,9 +52,9 @@
             <span th:if="${s.status == 'Denegada'}" class="estado-rechazada" th:text="${s.status}"></span>
           </td>
           <td>
-            <a th:href="@{/staff/match/{id}(id=${s.idRequest})}" class="btn btn-outline">Generar propuesta</a>
-            <a th:href="@{/staff/solicitudes/aceptar/{id}(id=${s.idRequest})}" class="btn btn-success">Aceptar</a>
-            <a th:href="@{/staff/solicitudes/denegar/{id}(id=${s.idRequest})}" class="btn btn-secondary">Denegar</a>
+            <a th:href="@{/staff/match/{id}(id=${s['idrequest']})}" class="btn btn-outline">Generar propuesta</a>
+            <a th:href="@{/staff/solicitudes/aceptar/{id}(id=${s['idrequest']})}" class="btn btn-success">Aceptar</a>
+            <a th:href="@{/staff/solicitudes/denegar/{id}(id=${s['idrequest']})}" class="btn btn-secondary">Denegar</a>
           </td>
         </tr>
         </tbody>

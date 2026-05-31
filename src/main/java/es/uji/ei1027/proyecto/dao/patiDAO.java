@@ -19,10 +19,10 @@ public class patiDAO {
 
     public int countPATIsByOVIUser(String dni) {
         String sql = "SELECT COUNT(*) FROM pap_pati p " +
-                "JOIN contract c ON p.dni = c.dnipati " +
-                "JOIN request r ON c.idcontract = r.idcontract " +
-                "JOIN oviuser o ON o.dni = r.dniuser " +
-                "WHERE o.dni = ?";
+                "JOIN contract c ON p.dni = c.dnicand " +
+                "JOIN request r ON c.idrequest = r.idrequest " +
+                "LEFT JOIN oviuser o ON o.dni = r.dniuser " +
+                "WHERE r.dniuser = ?";
         return jdbcTemplate.queryForObject(sql, Integer.class, dni);
     }
 
@@ -36,10 +36,10 @@ public class patiDAO {
             List<PATI> patis = jdbcTemplate.query(
                     "SELECT p.* " +
                             "FROM pap_pati p " +
-                            "JOIN contract c ON p.dni = c.dnipati " +
-                            "JOIN request r ON c.idcontract = r.idcontract " +
-                            "JOIN oviuser o ON o.dni = r.dniuser " +
-                            "WHERE o.dni = ?",
+                            "JOIN contract c ON p.dni = c.dnicand " +
+                            "JOIN request r ON c.idrequest = r.idrequest " +
+                            "LEFT JOIN oviuser o ON o.dni = r.dniuser " +
+                            "WHERE r.dniuser = ?",
                     new PATIRowMapper(),
                     dniOviUser
             );

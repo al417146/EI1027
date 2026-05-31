@@ -30,7 +30,8 @@
     <table th:unless="${#lists.isEmpty(solicitudes)}" class="data-table">
       <thead>
         <tr>
-          <th>Usuario</th>
+          <th>DNI</th>
+          <th>Nombre</th>
           <th>Fecha</th>
           <th>Zona</th>
           <th>Especialidad</th>
@@ -40,7 +41,8 @@
       </thead>
       <tbody>
         <tr th:each="s : ${solicitudes}">
-          <td th:text="${s.DNIUser}"></td>
+          <td th:text="${s.dniuser}"></td>
+          <td th:text="${s.username}"></td>
           <td th:text="${s.date != null} ? ${#dates.format(s.date, 'dd/MM/yyyy')} : '-'"></td>
           <td th:text="${s.preferredZone}"></td>
           <td th:text="${s.preferredSpeciality}"></td>

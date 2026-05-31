@@ -11,6 +11,7 @@ import javax.sql.DataSource;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 @Repository
 public class ContractDAO {
@@ -94,6 +95,45 @@ public class ContractDAO {
                     "SELECT c.* FROM contract c JOIN request r ON c.idrequest = r.idrequest WHERE r.dniuser = ?",
                     new ContractRowMapper(), dniUser);
         } catch (EmptyResultDataAccessException e) {
+            return new ArrayList<>();
+        }
+    }
+
+    public List<Map<String, Object>> getContractsByUserWithName(String dniUser) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT c.*, p.name as candname " +
+                            "FROM contract c " +
+                            "JOIN request r ON c.idrequest = r.idrequest " +
+                            "LEFT JOIN pap_pati p ON c.dnicand = p.dni " +
+                            "WHERE r.dniuser = ?", dniUser);
+        } catch (Exception e) {
+            e.printStackTrace();
+            return new ArrayList<>();
+        }
+    }
+
+    public void signarContracte(int idContract, String pdf) {
+        jdbcTemplate.update(
+                "UPDATE contract SET status = 'Actiu', pdf = ? WHERE idcontract = ?",
+                pdf, idContract);
+    }
+
+    public void updateDateEnd(int idContract, java.util.Date dateEnd) {
+        jdbcTemplate.update(
+                "UPDATE contract SET dateend = ? WHERE idcontract = ?",
+                dateEnd, idContract);
+    }
+
+    public List<Map<String, Object>> getContractsByPATIWithName(String dniCand) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT c.*, o.name as username " +
+                            "FROM contract c " +
+                            "JOIN request r ON c.idrequest = r.idrequest " +
+                            "LEFT JOIN oviuser o ON r.dniuser = o.dni " +
+                            "WHERE c.dnicand = ?", dniCand);
+        } catch (Exception e) {
             return new ArrayList<>();
         }
     }
