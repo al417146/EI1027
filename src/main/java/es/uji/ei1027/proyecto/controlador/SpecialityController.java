@@ -10,7 +10,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 @Controller
-@RequestMapping("/Speciality")
+@RequestMapping("/speciality")
 public class SpecialityController {
 
     private SpecialityDAO specialityDAO;
@@ -29,41 +29,41 @@ public class SpecialityController {
     public String list(Model model, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         model.addAttribute("specialities", specialityDAO.getSpecialities());
-        return "Speciality/list";
+        return "speciality/list";
     }
 
     @GetMapping("/add")
     public String add(Model model, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         model.addAttribute("speciality", new Speciality());
-        return "Speciality/add";
+        return "speciality/add";
     }
 
     @PostMapping("/add")
     public String processAdd(@ModelAttribute Speciality speciality, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         specialityDAO.addSpeciality(speciality);
-        return "redirect:/Speciality/list";
+        return "redirect:/speciality/list";
     }
 
     @GetMapping("/delete/{id}")
     public String delete(@PathVariable int id, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         specialityDAO.deleteSpeciality(id);
-        return "redirect:/Speciality/list";
+        return "redirect:/speciality/list";
     }
 
     @GetMapping("/edit/{id}")
     public String edit(Model model, @PathVariable int id, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         model.addAttribute("speciality", specialityDAO.getSpeciality(id));
-        return "Speciality/update";
+        return "speciality/update";
     }
 
     @PostMapping("/edit")
     public String processEdit(@ModelAttribute Speciality speciality, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         specialityDAO.updateSpeciality(speciality);
-        return "redirect:/Speciality/list";
+        return "redirect:/speciality/list";
     }
 }

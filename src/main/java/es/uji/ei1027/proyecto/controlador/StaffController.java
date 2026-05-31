@@ -1,10 +1,7 @@
 package es.uji.ei1027.proyecto.controlador;
 
 import es.uji.ei1027.proyecto.dao.*;
-import es.uji.ei1027.proyecto.modelo.OVIUser;
-import es.uji.ei1027.proyecto.modelo.PATI;
-import es.uji.ei1027.proyecto.modelo.Request;
-import es.uji.ei1027.proyecto.modelo.UserDetails;
+import es.uji.ei1027.proyecto.modelo.*;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -12,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -175,26 +173,23 @@ public class StaffController {
         return "redirect:/staff/solicitudes";
     }
 
-    /*@GetMapping("/match/{idRequest}")
-    public String matchCandidatos(@PathVariable int idRequest, Model model, HttpSession session) {
+    @GetMapping("/contractes")
+    public String listarContractes(Model model, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
-        Request request = requestDAO.getRequest(idRequest);
-        if (request == null) return "redirect:/staff/solicitudes";
+        model.addAttribute("contractes", cDAO.getContracts());
+        return "contractes";
+    }
 
-        OVIUser user = oviUserDAO.getOVIUser(request.getDNIUser());
-
-        List<PATI> candidates = patiDAO.findMatch(
-                request.getPreferredZone(),
-                request.getPreferredGender(),
-                request.getPreferredSpeciality()
-        );
-        for (PATI p : candidates) {
-            p.setSpecialties(patiDAO.getSpecialtiesForPati(p.getDNI()));
+    @PostMapping("/contracte/updateDateEnd")
+    public String updateDateEnd(@RequestParam int idContract,
+                                @RequestParam @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date dateEnd,
+                                HttpSession session) {
+        if (!isStaff(session)) return "redirect:/login";
+        Contract c = cDAO.getContractById(idContract);
+        if (c != null) {
+            c.setDateEnd(dateEnd);
+            cDAO.updateContract(c);
         }
-
-        model.addAttribute("request", request);
-        model.addAttribute("user", user);
-        model.addAttribute("candidates", candidates);
-        return "staff/match";
-    }*/
+        return "redirect:/staff/contractes";
+    }
 }
