@@ -250,43 +250,33 @@ public class OVIUserController {
         }
         return "redirect:/OVIUser/estadoSolicitud";
     }
-    /*@GetMapping("/misContratos")
+    @GetMapping("/misContratos")
     public String listMisContratos(Model model, HttpSession session,
-                                   @RequestParam(value = "tipo", required = false, defaultValue = "activos") String tipo) {
+                                   @RequestParam(value = "tipo", required = false, defaultValue = "todos") String tipo) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
 
-        List<Map<String, Object>> todosContratos = cDAO.getContractsByUserWithName(user.getDni());
+        List<Map<String, Object>> todos = cDAO.getContractsByUserWithName(user.getDni());
         Date hoy = new Date();
 
-        List<Contract> filtrados = new ArrayList<>();
-        for (Contract c : todosContratos) {
-            boolean activo = (c.getDateEnd() == null || c.getDateEnd().after(hoy)) && c.getDateStart().before(hoy);
-            boolean pasado = c.getDateEnd() != null && c.getDateEnd().before(hoy);
-            boolean futuro = c.getDateStart().after(hoy);
+        List<Map<String, Object>> filtrados = new ArrayList<>();
+        for (Map<String, Object> c : todos) {
+            Date dateStart = (Date) c.get("datestart");
+            Date dateEnd   = (Date) c.get("dateend");
 
-            if ("activos".equals(tipo) && activo) filtrados.add(c);
-            else if ("pasados".equals(tipo) && pasado) filtrados.add(c);
-            else if ("futuros".equals(tipo) && futuro) filtrados.add(c);
-            else if ("todos".equals(tipo)) filtrados.add(c);
-            else if ("activos".equals(tipo) && !activo) {} // no añadir
-            else if ("pasados".equals(tipo) && !pasado) {}
-            else if ("futuros".equals(tipo) && !futuro) {}
-            else if (!"activos".equals(tipo) && !"pasados".equals(tipo) && !"futuros".equals(tipo) && !"todos".equals(tipo)) {
-                // por defecto, activos
-                if (activo) filtrados.add(c);
-            }
+            boolean activo = dateStart != null && dateStart.before(hoy)
+                    && (dateEnd == null || dateEnd.after(hoy));
+            boolean pasado = dateEnd != null && dateEnd.before(hoy);
+            boolean futuro = dateStart != null && dateStart.after(hoy);
+
+            if ("activos".equals(tipo)  && activo)  filtrados.add(c);
+            else if ("pasados".equals(tipo) && pasado)  filtrados.add(c);
+            else if ("futuros".equals(tipo) && futuro)  filtrados.add(c);
+            else if ("todos".equals(tipo))              filtrados.add(c);
         }
 
         model.addAttribute("contratos", filtrados);
         model.addAttribute("tipoActual", tipo);
-        return "OVIUser/misContratos";
-    }*/
-    @GetMapping("/misContratos")
-    public String listMisContratos(Model model, HttpSession session) {
-        UserDetails user = (UserDetails) session.getAttribute("user");
-        if (user == null) return "redirect:/login";
-        model.addAttribute("contratos", cDAO.getContractsByUserWithName(user.getDni()));
         return "OVIUser/misContratos";
     }
     @PostMapping("/signarContracte")

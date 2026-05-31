@@ -12,55 +12,73 @@
   </div>
   <nav class="nav-bar">
     <a th:href="@{/OVIUser/OVIIndex}" class="nav-link">Inicio</a>
+    <a th:href="@{/OVIUser/available}" class="nav-link">Solicitar profesional</a>
+    <a th:href="@{/OVIUser/requestAssistance}" class="nav-link">Solicitar asistencia</a>
     <a th:href="@{/OVIUser/estadoSolicitud}" class="nav-link">Mis solicitudes</a>
+    <a th:href="@{/OVIUser/list}" class="nav-link">Mis PAP/PATIS</a>
     <a th:href="@{/OVIUser/misContratos}" class="nav-link">Mis contratos</a>
-    <a th:href="@{/OVIUser/misCertificados}" class="nav-link">Mis certificados</a>
+    <a th:href="@{/OVIUser/profile}" class="nav-link">Editar mi perfil</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
 <main class="container">
   <div class="header-primary">
     <h1>Mis contratos</h1>
+    <p>Consulta el estado de tus contratos de asistencia personal</p>
   </div>
   <div style="padding:20px">
+
+    <!-- Filtros -->
+    <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
+      <a th:href="@{/OVIUser/misContratos(tipo='todos')}"
+         th:class="${tipoActual == 'todos'} ? 'btn btn-primary' : 'btn btn-outline'">Todos</a>
+      <a th:href="@{/OVIUser/misContratos(tipo='activos')}"
+         th:class="${tipoActual == 'activos'} ? 'btn btn-primary' : 'btn btn-outline'">Activos</a>
+      <a th:href="@{/OVIUser/misContratos(tipo='pasados')}"
+         th:class="${tipoActual == 'pasados'} ? 'btn btn-primary' : 'btn btn-outline'">Pasados</a>
+      <a th:href="@{/OVIUser/misContratos(tipo='futuros')}"
+         th:class="${tipoActual == 'futuros'} ? 'btn btn-primary' : 'btn btn-outline'">Futuros</a>
+    </div>
+
     <div th:if="${#lists.isEmpty(contratos)}" class="alert-info">
-      No tienes contratos registrados.
+      No hay contratos para el filtro seleccionado.
     </div>
     <div th:unless="${#lists.isEmpty(contratos)}">
       <table class="data-table">
         <thead>
-          <tr>
-            <th>Profesional</th>
-            <th>Fecha inicio</th>
-            <th>Fecha fin</th>
-            <th>Estado contrato</th>
-            <th>Contrato PDF</th>
-            <th>Acción</th>
-          </tr>
+        <tr>
+          <th>Profesional</th>
+          <th>Fecha inicio</th>
+          <th>Fecha fin</th>
+          <th>Estado contrato</th>
+          <th>Contrato PDF</th>
+          <th>Acción</th>
+        </tr>
         </thead>
         <tbody>
-          <tr th:each="c : ${contratos}">
-            <td th:text="${c['candname']}"></td>
-            <td th:text="${c['datestart']}"></td>
-            <td th:text="${c['dateend'] != null} ? ${c['dateend']} : 'En curso'"></td>
-            <td>
+        <tr th:each="c : ${contratos}">
+          <td th:text="${c['candname']}"></td>
+          <td th:text="${c['datestart']}"></td>
+          <td th:text="${c['dateend'] != null} ? ${c['dateend']} : 'En curso'"></td>
+          <td>
               <span th:text="${c['status']}"
-                    th:class="${c['status'] == 'Actiu'} ? 'estado-aprobada' : 'estado-pendiente'"></span>
-            </td>
-            <td>
-              <td>
-              <pre th:if="${c['pdf'] != null}" th:text="${c['pdf']}" style="background:#f4f6f7; padding:10px; border-radius:5px; font-size:11px; max-width:300px; overflow:auto;"></pre>
-              <span th:unless="${c['pdf'] != null}">Pendiente de firma</span>
-            </td>
-            <td>
-              <form th:if="${c['status'] == 'Pendent de signatura'}"
-                    th:action="@{/OVIUser/signarContracte}" method="post">
-                <input type="hidden" name="idContract" th:value="${c['idcontract']}">
-                <button type="submit" class="btn btn-success">Firmar contrato</button>
-              </form>
-              <span th:unless="${c['status'] == 'Pendent de signatura'}" class="estado-aprobada">Firmado</span>
-            </td>
-          </tr>
+                    th:class="${c['status'] == 'Activo'} ? 'estado-aprobada' :
+                              (${c['status'] == 'Rechazado'} ? 'estado-rechazada' : 'estado-pendiente')"></span>
+          </td>
+          <td>
+              <pre th:if="${c['pdf'] != null}" th:text="${c['pdf']}"
+                   style="background:#f4f6f7; padding:10px; border-radius:5px; font-size:11px; max-width:300px; overflow:auto;"></pre>
+            <span th:unless="${c['pdf'] != null}">Pendiente de firma</span>
+          </td>
+          <td>
+            <form th:if="${c['status'] == 'Pendiente'}"
+                  th:action="@{/OVIUser/signarContracte}" method="post">
+              <input type="hidden" name="idContract" th:value="${c['idcontract']}">
+              <button type="submit" class="btn btn-success">Firmar contrato</button>
+            </form>
+            <span th:unless="${c['status'] == 'Pendiente'}" class="estado-aprobada">Firmado</span>
+          </td>
+        </tr>
         </tbody>
       </table>
     </div>

@@ -115,7 +115,7 @@ public class ContractDAO {
 
     public void signarContracte(int idContract, String pdf) {
         jdbcTemplate.update(
-                "UPDATE contract SET status = 'Actiu', pdf = ? WHERE idcontract = ?",
+                "UPDATE contract SET status = 'Activo', pdf = ? WHERE idcontract = ?",
                 pdf, idContract);
     }
 

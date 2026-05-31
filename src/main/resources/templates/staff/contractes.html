@@ -41,7 +41,7 @@
           <td th:text="${c.DNICand}"></td>
           <td th:text="${c.dateStart}"></td>
           <td th:text="${c.dateEnd != null} ? ${c.dateEnd} : 'En curso'"></td>
-          <td><span th:text="${c.status}" th:class="${c.status == 'Actiu'} ? 'estado-aprobada' : 'estado-pendiente'"></span></td>
+          <td><span th:text="${c.status}" th:class="${c.status == 'Activo'} ? 'estado-aprobada' : 'estado-pendiente'"></span></td>
           <td>
             <form th:action="@{/staff/contracte/updateDateEnd}" method="post" style="display:flex; gap:5px;">
               <input type="hidden" name="idContract" th:value="${c.idContract}">
