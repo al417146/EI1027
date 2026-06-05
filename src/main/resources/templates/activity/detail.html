@@ -43,6 +43,12 @@
          th:href="@{/activity/emitirCertificados/{id}(id=${activity.idActivity})}"
          class="btn btn-primary">Emitir certificados</a>
     </div>
+    <div th:if="${param.ple}" class="alert-info" style="margin-bottom:10px;">
+      Esta actividad está completa. No hay plazas disponibles.
+    </div>
+    <div th:if="${param.passada}" class="alert-info" style="margin-bottom:10px;">
+      Esta actividad ya ha finalizado. No es posible inscribirse.
+    </div>
   </div>
   <a th:if="${session.user != null and session.user.rol == 'PAP'}"
      th:href="@{/PAP/index}" class="btn btn-secondary" style="margin:20px">Volver al inicio</a>

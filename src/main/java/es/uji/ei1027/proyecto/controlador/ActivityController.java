@@ -73,6 +73,8 @@ public class ActivityController {
         int inscrits = activityDAO.countRegistrations(id);
         if (activity.getMaxParticipants() != null && inscrits >= activity.getMaxParticipants())
             return "redirect:/activity/detail/" + id + "?ple";
+        if (activity.getActDate() != null && activity.getActDate().before(new java.util.Date()))
+            return "redirect:/activity/detail/" + id + "?passada";
         if (!registrationDAO.isRegistered(id, user.getDni())) {
             Registration r = new Registration();
             r.setIdActivity(id);
@@ -80,6 +82,7 @@ public class ActivityController {
             r.setAttended(false);
             registrationDAO.addRegistration(r);
         }
+
         return "redirect:/activity/detail/" + id + "?inscrit";
     }
 
