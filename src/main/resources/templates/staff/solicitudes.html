@@ -26,6 +26,10 @@
     <h1>Solicitudes pendientes</h1>
   </div>
   <div style="padding:20px">
+    <div style="margin-bottom:15px;">
+      <a th:href="@{/staff/solicitudes(tipus='pendents')}" class="btn btn-primary" th:classappend="${tipus == 'pendents'} ? ' btn-active' : ''">Pendientes</a>
+      <a th:href="@{/staff/solicitudes(tipus='rebutjades')}" class="btn btn-secondary" th:classappend="${tipus == 'rebutjades'} ? ' btn-active' : ''">Denegadas</a>
+    </div>
     <div th:if="${#lists.isEmpty(solicitudes)}" class="alert-info">
       No hay solicitudes pendientes.
     </div>
@@ -53,8 +57,7 @@
           </td>
           <td>
             <a th:href="@{/staff/match/{id}(id=${s['idrequest']})}" class="btn btn-outline">Generar propuesta</a>
-            <a th:href="@{/staff/solicitudes/aceptar/{id}(id=${s['idrequest']})}" class="btn btn-success">Aceptar</a>
-            <a th:href="@{/staff/solicitudes/denegar/{id}(id=${s['idrequest']})}" class="btn btn-secondary">Denegar</a>
+            <a th:href="@{/staff/solicitudes/denegar/{id}(id=${s['idrequest']})}" class="btn btn-secondary" onclick="return confirm('¿Seguro que quieres denegar esta solicitud?')">Denegar</a>
           </td>
         </tr>
         </tbody>

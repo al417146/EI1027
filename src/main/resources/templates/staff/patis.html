@@ -55,7 +55,7 @@
           <td>
             <th:block th:if="${p.status == 'Pendiente'}">
               <a th:href="@{/staff/patis/aceptar/{dni}(dni=${p.DNI})}" class="btn btn-success">Aceptar</a>
-              <a th:href="@{/staff/patis/denegar/{dni}(dni=${p.DNI})}" class="btn btn-secondary">Denegar</a>
+              <a th:href="@{/staff/patis/denegar/{dni}(dni=${p.DNI})}" class="btn btn-secondary" onclick="return confirm('¿Seguro que quieres denegar este profesional?')">Denegar</a>
             </th:block>
             <span th:if="${p.status != 'Pendiente'}" class="estado-info">Ya gestionado</span>
           </td>

@@ -53,7 +53,16 @@
       </div>
       <div class="form-group">
         <label>Dirección</label>
-        <input type="text" th:field="*{address}" class="form-control" required>
+        <select th:field="*{address}" class="form-control" required>
+          <option value="">Selecciona una zona</option>
+          <option value="Barcelona">Barcelona</option>
+          <option value="Bremen">Bremen</option>
+          <option value="Castellón">Castellón</option>
+          <option value="Estrasburgo">Estrasburgo</option>
+          <option value="Madrid">Madrid</option>
+          <option value="Valencia">Valencia</option>
+          <option value="Villarreal">Villarreal</option>
+        </select>
       </div>
       <div class="form-group">
         <label>Contraseña</label>
@@ -66,6 +75,15 @@
           <input type="checkbox" name="selectedSpecialities" th:value="${s.idSpeciality}">
           <span th:text="${s.descrip}"></span>
         </div>
+      </div>
+      <div class="form-group">
+        <input type="checkbox" id="lopd" name="lopd" required>
+        <label for="lopd">
+          He llegit i accepte la
+          <a href="#" onclick="alert('Política de privacitat: Les teves dades seran tractades per la OVI Castelló per gestionar el servei d\'assistència personal, d\'acord amb el RGPD i la LOPD.')">
+            política de privacitat
+          </a> i el tractament de les meves dades personals (LOPD/RGPD).
+        </label>
       </div>
       <button type="submit" class="btn btn-secondary" style="width:100%;">Registrarse</button>
       <a th:href="@{/register}" class="btn btn-outline" style="width:100%; margin-top:10px;">Cancelar</a>

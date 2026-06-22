@@ -72,9 +72,15 @@ public class StaffController {
 
     // Listar solicitudes pendientes (todas las que tienen estado "Pendiente")
     @GetMapping("/solicitudes")
-    public String listarSolicitudes(Model model, HttpSession session) {
+    public String listarSolicitudes(Model model, HttpSession session,
+                                    @RequestParam(value = "tipus", required = false, defaultValue = "pendents") String tipus) {
         if (!isStaff(session)) return "redirect:/login";
-        model.addAttribute("solicitudes", requestDAO.getRequestsWithUserName("Pendiente"));
+        if ("rebutjades".equals(tipus)) {
+            model.addAttribute("solicitudes", requestDAO.getRequestsWithUserName("Denegada"));
+        } else {
+            model.addAttribute("solicitudes", requestDAO.getRequestsWithUserName("Pendiente"));
+        }
+        model.addAttribute("tipus", tipus);
         return "staff/solicitudes";
     }
 

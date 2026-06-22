@@ -1,29 +1,53 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>OVI - Oficina para la Vida Independiente</title>
-    <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <meta charset="UTF-8">
+  <title>OVI - Oficina per a la Vida Independent</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
 </head>
 <body>
 <header class="top-bar">
-    <div class="logo">
-        <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
-    </div>
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/activity/list}" class="nav-link">Actividades</a>
+    <a th:href="@{/login}" class="nav-link">Iniciar sesión</a>
+    <a th:href="@{/register}" class="nav-link">Registrarse</a>
+  </nav>
 </header>
 <main class="container">
-    <div class="header-primary" style="text-align:center; padding: 40px 0;">
-        <h1>Bienvenido a la OVI</h1>
-        <p>Oficina para la Vida Independiente</p>
+  <div class="header-primary" style="text-align:center; padding:40px 0;">
+    <h1>Oficina per a la Vida Independent</h1>
+    <p>"Sole Arnau Ripollés" de Castelló</p>
+  </div>
+  <div style="padding:20px">
+    <div class="lista-candidatos">
+      <div class="tarjeta-candidato">
+        <h3>🤝 Assistència Personal</h3>
+        <p>Connectem persones amb diversitat funcional amb professionals d'assistència personal (PAP/PATI) per impulsar la vida autònoma.</p>
+      </div>
+      <div class="tarjeta-candidato">
+        <h3>📚 Formació i Divulgació</h3>
+        <p>Organitzem cursos, xerrades i actes per difondre la vida independent en instituts, universitats i entitats del tercer sector.</p>
+      </div>
+      <div class="tarjeta-candidato">
+        <h3>🌟 Projectes d'Innovació</h3>
+        <p>Impulsem projectes com VICOOP i CercAPp per a la reivindicació dels drets de les persones amb diversitat funcional.</p>
+      </div>
     </div>
-    <div class="card" style="max-width:500px; margin:0 auto; text-align:center; padding:30px;">
-        <h2>¿Qué deseas hacer?</h2>
-        <div style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
-            <a th:href="@{/login}" class="btn btn-primary">Iniciar sesión</a>
-            <a th:href="@{/register}" class="btn btn-secondary">Registrarse</a>
-        </div>
+    <div class="card" style="max-width:500px; margin:40px auto; text-align:center; padding:30px;">
+      <h2>Accedeix a SgOVI</h2>
+      <div style="display:flex; flex-direction:column; gap:15px; margin-top:20px;">
+        <a th:href="@{/login}" class="btn btn-primary">Iniciar sessió</a>
+        <a th:href="@{/register}" class="btn btn-secondary">Registrar-se</a>
+        <a th:href="@{/activity/list}" class="btn btn-outline">Veure activitats públiques</a>
+      </div>
     </div>
-
+  </div>
 </main>
+<footer style="text-align:center; padding:20px; color:#777; border-top:1px solid #eee; margin-top:40px;">
+  <p>OVI Castelló · <a href="https://ovicastello.org/" target="_blank">ovicastello.org</a></p>
+</footer>
 </body>
 </html>

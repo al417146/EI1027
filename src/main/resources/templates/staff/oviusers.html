@@ -55,7 +55,7 @@
           <td>
             <th:block th:if="${u.status == 'Pendiente'}">
               <a th:href="@{/staff/oviusers/aceptar/{dni}(dni=${u.DNI})}" class="btn btn-success">Aceptar</a>
-              <a th:href="@{/staff/oviusers/denegar/{dni}(dni=${u.DNI})}" class="btn btn-secondary">Denegar</a>
+              <a th:href="@{/staff/oviusers/denegar/{dni}(dni=${u.DNI})}" class="btn btn-secondary" onclick="return confirm('¿Seguro que quieres denegar este usuario?')">Denegar</a>
             </th:block>
             <span th:if="${u.status != 'Pendiente'}" class="estado-info">Ya gestionado</span>
           </td>

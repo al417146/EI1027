@@ -51,7 +51,7 @@
           <td>
             <a th:href="@{/staff/formadores/edit/{dni}(dni=${p.DNI})}" class="btn btn-outline">Editar</a>
             <a th:href="@{/staff/formadores/delete/{dni}(dni=${p.DNI})}" class="btn btn-secondary"
-               onclick="return confirm('¿Eliminar este formador?')">Eliminar</a>
+               onclick="return confirm('¿Seguro que quieres eliminar este formador? Esta acción no se puede deshacer.')">Eliminar</a>
           </td>
         </tr>
       </tbody>

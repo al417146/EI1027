@@ -21,13 +21,13 @@ public class StatsDAO {
     // Servicios activos: contratos con fecha inicio <= hoy y (fecha fin nula o > hoy)
     public int countActiveServices() {
         String sql = "SELECT COUNT(*) FROM contract WHERE (dateend IS NULL OR dateend > CURRENT_DATE) AND datestart <= CURRENT_DATE";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class); return result != null ? result : 0;
     }
 
     // Solicitudes pendientes (estado 'Pendiente' o 'Propuesta enviada')
     public int countPendingRequests() {
         String sql = "SELECT COUNT(*) FROM request WHERE status IN ('Pendiente', 'Propuesta enviada')";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class); return result != null ? result : 0;
     }
 
     // Usuarios OVI con al menos un contrato activo
@@ -35,25 +35,26 @@ public class StatsDAO {
         String sql = "SELECT COUNT(DISTINCT r.dniuser) FROM request r " +
                 "JOIN contract c ON r.idrequest = c.idrequest " +
                 "WHERE (c.dateend IS NULL OR c.dateend > CURRENT_DATE) AND c.datestart <= CURRENT_DATE";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class); return result != null ? result : 0;
     }
 
     // Usuarios OVI que tienen solicitudes pendientes (demandantes pendientes de asistente)
     public int countUsersWithPendingRequests() {
         String sql = "SELECT COUNT(DISTINCT dniuser) FROM request WHERE status IN ('Pendiente', 'Propuesta enviada')";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class); return result != null ? result : 0;
     }
+
 
     // Total de usuarios OVI registrados
     public int countTotalOVIUsers() {
         String sql = "SELECT COUNT(*) FROM oviuser";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class); return result != null ? result : 0;
     }
 
     // Profesionales (PAP/PATI) aceptados
     public int countActivePATIs() {
         String sql = "SELECT COUNT(*) FROM pap_pati WHERE status = 'Aceptado'";
-        return jdbcTemplate.queryForObject(sql, Integer.class);
+        Integer result = jdbcTemplate.queryForObject(sql, Integer.class); return result != null ? result : 0;
     }
 
     // Estadísticas de asistencia a actividades de formación

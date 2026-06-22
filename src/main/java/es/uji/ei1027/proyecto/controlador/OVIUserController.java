@@ -39,6 +39,9 @@ public class OVIUserController {
     @Autowired
     private RequestCandidatesDAO requestCandidatesDAO;
 
+    @Autowired
+    private SpecialityDAO specialityDAO;
+
     // Panel principal
     @GetMapping("/OVIIndex")
     public String index() {
@@ -167,6 +170,9 @@ public class OVIUserController {
     @GetMapping("/requestAssistance")
     public String showRequestAssistance(Model model) {
         model.addAttribute("request", new Request());
+        model.addAttribute("specialities", specialityDAO.getSpecialities());
+        model.addAttribute("zones", List.of("Castellón", "Valencia", "Barcelona", "Villarreal", "Madrid", "Alicante"));
+        model.addAttribute("zones", List.of("Barcelona", "Bremen", "Castellón", "Estrasburgo", "Madrid", "Paseo de la Castellana", "Valencia", "Villarreal"));
         return "OVIUser/requestAssistance";
     }
 
@@ -284,14 +290,20 @@ public class OVIUserController {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
         Contract contract = cDAO.getContractById(idContract);
+        OVIUser oviUser = oviUserDAO.getOVIUser(user.getDni());
+        PATI pati = patiDAO.getPATI(contract.getDNICand());
+        String nomOVI = oviUser != null ? oviUser.getName() : user.getDni();
+        String nomPAP = pati != null ? pati.getName() : contract.getDNICand();
         String pdf = "========================================\n" +
                 "         CONTRACTE D'ASSISTÈNCIA PERSONAL\n" +
                 "========================================\n" +
-                "ID Contracte: " + idContract + "\n" +
-                "Data d'inici: " + contract.getDateStart() + "\n" +
-                "Signat digitalment per l'OVIUser: " + user.getDni() + "\n" +
+                "Data d'inici: " + contract.getDateStart() + "\n\n" +
+                "Persona usuaria OVI: " + nomOVI + "\n" +
+                "Professional PAP/PATI: " + nomPAP + "\n\n" +
+                "Signat digitalment per ambdues parts.\n" +
                 "========================================\n";
         cDAO.signarContracte(idContract, pdf);
         return "redirect:/OVIUser/misContratos";
     }
+
 }

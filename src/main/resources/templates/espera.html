@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Esperando aprobación</title>
+  <meta http-equiv="refresh" content="10;url=/espera">
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+</header>
+<main class="container">
+  <div class="header-primary" style="text-align:center; padding:60px 0;">
+    <h1>Solicitud pendiente de aprobación</h1>
+    <p>Tu registro está siendo revisado por el equipo de la OVI.</p>
+    <p>Esta página se actualizará automáticamente cada 10 segundos.</p>
+    <div style="margin:40px auto; max-width:500px;" class="card">
+      <p style="font-size:18px;">⏳ Esperando que el staff apruebe tu acceso...</p>
+      <p>Cuando tu solicitud sea aprobada, serás redirigido automáticamente al menú principal.</p>
+      <p>Si tu solicitud es denegada, recibirás un mensaje informativo.</p>
+    </div>
+    <a th:href="@{/logout}" class="btn btn-secondary">Cancelar y salir</a>
+  </div>
+</main>
+</body>
+</html>

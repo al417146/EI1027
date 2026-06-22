@@ -35,6 +35,7 @@ public class StatsController {
         model.addAttribute("attendanceStats", statsDAO.getTrainingAttendanceStats());
         model.addAttribute("requestStatusSummary", statsDAO.getRequestStatusSummary());
         model.addAttribute("topProfessionals", statsDAO.getTopProfessionalsByContracts(3));
+        model.addAttribute("usersWithPendingRequests", statsDAO.countUsersWithPendingRequests());
 
         return "staff/stats";
     }
