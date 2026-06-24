@@ -14,14 +14,14 @@
     <a th:href="@{/PAP/index}" class="nav-link">Inicio</a>
     <a th:href="@{/activity/list}" class="nav-link">Actividades</a>
     <a th:href="@{/PAP/misActividades}" class="nav-link">Mis actividades</a>
-    <a th:href="@{/PAP/solicitudesPendientes}" class="nav-link">Solicitudes</a>
+    <a th:href="@{/PAP/misContratos}" class="nav-link">Mis contratos</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
 <main class="container">
   <div class="header-primary">
     <h1>Bienvenido al panel PAP/PATI</h1>
-    <p>Gestiona tus actividades y solicitudes de asistencia</p>
+    <p>Gestiona tus actividades y contratos de asistencia</p>
   </div>
   <div style="padding:20px">
     <div class="lista-candidatos">
@@ -34,11 +34,6 @@
         <h3>Mis actividades</h3>
         <p>Consulta las actividades en las que estás inscrito.</p>
         <a th:href="@{/PAP/misActividades}" class="btn btn-secondary">Ver mis actividades</a>
-      </div>
-      <div class="tarjeta-candidato">
-        <h3>Solicitudes pendientes</h3>
-        <p>Gestiona las solicitudes de asistencia que te han sido asignadas.</p>
-        <a th:href="@{/PAP/solicitudesPendientes}" class="btn btn-outline">Ver solicitudes</a>
       </div>
       <div class="tarjeta-candidato">
         <h3>Mis contratos</h3>

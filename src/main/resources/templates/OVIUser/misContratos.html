@@ -71,12 +71,12 @@
             <span th:unless="${c['pdf'] != null}">Pendiente de firma</span>
           </td>
           <td>
-            <form th:if="${c['status'] == 'Pendent de signatura'}"
+            <form th:if="${c['status'] == 'Pendiente de firma'}"
                   th:action="@{/OVIUser/signarContracte}" method="post">
               <input type="hidden" name="idContract" th:value="${c['idcontract']}">
               <button type="submit" class="btn btn-success">Firmar contrato</button>
             </form>
-            <span th:unless="${c['status'] == 'Pendent de signatura'}" class="estado-aprobada">Firmado</span>
+            <span th:unless="${c['status'] == 'Pendiente de firma'}" class="estado-aprobada">Firmado</span>
           </td>
         </tr>
         </tbody>

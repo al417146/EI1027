@@ -22,11 +22,11 @@
     <p>Cursos, charlas y actos organizados por la OVI</p>
   </div>
   <div style="padding:20px">
-    <div th:if="${#lists.isEmpty(activitats)}" class="alert-info">
+    <div th:if="${#lists.isEmpty(actividades)}" class="alert-info">
       No hay actividades programadas.
     </div>
-    <div th:unless="${#lists.isEmpty(activitats)}" class="lista-candidatos">
-      <div th:each="a : ${activitats}" class="tarjeta-candidato">
+    <div th:unless="${#lists.isEmpty(actividades)}" class="lista-candidatos">
+      <div th:each="a : ${actividades}" class="tarjeta-candidato">
         <div style="display:flex; justify-content:space-between; align-items:center;">
           <h3 th:text="${a.name}"></h3>
           <span th:if="${a.type == 'formacio'}" class="estado-pendiente">Formación</span>
@@ -42,6 +42,7 @@
       </div>
     </div>
     <div style="margin-top:20px">
+      <a th:if="${session.user == null}" th:href="@{/}" class="btn btn-secondary">Volver al inicio</a>
       <a th:if="${session.user != null and session.user.rol == 'STAFF'}" th:href="@{/staff/index}" class="btn btn-secondary">Volver al panel</a>
       <a th:if="${session.user != null and session.user.rol == 'OVIUSER'}" th:href="@{/OVIUser/OVIIndex}" class="btn btn-secondary">Volver al inicio</a>
       <a th:if="${session.user != null and session.user.rol == 'PAP'}" th:href="@{/PAP/index}" class="btn btn-secondary">Volver al inicio</a>

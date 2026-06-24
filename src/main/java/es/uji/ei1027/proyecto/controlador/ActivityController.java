@@ -45,7 +45,7 @@ public class ActivityController {
     // Llista pública d'activitats (tots els usuaris)
     @GetMapping("/list")
     public String list(Model model) {
-        model.addAttribute("activitats", activityDAO.getActivities());
+        model.addAttribute("actividades", activityDAO.getActivities());
         return "activity/list";
     }
 

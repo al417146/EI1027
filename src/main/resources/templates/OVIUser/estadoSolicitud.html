@@ -51,7 +51,7 @@
                               (${s.status == 'Denegada'} ? 'estado-rechazada' : 'estado-pendiente')"
                     th:text="${s.status}"></span>
             </td>
-            <td th:text="${s.DNICand != null} ? ${s.DNICand} : 'Sin asignar'"></td>
+            <td th:text="${s['candname'] != null} ? ${s['candname']} : 'Sin asignar'"></td>
             <td>
               <a th:if="${s.status == 'Propuesta enviada'}"
                  th:href="@{/OVIUser/verCandidatos/{id}(id=${s.idRequest})}"

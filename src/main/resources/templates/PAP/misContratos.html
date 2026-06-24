@@ -42,19 +42,19 @@
           <td th:text="${c.username}"></td>
           <td th:text="${c.datestart}"></td>
           <td th:text="${c.dateend != null} ? ${c.dateend} : 'En curso'"></td>
-          <td><span th:text="${c.status}" th:class="${c.status == 'Actiu'} ? 'estado-aprobada' : 'estado-pendiente'"></span></td>
+          <td><span th:text="${c.status}" th:class="${c.status == 'Activo'} ? 'estado-aprobada' : 'estado-pendiente'"></span></td>
           <td>
             <pre th:if="${c.pdf != null}" th:text="${c.pdf}"
                  style="background:#f4f6f7; padding:10px; border-radius:5px; font-size:11px;"></pre>
             <span th:unless="${c.pdf != null}">No disponible</span>
           </td>
           <td>
-            <form th:if="${c.status == 'Pendent de signatura'}"
+            <form th:if="${c.status == 'Pendiente de firma'}"
                   th:action="@{/OVIUser/signarContracte}" method="post">
               <input type="hidden" name="idContract" th:value="${c.idcontract}">
               <button type="submit" class="btn btn-success">Firmar contrato</button>
             </form>
-            <span th:unless="${c.status == 'Pendent de signatura'}" class="estado-aprobada">Firmado</span>
+            <span th:unless="${c.status == 'Pendiente de firma'}" class="estado-aprobada">Firmado</span>
           </td>
         </tr>
       </tbody>

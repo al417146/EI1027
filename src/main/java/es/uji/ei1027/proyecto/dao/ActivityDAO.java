@@ -24,7 +24,8 @@ public class ActivityDAO {
     public List<Activity> getActivities() {
         try {
             return jdbcTemplate.query("SELECT * FROM activity ORDER BY actdate", new ActivityRowMapper());
-        } catch (EmptyResultDataAccessException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new ArrayList<>();
         }
     }

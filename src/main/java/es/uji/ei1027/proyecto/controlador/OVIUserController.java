@@ -125,8 +125,7 @@ public class OVIUserController {
     public String verEstadoSolicitudes(Model model, HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
-        List<Request> solicitudes = rDAO.getRequestsByUser(user.getDni());
-        model.addAttribute("solicitudes", solicitudes);
+        model.addAttribute("solicitudes", rDAO.getRequestsWithCandName(user.getDni()));
         return "OVIUser/estadoSolicitud";
     }
 
@@ -295,7 +294,7 @@ public class OVIUserController {
         String nomOVI = oviUser != null ? oviUser.getName() : user.getDni();
         String nomPAP = pati != null ? pati.getName() : contract.getDNICand();
         String pdf = "========================================\n" +
-                "         CONTRACTE D'ASSISTÈNCIA PERSONAL\n" +
+                "         CONTRATO DE ASISTENCIA PERSONAL\n" +
                 "========================================\n" +
                 "Data d'inici: " + contract.getDateStart() + "\n\n" +
                 "Persona usuaria OVI: " + nomOVI + "\n" +
