@@ -71,18 +71,24 @@
       </div>
       <div class="form-group">
         <label>Especialidades</label>
-        <div th:each="s : ${specialities}" style="margin:5px 0">
-          <input type="checkbox" name="selectedSpecialities" th:value="${s.idSpeciality}">
-          <span th:text="${s.descrip}"></span>
+        <div th:each="s : ${specialities}" style="display:flex; align-items:center; margin:5px 0; gap:6px">
+          <input type="checkbox"
+                 name="selectedSpecialities"
+                 th:value="${s.idSpeciality}"
+                 th:id="${'spec-' + s.idSpeciality}">
+          <label th:for="${'spec-' + s.idSpeciality}"
+                 th:text="${s.descrip}"
+                 style="margin:0; font-weight:normal; cursor:pointer">
+          </label>
         </div>
       </div>
       <div class="form-group">
         <input type="checkbox" id="lopd" name="lopd" required>
         <label for="lopd">
-          He llegit i accepte la
-          <a href="#" onclick="alert('Política de privacitat: Les teves dades seran tractades per la OVI Castelló per gestionar el servei d\'assistència personal, d\'acord amb el RGPD i la LOPD.')">
-            política de privacitat
-          </a> i el tractament de les meves dades personals (LOPD/RGPD).
+          He leído y acepto la
+          <a href="#" onclick="alert('Política de privacidad: Tus datos serán tratados por la OVI Castellón para gestionar el servicio de asistencia personal, de acuerdo con el RGPD y la LOPD.')">
+            política de privacidad
+          </a> y el tratamiento de mis datos personales (LOPD/RGPD).
         </label>
       </div>
       <button type="submit" class="btn btn-secondary" style="width:100%;">Registrarse</button>
