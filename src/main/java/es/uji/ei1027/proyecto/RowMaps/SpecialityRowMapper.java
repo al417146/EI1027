@@ -10,7 +10,7 @@ public final class SpecialityRowMapper implements RowMapper<Speciality> {
     @Override
     public Speciality mapRow(ResultSet rs, int rowNum) throws SQLException {
         Speciality s = new Speciality();
-        s.setIdSpeciality(rs.getInt("idSpeciality"));
+        s.setIdSpeciality(rs.getInt("idspeciality"));
         s.setDescrip(rs.getString("descrip"));
         return s;
     }
