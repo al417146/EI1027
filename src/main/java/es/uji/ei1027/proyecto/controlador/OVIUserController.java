@@ -251,6 +251,7 @@ public class OVIUserController {
             contract.setDateStart(new Date());
             contract.setIdRequest(idRequest);
             contract.setDNICand(dniCand);
+            contract.setStatus("Pendiente de firma");  // ← afegeix aquesta línia
             cDAO.addContract(contract);
         }
         return "redirect:/OVIUser/misContratos?nou=true";

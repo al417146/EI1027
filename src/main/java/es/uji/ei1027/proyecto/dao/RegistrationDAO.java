@@ -86,4 +86,16 @@ public class RegistrationDAO {
             return new ArrayList<>();
         }
     }
+    public List<Map<String, Object>> getRegistrationsByActivityWithName(int idActivity) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT ar.*, COALESCE(o.name, p.name, ar.dniuser) as username " +
+                            "FROM activityregistration ar " +
+                            "LEFT JOIN oviuser o ON ar.dniuser = o.dni " +
+                            "LEFT JOIN pap_pati p ON ar.dniuser = p.dni " +
+                            "WHERE ar.idactivity = ?", idActivity);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
 }

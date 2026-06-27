@@ -26,30 +26,30 @@
     <table th:unless="${#lists.isEmpty(inscrits)}" class="data-table">
       <thead>
         <tr>
-          <th>DNI Usuario</th>
+          <th>Nombre</th>
           <th>¿Ha asistido?</th>
           <th>Acción</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="r : ${inscrits}">
-          <td th:text="${r.dniUser}"></td>
+          <td th:text="${r['username'] != null} ? ${r['username']} : ${r['dniuser']}"></td>
           <td>
-            <span th:if="${r.attended}" class="estado-aprobada">Sí</span>
-            <span th:unless="${r.attended}" class="estado-rechazada">No</span>
+            <span th:if="${r['attended']}" class="estado-aprobada">Sí</span>
+            <span th:unless="${r['attended']}" class="estado-rechazada">No</span>
           </td>
           <td>
             <form th:action="@{/activity/assistencia/update}" method="post" style="display:inline">
-              <input type="hidden" name="idRegist" th:value="${r.idRegist}">
+              <input type="hidden" name="idRegist" th:value="${r['idregist']}">
               <input type="hidden" name="idActivity" th:value="${activity.idActivity}">
               <input type="hidden" name="attended" value="true">
-              <button type="submit" class="btn btn-success" th:unless="${r.attended}">Marcar presente</button>
+              <button type="submit" class="btn btn-success" th:unless="${r['attended']}">Marcar presente</button>
             </form>
             <form th:action="@{/activity/assistencia/update}" method="post" style="display:inline">
-              <input type="hidden" name="idRegist" th:value="${r.idRegist}">
+              <input type="hidden" name="idRegist" th:value="${r['idregist']}">
               <input type="hidden" name="idActivity" th:value="${activity.idActivity}">
               <input type="hidden" name="attended" value="false">
-              <button type="submit" class="btn btn-secondary" th:if="${r.attended}">Desmarcar</button>
+              <button type="submit" class="btn btn-secondary" th:if="${r['attended']}">Desmarcar</button>
             </form>
           </td>
         </tr>

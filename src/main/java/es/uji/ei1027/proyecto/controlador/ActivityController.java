@@ -132,6 +132,7 @@ public class ActivityController {
         if (!isStaff(session)) return "redirect:/login";
         model.addAttribute("activity", activityDAO.getActivity(id));
         model.addAttribute("inscrits", registrationDAO.getRegistrationsByActivity(id));
+        model.addAttribute("inscrits", registrationDAO.getRegistrationsByActivityWithName(id));
         return "activity/assistencia";
     }
 

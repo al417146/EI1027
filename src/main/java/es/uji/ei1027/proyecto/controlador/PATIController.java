@@ -1,10 +1,8 @@
 package es.uji.ei1027.proyecto.controlador;
 
-import es.uji.ei1027.proyecto.dao.ActivityDAO;
-import es.uji.ei1027.proyecto.dao.ContractDAO;
-import es.uji.ei1027.proyecto.dao.RegistrationDAO;
-import es.uji.ei1027.proyecto.dao.RequestDAO;
+import es.uji.ei1027.proyecto.dao.*;
 import es.uji.ei1027.proyecto.modelo.Contract;
+import es.uji.ei1027.proyecto.modelo.PATI;
 import es.uji.ei1027.proyecto.modelo.Request;
 import es.uji.ei1027.proyecto.modelo.UserDetails;
 import jakarta.servlet.http.HttpSession;
@@ -34,6 +32,11 @@ public class PATIController {
 
     @Autowired
     private ContractDAO cDAO;
+
+    @Autowired
+    private patiDAO patiDAO;
+
+
 
     private boolean isPAP(HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
@@ -83,5 +86,22 @@ public class PATIController {
         UserDetails user = (UserDetails) session.getAttribute("user");
         model.addAttribute("contratos", cDAO.getContractsByPATIWithName(user.getDni()));
         return "PAP/misContratos";
+    }
+
+    @PostMapping("/firmarContrato")
+    public String firmarContrato(@RequestParam int idContract, HttpSession session) {
+        if (!isPAP(session)) return "redirect:/login";
+        UserDetails user = (UserDetails) session.getAttribute("user");
+        Contract contract = cDAO.getContractById(idContract);
+
+        PATI pati = patiDAO.getPATI(user.getDni());
+        String nomPAP = pati != null ? pati.getName() : user.getDni();
+        String pdf = contract.getPdf() != null ? contract.getPdf() : "";
+        pdf += "========================================\n" +
+                "Firmado también por el PAP/PATI: " + nomPAP + "\n" +
+                "Contrato ACTIVO desde: " + new java.util.Date() + "\n" +
+                "========================================\n";
+        cDAO.firmarPAP(idContract, pdf);
+        return "redirect:/PAP/misContratos";
     }
 }

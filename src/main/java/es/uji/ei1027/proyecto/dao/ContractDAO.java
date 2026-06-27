@@ -25,11 +25,12 @@ public class ContractDAO {
 
     public void addContract(Contract c){
         jdbcTemplate.update(
-                "INSERT INTO contract (datestart, dateend, idrequest, dnicand) VALUES (?,?,?,?)",
+                "INSERT INTO contract (datestart, dateend, idrequest, dnicand, status) VALUES (?,?,?,?,?)",
                 c.getDateStart(),
                 c.getDateEnd(),
                 c.getIdRequest(),
-                c.getDNICand());
+                c.getDNICand(),
+                c.getStatus());
     }
 
     public void deleteContract(int idContract){
@@ -136,5 +137,10 @@ public class ContractDAO {
         } catch (Exception e) {
             return new ArrayList<>();
         }
+    }
+    public void firmarPAP(int idContract, String pdf) {
+        jdbcTemplate.update(
+                "UPDATE contract SET status = 'Activo', pdf = ? WHERE idcontract = ?",
+                pdf, idContract);
     }
 }
