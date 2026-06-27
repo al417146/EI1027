@@ -253,7 +253,7 @@ public class OVIUserController {
             contract.setDNICand(dniCand);
             cDAO.addContract(contract);
         }
-        return "redirect:/OVIUser/estadoSolicitud";
+        return "redirect:/OVIUser/misContratos?nou=true";
     }
     @GetMapping("/misContratos")
     public String listMisContratos(Model model, HttpSession session,

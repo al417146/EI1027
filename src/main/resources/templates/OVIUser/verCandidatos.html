@@ -44,7 +44,7 @@
                 <form th:action="@{/OVIUser/elegirCandidato}" method="post" style="margin-top:10px">
                     <input type="hidden" name="idRequest" th:value="${request.idRequest}">
                     <input type="hidden" name="dniCand" th:value="${cand.DNI}">
-                    <button type="submit" class="btn btn-success">Elegir este profesional</button>
+                    <button type="submit" class="btn btn-success" onclick="return confirm('¿Estás seguro de que quieres seleccionar este profesional? Se generará un contrato automáticamente.')">Elegir este profesional</button>
                 </form>
             </div>
         </div>

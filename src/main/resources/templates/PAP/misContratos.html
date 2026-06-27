@@ -19,6 +19,9 @@
   </nav>
 </header>
 <main class="container">
+  <div th:if="${contratos != null and !#lists.isEmpty(contratos)}" class="alert-info" style="margin:20px; background:#fff3cd; border:1px solid #ffc107; padding:15px; border-radius:8px;">
+    <strong>Tienes contratos pendientes de firma por parte del usuario OVI.</strong> Cuando el usuario firme, el contrato quedará activo.
+  </div>
   <div class="header-primary">
     <h1>Mis contratos</h1>
   </div>
