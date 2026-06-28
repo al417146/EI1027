@@ -154,4 +154,26 @@ public class RequestDAO {
         }
     }
 
+    public int getLastRequestId(String dniUser) {
+        try {
+            return jdbcTemplate.queryForObject(
+                    "SELECT idrequest FROM request WHERE dniuser = ? ORDER BY idrequest DESC LIMIT 1",
+                    Integer.class, dniUser);
+        } catch (Exception e) {
+            return 0;
+        }
+    }
+
+    public List<Map<String, Object>> getSolicitudesForPAP(String dniPAP) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT r.*, o.name as username " +
+                            "FROM request r " +
+                            "LEFT JOIN oviuser o ON r.dniuser = o.dni " +
+                            "WHERE r.dnicand = ? AND r.status = 'Aceptada'", dniPAP);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
 }

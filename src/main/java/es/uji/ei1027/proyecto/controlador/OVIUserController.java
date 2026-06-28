@@ -79,14 +79,25 @@ public class OVIUserController {
     public String solicitarRequest(@RequestParam String dniPAP, HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
+
         Request r = new Request();
         r.setDNICand(dniPAP);
         r.setDate(new Date());
-        r.setStatus("Pendiente");
+        r.setStatus("Aceptada");
         r.setDNIUser(user.getDni());
         r.setIdRequirement(new Random().nextInt(999999));
         rDAO.addRequest(r);
-        return "redirect:/OVIUser/estadoSolicitud";
+
+        int idRequest = rDAO.getLastRequestId(user.getDni());
+
+        Contract contract = new Contract();
+        contract.setDateStart(new Date());
+        contract.setIdRequest(idRequest);
+        contract.setDNICand(dniPAP);
+        contract.setStatus("Pendiente de firma OVI");
+        cDAO.addContract(contract);
+
+        return "redirect:/OVIUser/misContratos?nou=true";
     }
 
     // Mostramos un formulario para añadir la fecha de fin a un contrato
@@ -240,21 +251,13 @@ public class OVIUserController {
                                   HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
-
         Request request = rDAO.getRequest(idRequest);
         if (request != null && request.getDNIUser().equals(user.getDni())) {
             request.setStatus("Aceptada");
             request.setDNICand(dniCand);
             rDAO.updateRequest(request);
-
-            Contract contract = new Contract();
-            contract.setDateStart(new Date());
-            contract.setIdRequest(idRequest);
-            contract.setDNICand(dniCand);
-            contract.setStatus("Pendiente de firma");  // ← afegeix aquesta línia
-            cDAO.addContract(contract);
         }
-        return "redirect:/OVIUser/misContratos?nou=true";
+        return "redirect:/OVIUser/estadoSolicitud";
     }
     @GetMapping("/misContratos")
     public String listMisContratos(Model model, HttpSession session,

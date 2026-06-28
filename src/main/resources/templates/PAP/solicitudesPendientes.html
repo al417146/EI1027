@@ -12,9 +12,8 @@
   </div>
   <nav class="nav-bar">
     <a th:href="@{/PAP/index}" class="nav-link">Inicio</a>
-    <a th:href="@{/activity/list}" class="nav-link">Actividades</a>
-    <a th:href="@{/PAP/misActividades}" class="nav-link">Mis actividades</a>
     <a th:href="@{/PAP/solicitudesPendientes}" class="nav-link">Solicitudes</a>
+    <a th:href="@{/PAP/misContratos}" class="nav-link">Mis contratos</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
@@ -30,27 +29,26 @@
     <table th:unless="${#lists.isEmpty(solicitudes)}" class="data-table">
       <thead>
         <tr>
-          <th>DNI</th>
-          <th>Nombre</th>
+          <th>Usuario</th>
           <th>Fecha</th>
           <th>Zona</th>
           <th>Especialidad</th>
-          <th>Estado</th>
           <th>Acción</th>
         </tr>
       </thead>
       <tbody>
         <tr th:each="s : ${solicitudes}">
-          <td th:text="${s.dniuser}"></td>
-          <td th:text="${s.username}"></td>
-          <td th:text="${s.date != null} ? ${#dates.format(s.date, 'dd/MM/yyyy')} : '-'"></td>
-          <td th:text="${s.preferredZone}"></td>
-          <td th:text="${s.preferredSpeciality}"></td>
-          <td><span class="estado-pendiente" th:text="${s.status}"></span></td>
+          <td th:text="${s['username'] != null} ? ${s['username']} : ${s['dniuser']}"></td>
+          <td th:text="${s['date']}"></td>
+          <td th:text="${s['preferredzone']}"></td>
+          <td th:text="${s['preferredspeciality']}"></td>
           <td>
             <form th:action="@{/PAP/aceptarSolicitud}" method="post">
-              <input type="hidden" name="idRequest" th:value="${s.idRequest}">
-              <button type="submit" class="btn btn-success">Aceptar</button>
+              <input type="hidden" name="idRequest" th:value="${s['idrequest']}">
+              <button type="submit" class="btn btn-success"
+                      onclick="return confirm('¿Aceptas esta solicitud de asistencia?')">
+                Aceptar
+              </button>
             </form>
           </td>
         </tr>

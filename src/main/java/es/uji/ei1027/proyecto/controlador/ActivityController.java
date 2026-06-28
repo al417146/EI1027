@@ -1,13 +1,7 @@
 package es.uji.ei1027.proyecto.controlador;
 
-import es.uji.ei1027.proyecto.dao.ActivityDAO;
-import es.uji.ei1027.proyecto.dao.OVIUserDAO;
-import es.uji.ei1027.proyecto.dao.ProfessionalDAO;
-import es.uji.ei1027.proyecto.dao.RegistrationDAO;
-import es.uji.ei1027.proyecto.modelo.Activity;
-import es.uji.ei1027.proyecto.modelo.OVIUser;
-import es.uji.ei1027.proyecto.modelo.Registration;
-import es.uji.ei1027.proyecto.modelo.UserDetails;
+import es.uji.ei1027.proyecto.dao.*;
+import es.uji.ei1027.proyecto.modelo.*;
 import es.uji.ei1027.proyecto.service.CertificadoService;
 import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,6 +30,10 @@ public class ActivityController {
 
     @Autowired
     private OVIUserDAO oviUserDAO;
+
+    @Autowired
+    private patiDAO patiDAO;
+
 
     private boolean isStaff(HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
@@ -154,11 +152,35 @@ public class ActivityController {
         List<String> certificados = new ArrayList<>();
         for (Registration r : inscrits) {
             if (r.isAttended()) {
-                OVIUser user = oviUserDAO.getOVIUser(r.getDniUser());
-                if (user != null) {
-                    String cert = certificadoService.generarCertificado(user, activity);
+                String nom = null;
+                String mail = null;
+                OVIUser oviUser = oviUserDAO.getOVIUser(r.getDniUser());
+                if (oviUser != null) {
+                    nom = oviUser.getName();
+                    mail = oviUser.getMail();
+                } else {
+                    PATI pati = patiDAO.getPATI(r.getDniUser());
+                    if (pati != null) {
+                        nom = pati.getName();
+                        mail = pati.getMail();
+                    }
+                }
+                if (nom != null) {
+                    String cert = "========================================\n" +
+                            "         CERTIFICADO DE ASISTENCIA      \n" +
+                            "========================================\n" +
+                            "La Oficina para la Vida Independiente   \n" +
+                            "certifica que:                          \n\n" +
+                            "  " + nom + "\n" +
+                            "  DNI: " + r.getDniUser() + "\n\n" +
+                            "ha asistido a la actividad:\n\n" +
+                            "  " + activity.getName() + "\n" +
+                            "  Lugar: " + activity.getPlace() + "\n" +
+                            "  Fecha: " + activity.getActDate() + "\n\n" +
+                            "Firmado digitalmente por la OVI.\n" +
+                            "========================================\n";
                     certificadoService.guardarEnHistorialFormador(activity, cert);
-                    String resultado = certificadoService.enviarCertificado(user.getMail(), cert);
+                    String resultado = certificadoService.enviarCertificado(mail, cert);
                     certificados.add(resultado);
                 }
             }

@@ -61,22 +61,25 @@ public class PATIController {
     public String listSolicitudesPendientes(Model model, HttpSession session) {
         if (!isPAP(session)) return "redirect:/login";
         UserDetails user = (UserDetails) session.getAttribute("user");
-        model.addAttribute("solicitudes", requestDAO.getRequestsWithUserName("Propuesta enviada"));
+        model.addAttribute("solicitudes", requestDAO.getSolicitudesForPAP(user.getDni()));
         return "PAP/solicitudesPendientes";
     }
 
     @PostMapping("/aceptarSolicitud")
-    public String acceptRequest(@RequestParam int idRequest, HttpSession session) {
+    public String aceptarSolicitud(@RequestParam int idRequest, HttpSession session) {
         if (!isPAP(session)) return "redirect:/login";
         UserDetails user = (UserDetails) session.getAttribute("user");
         Request r = requestDAO.getRequest(idRequest);
-        if (r == null) return "redirect:/PAP/solicitudesPendientes?error=invalid";
+        if (r == null) return "redirect:/PAP/solicitudesPendientes";
+
         Contract contract = new Contract();
         contract.setDateStart(new Date());
-        contract.setIdRequest(r.getIdRequest());
+        contract.setIdRequest(idRequest);
         contract.setDNICand(user.getDni());
-        contractDAO.addContract(contract);
-        requestDAO.updateRequestStatus(r.getIdRequest(), "Aceptada", 0);
+        contract.setStatus("Pendiente de firma OVI");
+        cDAO.addContract(contract);
+
+        requestDAO.updateRequestStatus(idRequest, "Contrato pendiente", 0);
         return "redirect:/PAP/solicitudesPendientes";
     }
 

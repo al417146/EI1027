@@ -14,8 +14,8 @@
     <a th:href="@{/PAP/index}" class="nav-link">Inicio</a>
     <a th:href="@{/activity/list}" class="nav-link">Actividades</a>
     <a th:href="@{/PAP/misActividades}" class="nav-link">Mis actividades</a>
-    <a th:href="@{/PAP/misContratos}" class="nav-link">Mis contratos</a>
     <a th:href="@{/PAP/solicitudesPendientes}" class="nav-link">Solicitudes</a>
+    <a th:href="@{/PAP/misContratos}" class="nav-link">Mis contratos</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
@@ -27,9 +27,14 @@
   <div style="padding:20px">
     <div class="lista-candidatos">
       <div class="tarjeta-candidato">
+        <h3>Solicitudes pendientes</h3>
+        <p>Revisa y acepta las solicitudes de asistencia asignadas.</p>
+        <a th:href="@{/PAP/solicitudesPendientes}" class="btn btn-primary">Ver solicitudes</a>
+      </div>
+      <div class="tarjeta-candidato">
         <h3>Actividades disponibles</h3>
         <p>Consulta y apúntate a cursos y charlas organizados por la OVI.</p>
-        <a th:href="@{/activity/list}" class="btn btn-primary">Ver actividades</a>
+        <a th:href="@{/activity/list}" class="btn btn-secondary">Ver actividades</a>
       </div>
       <div class="tarjeta-candidato">
         <h3>Mis actividades</h3>
@@ -40,11 +45,6 @@
         <h3>Mis contratos</h3>
         <p>Consulta los contratos de asistencia asignados.</p>
         <a th:href="@{/PAP/misContratos}" class="btn btn-outline">Ver contratos</a>
-      </div>
-      <div class="tarjeta-candidato">
-        <h3>Solicitudes pendientes</h3>
-        <p>Revisa y acepta las solicitudes de asistencia que te han sido asignadas.</p>
-        <a th:href="@{/PAP/solicitudesPendientes}" class="btn btn-outline">Ver solicitudes</a>
       </div>
     </div>
   </div>
