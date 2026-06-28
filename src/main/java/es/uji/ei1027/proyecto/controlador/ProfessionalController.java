@@ -11,6 +11,8 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Controller
 @RequestMapping("/staff/formadores")
 public class ProfessionalController {
@@ -34,17 +36,27 @@ public class ProfessionalController {
     public String add(Model model, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         model.addAttribute("professional", new Professional());
+        model.addAttribute("especialidades", List.of(
+                "Comunicación aumentativa",
+                "Divulgación social",
+                "Fisioterapia",
+                "Formación laboral",
+                "Habilidades sociales",
+                "Movilidad y autonomía",
+                "Psicología",
+                "Tecnología asistiva",
+                "Trabajo social"
+        ));
         return "staff/profesionales/add";
     }
 
     @PostMapping("/add")
-    public String processAdd(@ModelAttribute Professional professional, BindingResult bindingResult, Model model, HttpSession session) {
+    public String processAdd(@ModelAttribute Professional professional,
+                             @RequestParam(value = "selectedEspecialidades", required = false) List<String> especialidades,
+                             HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
-        ProfessionalValidator validator = new ProfessionalValidator();
-        validator.validate(professional, bindingResult);
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("professional", professional);
-            return "staff/profesionales/add";
+        if (especialidades != null) {
+            professional.setUniqueSpeciality(String.join(", ", especialidades));
         }
         professionalDAO.addProfessional(professional);
         return "redirect:/staff/formadores/list";
@@ -54,26 +66,30 @@ public class ProfessionalController {
     public String edit(@PathVariable String dni, Model model, HttpSession session) {
         if (!isStaff(session)) return "redirect:/login";
         model.addAttribute("professional", professionalDAO.getProfessional(dni));
+        model.addAttribute("especialidades", List.of(
+                "Comunicación aumentativa",
+                "Divulgación social",
+                "Fisioterapia",
+                "Formación laboral",
+                "Habilidades sociales",
+                "Movilidad y autonomía",
+                "Psicología",
+                "Tecnología asistiva",
+                "Trabajo social"
+        ));
         return "staff/profesionales/edit";
     }
 
     @PostMapping("/edit")
-    public String processEdit(@ModelAttribute("professional") Professional professional,
-                              BindingResult bindingResult,
-                              Model model,
+    public String processEdit(@ModelAttribute Professional professional,
+                              @RequestParam(value = "selectedEspecialidades", required = false) List<String> especialidades,
                               HttpSession session) {
-        if (!isStaff(session)) {
-            return "redirect:/login";
+        if (!isStaff(session)) return "redirect:/login";
+        if (especialidades != null) {
+            professional.setUniqueSpeciality(String.join(", ", especialidades));
+        } else {
+            professional.setUniqueSpeciality("");
         }
-
-        ProfessionalValidator validator = new ProfessionalValidator();
-        validator.validate(professional, bindingResult);
-
-        if (bindingResult.hasErrors()) {
-            model.addAttribute("professional", professional);
-            return "staff/profesionales/edit";
-        }
-
         professionalDAO.updateProfessional(professional);
         return "redirect:/staff/formadores/list";
     }
