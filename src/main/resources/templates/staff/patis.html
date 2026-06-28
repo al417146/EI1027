@@ -42,7 +42,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="p : ${patis}">
+        <tr th:each="p : ${patis}" th:id="'row-' + ${p.DNI}">
           <td th:text="${p.DNI}"></td>
           <td th:text="${p.name}"></td>
           <td th:text="${p.phone}"></td>

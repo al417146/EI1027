@@ -45,7 +45,7 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="s : ${solicitudes}">
+        <tr th:each="s : ${solicitudes}" th:id="'row-' + ${s['idrequest']}">
           <td th:text="${s.dniuser}"></td>
           <td th:text="${s.username}"></td>
           <td th:text="${#dates.format(s.date, 'dd/MM/yyyy')}"></td>
