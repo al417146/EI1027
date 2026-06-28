@@ -54,9 +54,14 @@
         <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></div>
       </div>
       <div class="form-group">
-        <label for="uniqueSpeciality">Especialidad</label>
-        <input type="text" id="uniqueSpeciality" th:field="*{uniqueSpeciality}" class="form-control">
-        <div th:if="${#fields.hasErrors('uniqueSpeciality')}" th:errors="*{uniqueSpeciality}" class="error"></div>
+        <label>Especialidades</label>
+        <div style="max-width:300px;">
+          <div th:each="e : ${especialidades}" style="display:flex; align-items:center; justify-content:space-between; margin:5px 0; gap:8px;">
+            <label th:text="${e}" style="margin:0; font-weight:normal; cursor:pointer;"></label>
+            <input type="checkbox" name="selectedEspecialidades" th:value="${e}"
+                   th:checked="${professional.uniqueSpeciality != null and professional.uniqueSpeciality.contains(e)}">
+          </div>
+        </div>
       </div>
       <button type="submit" class="btn btn-primary">Guardar cambios</button>
       <a th:href="@{/staff/formadores/list}" class="btn btn-secondary">Cancelar</a>
