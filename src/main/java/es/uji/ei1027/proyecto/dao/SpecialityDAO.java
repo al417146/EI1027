@@ -50,7 +50,7 @@ public class SpecialityDAO {
 
     public List<Speciality> getSpecialities() {
         try {
-            return jdbcTemplate.query("SELECT * FROM Speciality", new SpecialityRowMapper());
+            return jdbcTemplate.query("SELECT * FROM Speciality ORDER BY descrip", new SpecialityRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }

@@ -62,7 +62,7 @@ public class OVIUserDAO {
     }
     public List<OVIUser> getOVIUsers(){
         try {
-            return jdbcTemplate.query("SELECT * FROM oviuser", new OVIUserRowMapper());
+            return jdbcTemplate.query("SELECT * FROM oviuser ORDER BY name", new OVIUserRowMapper());
         } catch(EmptyResultDataAccessException e) {
             return new ArrayList<>();
         }
@@ -70,7 +70,7 @@ public class OVIUserDAO {
     public List<OVIUser> getOVIUsersByStatus(String status) {
         try {
             return jdbcTemplate.query(
-                    "SELECT * FROM oviuser WHERE status = ?",
+                    "SELECT * FROM oviuser WHERE status = ? ORDER BY name",
                     new OVIUserRowMapper(), status);
         } catch (org.springframework.dao.EmptyResultDataAccessException e) {
             return new ArrayList<>();

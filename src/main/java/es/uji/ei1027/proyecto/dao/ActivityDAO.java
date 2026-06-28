@@ -23,7 +23,7 @@ public class ActivityDAO {
 
     public List<Activity> getActivities() {
         try {
-            return jdbcTemplate.query("SELECT * FROM activity ORDER BY actdate", new ActivityRowMapper());
+            return jdbcTemplate.query("SELECT * FROM activity ORDER BY actdate, name", new ActivityRowMapper());
         } catch (Exception e) {
             e.printStackTrace();
             return new ArrayList<>();

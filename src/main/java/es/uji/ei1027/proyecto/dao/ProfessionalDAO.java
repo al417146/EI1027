@@ -51,7 +51,7 @@ public class ProfessionalDAO {
 
     public List<Professional> getProfessionals() {
         try {
-            return jdbcTemplate.query("SELECT * FROM professional",
+            return jdbcTemplate.query("SELECT * FROM professional ORDER BY name",
                 new ProfessionalRowMapper());
         } catch (EmptyResultDataAccessException e) {
             return new ArrayList<>();

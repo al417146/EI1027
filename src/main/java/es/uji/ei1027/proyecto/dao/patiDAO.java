@@ -73,7 +73,7 @@ public class patiDAO {
     public List<PATI> getAvailablePATIs() {
         try {
             List<PATI> patis = jdbcTemplate.query(
-                    "SELECT * FROM pap_pati WHERE status = 'Aceptado'",
+                    "SELECT * FROM pap_pati WHERE status = 'Aceptado' ORDER BY name",
                     new PATIRowMapper());
             for (PATI p : patis) {
                 p.setSpecialties(getSpecialtiesForPati(p.getDNI()));
@@ -126,7 +126,7 @@ public class patiDAO {
 
     public List<PATI> getPATIs(){
         try{
-            return jdbcTemplate.query("SELECT * FROM pap_pati", new PATIRowMapper());
+            return jdbcTemplate.query("SELECT * FROM pap_pati ORDER BY name", new PATIRowMapper());
         } catch(EmptyResultDataAccessException e){
             return new ArrayList<>();
         }
