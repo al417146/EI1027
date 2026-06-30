@@ -27,21 +27,13 @@
     <p>Consulta el estado de tus contratos de asistencia personal</p>
   </div>
   <div style="padding:20px">
-
-    <!-- Filtros -->
-    <div style="display:flex; gap:10px; margin-bottom:20px; flex-wrap:wrap;">
-      <a th:href="@{/OVIUser/misContratos(tipo='todos')}"
-         th:class="${tipoActual == 'todos'} ? 'btn btn-primary' : 'btn btn-outline'">Todos</a>
-      <a th:href="@{/OVIUser/misContratos(tipo='activos')}"
-         th:class="${tipoActual == 'activos'} ? 'btn btn-primary' : 'btn btn-outline'">Activos</a>
-      <a th:href="@{/OVIUser/misContratos(tipo='pasados')}"
-         th:class="${tipoActual == 'pasados'} ? 'btn btn-primary' : 'btn btn-outline'">Pasados</a>
-      <a th:href="@{/OVIUser/misContratos(tipo='futuros')}"
-         th:class="${tipoActual == 'futuros'} ? 'btn btn-primary' : 'btn btn-outline'">Futuros</a>
-    </div>
-
     <div th:if="${#lists.isEmpty(contratos)}" class="alert-info">
-      No hay contratos para el filtro seleccionado.
+      Aún no tienes contratos. Si has aceptado a un profesional, espera a que confirme tu solicitud para generar el contrato.
+    </div>
+    <div th:if="${!#lists.isEmpty(pendientesPAP)}" style="margin-bottom:20px">
+      <div th:each="p : ${pendientesPAP}" class="alert-info">
+        Esperando confirmación de <span th:text="${p['candname']}"></span> para generar el contrato.
+      </div>
     </div>
     <div th:unless="${#lists.isEmpty(contratos)}">
       <table class="data-table">

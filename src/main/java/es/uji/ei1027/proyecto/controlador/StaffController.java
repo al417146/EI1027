@@ -140,11 +140,15 @@ public class StaffController {
         }
 
         OVIUser user = oviUserDAO.getOVIUser(request.getDNIUser());
+        System.out.println("ZONA: [" + request.getPreferredZone() + "]");
+        System.out.println("GENERO: [" + request.getPreferredGender() + "]");
+        System.out.println("ESPECIALIDAD: [" + request.getPreferredSpeciality() + "]");
         List<PATI> candidates = patiDAO.findMatch(
                 request.getPreferredZone(),
                 request.getPreferredGender(),
                 request.getPreferredSpeciality()
         );
+        System.out.println("CANDIDATOS ENCONTRADOS: " + candidates.size());
 
         for (PATI p : candidates)
             p.setSpecialties(patiDAO.getSpecialtiesForPati(p.getDNI()));

@@ -25,42 +25,43 @@
   <div class="header-primary">
     <h1>Añadir formador</h1>
   </div>
-  <div class="card" style="margin:20px; padding:20px">
-    <form th:action="@{/staff/formadores/add}" th:object="${professional}" method="post">
-      <div class="form-group">
-        <label for="DNI">DNI</label>
-        <input type="text" id="DNI" th:field="*{DNI}" class="form-control" required>
-        <div th:if="${#fields.hasErrors('DNI')}" th:errors="*{DNI}" class="error"></div>
-      </div>
-      <div class="form-group">
-        <label for="name">Nombre completo</label>
-        <input type="text" id="name" th:field="*{name}" class="form-control" required>
-        <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>
-      </div>
-      <div class="form-group">
-        <label for="phone">Teléfono</label>
-        <input type="text" id="phone" th:field="*{phone}" class="form-control">
-        <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error"></div>
-      </div>
-      <div class="form-group">
-        <label for="mail">Email</label>
-        <input type="email" id="mail" th:field="*{mail}" class="form-control">
-        <div th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="error"></div>
-      </div>
-      <div class="form-group">
-        <label for="address">Dirección</label>
-        <input type="text" id="address" th:field="*{address}" class="form-control">
-        <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></div>
-      </div>
-      <div class="form-group">
+  <form th:action="@{/staff/formadores/add}" th:object="${professional}" method="post">
+    <div class="form-group">
+      <label for="DNI">DNI</label>
+      <input type="text" id="DNI" th:field="*{DNI}" class="form-control" required>
+      <div th:if="${#fields.hasErrors('DNI')}" th:errors="*{DNI}" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="name">Nombre completo</label>
+      <input type="text" id="name" th:field="*{name}" class="form-control" required>
+      <div th:if="${#fields.hasErrors('name')}" th:errors="*{name}" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="phone">Teléfono</label>
+      <input type="text" id="phone" th:field="*{phone}" class="form-control">
+      <div th:if="${#fields.hasErrors('phone')}" th:errors="*{phone}" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="mail">Email</label>
+      <input type="email" id="mail" th:field="*{mail}" class="form-control">
+      <div th:if="${#fields.hasErrors('mail')}" th:errors="*{mail}" class="error"></div>
+    </div>
+    <div class="form-group">
+      <label for="address">Dirección</label>
+      <input type="text" id="address" th:field="*{address}" class="form-control">
+      <div th:if="${#fields.hasErrors('address')}" th:errors="*{address}" class="error"></div>
+    </div>
+    <div class="form-group">
       <label>Especialidades</label>
-      <div th:each="e : ${especialidades}" style="display:flex; align-items:center; gap:8px; margin:5px 0">
-        <input type="checkbox" name="selectedEspecialidades" th:value="${e}"
-               th:checked="${professional.uniqueSpeciality != null and professional.uniqueSpeciality.contains(e)}">
-        <span th:text="${e}"></span>
+      <div style="display:inline-block;">
+        <div th:each="e : ${especialidades}" style="display:flex; align-items:center; gap:8px; margin:5px 0;">
+          <label th:text="${e}" style="margin:0; font-weight:normal; cursor:pointer;"></label>
+          <input type="checkbox" name="selectedEspecialidades" th:value="${e}"
+                 th:checked="${professional.uniqueSpeciality != null and professional.uniqueSpeciality.contains(e)}">
+        </div>
       </div>
     </div>
-      <button type="submit" class="btn btn-primary">Guardar</button>
+    <button type="submit" class="btn btn-primary">Guardar</button>
       <a th:href="@{/staff/formadores/list}" class="btn btn-secondary">Cancelar</a>
     </form>
   </div>

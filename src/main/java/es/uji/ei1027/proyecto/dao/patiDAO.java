@@ -134,6 +134,9 @@ public class patiDAO {
 
     public List<PATI> findMatch(String address, String gender, String topic) {
         try {
+            if (gender != null) gender = gender.trim();
+            if (address != null) address = address.trim();
+
             String sql =
                     "SELECT DISTINCT p.* " +
                             "FROM pap_pati p " +
@@ -147,10 +150,10 @@ public class patiDAO {
                     gender, gender, gender,
                     address, address, "%" + address + "%"
             );
-        } catch (EmptyResultDataAccessException e) {
+        } catch (Exception e) {
+            e.printStackTrace();
             return new ArrayList<>();
         }
-
     }
     public void addSpecialityToPATI(String dniPati, int idSpeciality) {
         jdbcTemplate.update(

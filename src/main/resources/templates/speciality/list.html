@@ -22,6 +22,9 @@
 </header>
 <div class="container">
     <div class="header-secondary">
+        <div th:if="${error}" class="alert-info" style="color:red; margin:10px 20px;">
+            <span th:text="${error}"></span>
+        </div>
         <h1>Lista de Especialidades</h1>
     </div>
     <div style="padding:20px">

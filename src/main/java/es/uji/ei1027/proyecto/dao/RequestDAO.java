@@ -176,4 +176,16 @@ public class RequestDAO {
         }
     }
 
+    public List<Map<String, Object>> getRequestsPendingPAPConfirmation(String dniUser) {
+        try {
+            return jdbcTemplate.queryForList(
+                    "SELECT r.*, p.name as candname FROM request r " +
+                            "LEFT JOIN pap_pati p ON r.dnicand = p.dni " +
+                            "WHERE r.dniuser = ? AND r.status = 'Aceptada' " +
+                            "AND r.idrequest NOT IN (SELECT idrequest FROM contract)", dniUser);
+        } catch (Exception e) {
+            return new ArrayList<>();
+        }
+    }
+
 }

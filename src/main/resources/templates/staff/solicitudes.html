@@ -56,8 +56,8 @@
             <span th:if="${s.status == 'Denegada'}" class="estado-rechazada" th:text="${s.status}"></span>
           </td>
           <td>
-            <a th:href="@{/staff/match/{id}(id=${s['idrequest']})}" class="btn btn-outline">Generar propuesta</a>
-            <a th:href="@{/staff/solicitudes/denegar/{id}(id=${s['idrequest']})}" class="btn btn-secondary" onclick="return confirm('¿Seguro que quieres denegar esta solicitud?')">Denegar</a>
+            <a th:if="${tipus == 'pendents'}" th:href="@{/staff/match/{id}(id=${s['idrequest']})}" class="btn btn-outline">Generar propuesta</a>
+            <a th:if="${tipus == 'pendents'}" th:href="@{/staff/solicitudes/denegar/{id}(id=${s['idrequest']})}" class="btn btn-secondary" onclick="return confirm('¿Seguro que quieres denegar esta solicitud?')">Denegar</a>
           </td>
         </tr>
         </tbody>

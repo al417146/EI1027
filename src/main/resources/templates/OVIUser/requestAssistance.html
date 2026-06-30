@@ -28,7 +28,9 @@
       <div class="form-group">
         <label>Género preferido del profesional</label>
         <select th:field="*{preferredGender}" class="form-control">
+
           <option value="">Sin preferencia</option>
+          
           <option value="M">Masculino</option>
           <option value="F">Femenino</option>
           <option value="O">Otro</option>
@@ -36,15 +38,17 @@
       </div>
       <div class="form-group">
         <label>Zona preferida</label>
-        <select th:field="*{preferredZone}" class="form-control">
-          <option value="">Selecciona una zona</option>
+        <select th:field="*{preferredZone}" class="form-control" required>
+          <option value="">-- Selecciona una zona --</option>
+          
           <option th:each="zone : ${zones}" th:value="${zone}" th:text="${zone}"></option>
         </select>
       </div>
       <div class="form-group">
         <label>Especialidad requerida</label>
-        <select th:field="*{preferredSpeciality}" class="form-control">
-          <option value="">Sin preferencia</option>
+        <select th:field="*{preferredSpeciality}" class="form-control" required>
+          <option value="">-- Selecciona una especialidad --</option>
+          
           <option th:each="s : ${specialities}" th:value="${s.descrip}" th:text="${s.descrip}"></option>
         </select>
       </div>

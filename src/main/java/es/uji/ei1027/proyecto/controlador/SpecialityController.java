@@ -47,9 +47,15 @@ public class SpecialityController {
     }
 
     @GetMapping("/delete/{id}")
-    public String delete(@PathVariable int id, HttpSession session) {
+    public String delete(@PathVariable int id, HttpSession session, Model model) {
         if (!isStaff(session)) return "redirect:/login";
-        specialityDAO.deleteSpeciality(id);
+        try {
+            specialityDAO.deleteSpeciality(id);
+        } catch (Exception e) {
+            model.addAttribute("error", "No se puede eliminar esta especialidad porque tiene profesionales asociados.");
+            model.addAttribute("specialities", specialityDAO.getSpecialities());
+            return "speciality/list";
+        }
         return "redirect:/speciality/list";
     }
 

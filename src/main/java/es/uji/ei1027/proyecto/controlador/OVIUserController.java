@@ -88,16 +88,7 @@ public class OVIUserController {
         r.setIdRequirement(new Random().nextInt(999999));
         rDAO.addRequest(r);
 
-        int idRequest = rDAO.getLastRequestId(user.getDni());
-
-        Contract contract = new Contract();
-        contract.setDateStart(new Date());
-        contract.setIdRequest(idRequest);
-        contract.setDNICand(dniPAP);
-        contract.setStatus("Pendiente de firma OVI");
-        cDAO.addContract(contract);
-
-        return "redirect:/OVIUser/misContratos?nou=true";
+        return "redirect:/OVIUser/estadoSolicitud";
     }
 
     // Mostramos un formulario para añadir la fecha de fin a un contrato
@@ -260,32 +251,15 @@ public class OVIUserController {
         return "redirect:/OVIUser/estadoSolicitud";
     }
     @GetMapping("/misContratos")
-    public String listMisContratos(Model model, HttpSession session,
-                                   @RequestParam(value = "tipo", required = false, defaultValue = "todos") String tipo) {
+    public String listMisContratos(Model model, HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
-
-        List<Map<String, Object>> todos = cDAO.getContractsByUserWithName(user.getDni());
-        Date hoy = new Date();
-
-        List<Map<String, Object>> filtrados = new ArrayList<>();
-        for (Map<String, Object> c : todos) {
-            Date dateStart = (Date) c.get("datestart");
-            Date dateEnd   = (Date) c.get("dateend");
-
-            boolean activo = dateStart != null && dateStart.before(hoy)
-                    && (dateEnd == null || dateEnd.after(hoy));
-            boolean pasado = dateEnd != null && dateEnd.before(hoy);
-            boolean futuro = dateStart != null && dateStart.after(hoy);
-
-            if ("activos".equals(tipo)  && activo)  filtrados.add(c);
-            else if ("pasados".equals(tipo) && pasado)  filtrados.add(c);
-            else if ("futuros".equals(tipo) && futuro)  filtrados.add(c);
-            else if ("todos".equals(tipo))              filtrados.add(c);
+        List<Map<String, Object>> contratos = cDAO.getContractsByUserWithName(user.getDni());
+        for (Map<String, Object> c : contratos) {
+            System.out.println("STATUS: [" + c.get("status") + "]");
         }
-
-        model.addAttribute("contratos", filtrados);
-        model.addAttribute("tipoActual", tipo);
+        model.addAttribute("contratos", contratos);
+        model.addAttribute("pendientesPAP", rDAO.getRequestsPendingPAPConfirmation(user.getDni()));
         return "OVIUser/misContratos";
     }
     @PostMapping("/signarContracte")
