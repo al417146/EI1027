@@ -154,17 +154,12 @@ public class OVIUserController {
     // Procesar actualización del perfil
     @PostMapping("/profile")
     public String updateProfile(@ModelAttribute("oviuser") OVIUser oviuser,
-                                BindingResult bindingResult,
                                 HttpSession session) {
         UserDetails user = (UserDetails) session.getAttribute("user");
         if (user == null) return "redirect:/login";
-        OVIUserValidator validator = new OVIUserValidator();
-        validator.validate(oviuser, bindingResult);
-        if (bindingResult.hasErrors())
-            return "OVIUser/profile";
         oviuser.setDNI(user.getDni());
         oviUserDAO.updateOVIUser(oviuser);
-        return "redirect:/OVIUser/OVIIndex?updated";
+        return "redirect:/OVIUser/OVIIndex";
     }
 
     // Mostrar formulario para solicitud genérica
