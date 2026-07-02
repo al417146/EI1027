@@ -57,6 +57,7 @@
                  th:href="@{/OVIUser/verCandidatos/{id}(id=${s.idRequest})}"
                  class="btn btn-primary">Ver candidatos</a>
               <span th:unless="${s.status == 'Propuesta enviada'}">—</span>
+              <a th:if="${s.status == 'Aceptada' or s.status == 'Contrato pendiente'}" th:href="@{/chat/{id}(id=${s['idrequest']})}" class="btn btn-outline">Chat</a>
             </td>
           </tr>
         </tbody>

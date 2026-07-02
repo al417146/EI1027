@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Mis notificaciones</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/}" class="nav-link">Inicio</a>
+    <a th:href="@{/notificaciones}" class="nav-link">Notificaciones</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1>Mis notificaciones</h1>
+  </div>
+  <div style="padding:20px">
+    <div th:if="${#lists.isEmpty(notificaciones)}" class="alert-info">
+      No tienes notificaciones.
+    </div>
+    <div th:each="n : ${notificaciones}" style="margin-bottom:15px; padding:15px; border-radius:8px;"
+         th:style="${n['leido']} ? 'background:#f9f9f9; border:1px solid #ddd;' : 'background:#e8f4fd; border:1px solid #2E86C1;'">
+      <p th:text="${n['contenido']}"></p>
+      <small style="color:#777;" th:text="${n['fechaenvio']}"></small>
+    </div>
+    <div style="margin-top:20px">
+      <a th:if="${session.user.rol == 'OVIUSER'}" th:href="@{/OVIUser/OVIIndex}" class="btn btn-secondary">Volver</a>
+      <a th:if="${session.user.rol == 'PAP'}" th:href="@{/PAP/index}" class="btn btn-secondary">Volver</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

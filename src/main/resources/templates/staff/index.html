@@ -18,6 +18,7 @@
     <a th:href="@{/staff/formadores/list}" class="nav-link">Formadores</a>
     <a th:href="@{/speciality/list}" class="nav-link">Especialidades</a>
     <a th:href="@{/staff/stats}" class="nav-link">Estadísticas</a>
+    <a th:href="@{/staff/notificaciones}" class="nav-link">Notificaciones</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
@@ -62,6 +63,11 @@
         <h3>Estadísticas e informes</h3>
         <p>Consulta las métricas clave sobre servicios, usuarios y actividades.</p>
         <a th:href="@{/staff/stats}" class="btn btn-primary">Ver estadísticas</a>
+      </div>
+      <div class="tarjeta-candidato">
+        <h3>Notificaciones</h3>
+        <p>Envía mensajes a usuarios OVI y PAP/PATI.</p>
+        <a th:href="@{/staff/notificaciones}" class="btn btn-primary">Enviar notificación</a>
       </div>
     </div>
   </div>

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Notificaciones</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/staff/index}" class="nav-link">Inicio</a>
+    <a th:href="@{/staff/notificaciones}" class="nav-link">Notificaciones</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1>Notificaciones</h1>
+    <p>Envía mensajes a usuarios OVI y PAP/PATI</p>
+  </div>
+  <div th:if="${param.enviado}" class="alert-info" style="margin:10px 20px; background:#d4edda; border:1px solid #c3e6cb; padding:10px; border-radius:8px;">
+    Notificación enviada correctamente.
+  </div>
+  <div class="card" style="margin:20px; padding:20px; max-width:600px;">
+    <form th:action="@{/staff/notificaciones/enviar}" method="post">
+      <div class="form-group">
+        <label>Destinatario</label>
+        <select name="destinatario" class="form-control" required>
+          <option value="">-- Selecciona un usuario --</option>
+          <optgroup label="Usuarios OVI">
+            <option th:each="u : ${oviusers}" th:value="${u.DNI}" th:text="${u.name + ' (' + u.DNI + ')'}"></option>
+          </optgroup>
+          <optgroup label="PAP/PATI">
+            <option th:each="p : ${patis}" th:value="${p.DNI}" th:text="${p.name + ' (' + p.DNI + ')'}"></option>
+          </optgroup>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mensaje</label>
+        <textarea name="contenido" class="form-control" rows="5" required
+                  style="width:100%; padding:10px; border:1px solid #ddd; border-radius:8px;"></textarea>
+      </div>
+      <button type="submit" class="btn btn-primary">Enviar notificación</button>
+      <a th:href="@{/staff/index}" class="btn btn-secondary">Cancelar</a>
+    </form>
+  </div>
+
+  <div style="margin:20px;">
+    <h2>Historial de notificaciones enviadas</h2>
+    <div th:if="${#lists.isEmpty(enviadas)}" class="alert-info">
+      No se han enviado notificaciones todavía.
+    </div>
+    <table th:unless="${#lists.isEmpty(enviadas)}" class="data-table">
+      <thead>
+        <tr>
+          <th>Destinatario</th>
+          <th>Mensaje</th>
+          <th>Fecha</th>
+          <th>Leído</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr th:each="n : ${enviadas}">
+          <td th:text="${n['destinatarioname']}"></td>
+          <td th:text="${n['contenido']}"></td>
+          <td th:text="${n['fechaenvio']}"></td>
+          <td>
+            <span th:if="${n['leido']}" class="estado-aprobada">Sí</span>
+            <span th:unless="${n['leido']}" class="estado-pendiente">No</span>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+  <div style="margin:20px;">
+    <a th:href="@{/staff/index}" class="btn btn-secondary">Volver</a>
+  </div>
+</main>
+</body>
+</html>

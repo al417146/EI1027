@@ -16,6 +16,7 @@
     <a th:href="@{/PAP/misActividades}" class="nav-link">Mis actividades</a>
     <a th:href="@{/PAP/solicitudesPendientes}" class="nav-link">Solicitudes</a>
     <a th:href="@{/PAP/misContratos}" class="nav-link">Mis contratos</a>
+    <a th:href="@{/notificaciones}" class="nav-link">Notificaciones</a>
     <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
   </nav>
 </header>
@@ -45,6 +46,11 @@
         <h3>Mis contratos</h3>
         <p>Consulta los contratos de asistencia asignados.</p>
         <a th:href="@{/PAP/misContratos}" class="btn btn-outline">Ver contratos</a>
+      </div>
+      <div class="tarjeta-candidato">
+        <h3>Notificaciones</h3>
+        <p>Mensajes del equipo de la OVI.</p>
+        <a th:href="@{/notificaciones}" class="btn btn-outline">Ver notificaciones</a>
       </div>
     </div>
   </div>

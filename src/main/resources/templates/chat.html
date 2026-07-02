@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="es">
+<head>
+  <meta charset="UTF-8">
+  <title>Chat</title>
+  <link rel="stylesheet" type="text/css" th:href="@{/css/style.css}">
+  <style>
+    .chat-container { max-width:700px; margin:20px auto; }
+    .mensaje { padding:10px 15px; border-radius:12px; margin:8px 0; max-width:70%; }
+    .mensaje-propio { background:#2E86C1; color:white; margin-left:auto; text-align:right; }
+    .mensaje-otro { background:#f1f0f0; color:#333; margin-right:auto; }
+    .mensaje-nombre { font-size:11px; opacity:0.7; margin-bottom:4px; }
+    .mensaje-fecha { font-size:10px; opacity:0.6; margin-top:4px; }
+    .chat-box { border:1px solid #ddd; border-radius:8px; padding:20px; height:400px; overflow-y:auto; background:#fafafa; }
+    .chat-input { display:flex; gap:10px; margin-top:15px; }
+    .chat-input input { flex:1; padding:10px; border:1px solid #ddd; border-radius:8px; }
+  </style>
+</head>
+<body>
+<header class="top-bar">
+  <div class="logo">
+    <img th:src="@{/images/logo-ovi.png}" alt="Logo OVI" class="logo-img">
+  </div>
+  <nav class="nav-bar">
+    <a th:href="@{/}" class="nav-link">Inicio</a>
+    <a th:href="@{/logoutConfirm}" class="nav-link">Cerrar sesión</a>
+  </nav>
+</header>
+<main class="container">
+  <div class="header-primary">
+    <h1>Chat de asistencia</h1>
+  </div>
+  <div class="chat-container">
+    <div class="chat-box" id="chatBox">
+      <div th:if="${#lists.isEmpty(mensajes)}" style="text-align:center; color:#999; margin-top:150px;">
+        No hay mensajes aún. ¡Sé el primero en escribir!
+      </div>
+      <div th:each="m : ${mensajes}">
+        <div th:class="${m['senderdni'] == userDni} ? 'mensaje mensaje-propio' : 'mensaje mensaje-otro'">
+          <div class="mensaje-nombre" th:text="${m['sendername']}"></div>
+          <div th:text="${m['contenido']}"></div>
+          <div class="mensaje-fecha" th:text="${m['fechaenvio']}"></div>
+        </div>
+      </div>
+    </div>
+    <form th:action="@{/chat/enviar}" method="post" class="chat-input">
+      <input type="hidden" name="idRequest" th:value="${idRequest}">
+      <input type="text" name="contenido" placeholder="Escribe un mensaje..." autocomplete="off" required>
+      <button type="submit" class="btn btn-primary">Enviar</button>
+    </form>
+    <div style="margin-top:15px;">
+      <a th:if="${session.user.rol == 'OVIUSER'}" th:href="@{/OVIUser/estadoSolicitud}" class="btn btn-secondary">Volver</a>
+      <a th:if="${session.user.rol == 'PAP'}" th:href="@{/PAP/solicitudesPendientes}" class="btn btn-secondary">Volver</a>
+      <a th:if="${session.user.rol == 'STAFF'}" th:href="@{/staff/solicitudes}" class="btn btn-secondary">Volver</a>
+    </div>
+  </div>
+</main>
+<script>
+  document.getElementById('chatBox').scrollTop = document.getElementById('chatBox').scrollHeight;
+</script>
+</body>
+</html>

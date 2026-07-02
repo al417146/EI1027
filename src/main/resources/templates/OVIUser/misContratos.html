@@ -27,51 +27,52 @@
     <p>Consulta el estado de tus contratos de asistencia personal</p>
   </div>
   <div style="padding:20px">
-    <div th:if="${#lists.isEmpty(contratos)}" class="alert-info">
-      Aún no tienes contratos. Si has aceptado a un profesional, espera a que confirme tu solicitud para generar el contrato.
-    </div>
-    <div th:if="${!#lists.isEmpty(pendientesPAP)}" style="margin-bottom:20px">
+    <div th:if="${pendientesPAP != null and !#lists.isEmpty(pendientesPAP)}" style="margin-bottom:20px">
       <div th:each="p : ${pendientesPAP}" class="alert-info">
         Esperando confirmación de <span th:text="${p['candname']}"></span> para generar el contrato.
       </div>
     </div>
+    <div th:if="${#lists.isEmpty(contratos)}" class="alert-info">
+      Aún no tienes contratos. Si has aceptado a un profesional, espera a que confirme tu solicitud para generar el contrato.
+    </div>
     <div th:unless="${#lists.isEmpty(contratos)}">
       <table class="data-table">
         <thead>
-        <tr>
-          <th>Profesional</th>
-          <th>Fecha inicio</th>
-          <th>Fecha fin</th>
-          <th>Estado contrato</th>
-          <th>Contrato PDF</th>
-          <th>Acción</th>
-        </tr>
+          <tr>
+            <th>Profesional</th>
+            <th>Fecha inicio</th>
+            <th>Fecha fin</th>
+            <th>Estado contrato</th>
+            <th>Contrato PDF</th>
+            <th>Acción</th>
+          </tr>
         </thead>
         <tbody>
-        <tr th:each="c : ${contratos}">
-          <td th:text="${c['candname']}"></td>
-          <td th:text="${c['datestart']}"></td>
-          <td th:text="${c['dateend'] != null} ? ${c['dateend']} : 'En curso'"></td>
-          <td>
+          <tr th:each="c : ${contratos}">
+            <td th:text="${c['candname']}"></td>
+            <td th:text="${c['datestart']}"></td>
+            <td th:text="${c['dateend'] != null} ? ${c['dateend']} : 'En curso'"></td>
+            <td>
               <span th:text="${c['status']}"
                     th:class="${c['status'] == 'Activo'} ? 'estado-aprobada' :
                               (${c['status'] == 'Rechazado'} ? 'estado-rechazada' : 'estado-pendiente')"></span>
-          </td>
-          <td>
+            </td>
+            <td>
               <pre th:if="${c['pdf'] != null}" th:text="${c['pdf']}"
                    style="background:#f4f6f7; padding:10px; border-radius:5px; font-size:11px; max-width:300px; overflow:auto;"></pre>
-            <span th:unless="${c['pdf'] != null}">Pendiente de firma</span>
-          </td>
-          <td>
-            <form th:if="${c['status'] == 'Pendiente de firma OVI'}"
-                  th:action="@{/OVIUser/signarContracte}" method="post">
-              <input type="hidden" name="idContract" th:value="${c['idcontract']}">
-              <button type="submit" class="btn btn-success">Firmar contrato</button>
-            </form>
-            <span th:if="${c['status'] == 'Activo'}" class="estado-aprobada">Firmado</span>
+              <span th:unless="${c['pdf'] != null}">Pendiente de firma</span>
+            </td>
+            <td>
+              <a th:href="@{/chat/{id}(id=${c['idrequest']})}" class="btn btn-outline">Chat</a>
+              <form th:if="${c['status'] == 'Pendiente de firma OVI'}"
+                    th:action="@{/OVIUser/signarContracte}" method="post">
+                <input type="hidden" name="idContract" th:value="${c['idcontract']}">
+                <button type="submit" class="btn btn-success">Firmar contrato</button>
+              </form>
+              <span th:if="${c['status'] == 'Activo'}" class="estado-aprobada">Firmado</span>
               <span th:if="${c['status'] == 'Pendiente de firma PAP'}" class="estado-pendiente">Esperando firma del PAP</span>
-          </td>
-        </tr>
+            </td>
+          </tr>
         </tbody>
       </table>
     </div>

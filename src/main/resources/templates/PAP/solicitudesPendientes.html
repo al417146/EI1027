@@ -43,13 +43,15 @@
           <td th:text="${s['preferredzone']}"></td>
           <td th:text="${s['preferredspeciality']}"></td>
           <td>
-            <form th:action="@{/PAP/aceptarSolicitud}" method="post">
+            <form th:if="${s['status'] == 'Aceptada'}" th:action="@{/PAP/aceptarSolicitud}" method="post">
               <input type="hidden" name="idRequest" th:value="${s['idrequest']}">
               <button type="submit" class="btn btn-success"
                       onclick="return confirm('¿Aceptas esta solicitud de asistencia?')">
                 Aceptar
               </button>
             </form>
+            <span th:if="${s['status'] == 'Contrato pendiente'}" class="estado-aprobada">Aceptado</span>
+            <a th:href="@{/chat/{id}(id=${s['idrequest']})}" class="btn btn-outline">Chat</a>
           </td>
         </tr>
       </tbody>

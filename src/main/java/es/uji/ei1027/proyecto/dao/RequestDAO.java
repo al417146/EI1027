@@ -170,7 +170,7 @@ public class RequestDAO {
                     "SELECT r.*, o.name as username " +
                             "FROM request r " +
                             "LEFT JOIN oviuser o ON r.dniuser = o.dni " +
-                            "WHERE r.dnicand = ? AND r.status = 'Aceptada'", dniPAP);
+                            "WHERE r.dnicand = ? AND r.status IN ('Aceptada', 'Contrato pendiente')", dniPAP);
         } catch (Exception e) {
             return new ArrayList<>();
         }
